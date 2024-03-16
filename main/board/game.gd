@@ -10,7 +10,7 @@ extends Node2D
 @onready var RobotTemplate = preload("res://main/board/robot/robot.tscn")
 
 
-var selected_square:Square
+var selected_square:SquareView
 signal go_to_editor()
 
 

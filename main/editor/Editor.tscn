@@ -1,0 +1,153 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsw2hh0316i2e"]
+
+[ext_resource type="Script" path="res://main/board/board.gd" id="1_30p0m"]
+[ext_resource type="Script" path="res://main/editor/Editor.gd" id="1_ihjyf"]
+
+[node name="Editor" type="Node2D"]
+script = ExtResource("1_ihjyf")
+
+[node name="board" type="ColorRect" parent="."]
+offset_left = 46.0
+offset_top = 158.0
+offset_right = 614.0
+offset_bottom = 726.0
+color = Color(0.52549, 1, 1, 1)
+script = ExtResource("1_30p0m")
+metadata/_edit_use_anchors_ = true
+
+[node name="left_check" type="CheckBox" parent="."]
+offset_left = 292.0
+offset_top = 764.0
+offset_right = 316.0
+offset_bottom = 788.0
+metadata/_edit_use_anchors_ = true
+
+[node name="top_check" type="CheckBox" parent="."]
+offset_left = 318.0
+offset_top = 740.0
+offset_right = 342.0
+offset_bottom = 764.0
+metadata/_edit_use_anchors_ = true
+
+[node name="right_check" type="CheckBox" parent="."]
+offset_left = 350.0
+offset_top = 765.0
+offset_right = 374.0
+offset_bottom = 789.0
+metadata/_edit_use_anchors_ = true
+
+[node name="bottom_check" type="CheckBox" parent="."]
+offset_left = 319.0
+offset_top = 788.0
+offset_right = 343.0
+offset_bottom = 812.0
+metadata/_edit_use_anchors_ = true
+
+[node name="target_check" type="CheckBox" parent="."]
+offset_left = 318.0
+offset_top = 765.0
+offset_right = 342.0
+offset_bottom = 789.0
+metadata/_edit_use_anchors_ = true
+
+[node name="save_button" type="Button" parent="."]
+offset_left = 131.0
+offset_top = 760.0
+offset_right = 187.0
+offset_bottom = 791.0
+text = "Save"
+metadata/_edit_use_anchors_ = true
+
+[node name="load_button" type="Button" parent="."]
+offset_left = 447.0
+offset_top = 757.0
+offset_right = 503.0
+offset_bottom = 788.0
+text = "Load"
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="."]
+offset_left = 524.0
+offset_top = 19.0
+offset_right = 607.0
+offset_bottom = 50.0
+text = "Game"
+
+[node name="OptionButton" type="OptionButton" parent="."]
+offset_left = 55.0
+offset_top = 21.0
+offset_right = 273.0
+offset_bottom = 43.0
+
+[connection signal="gui_input" from="board/Square" to="board/Square" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21444" to="board/@ColorRect@21444" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21445" to="board/@ColorRect@21445" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21446" to="board/@ColorRect@21446" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21447" to="board/@ColorRect@21447" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21448" to="board/@ColorRect@21448" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21449" to="board/@ColorRect@21449" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21450" to="board/@ColorRect@21450" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21451" to="board/@ColorRect@21451" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21452" to="board/@ColorRect@21452" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21453" to="board/@ColorRect@21453" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21454" to="board/@ColorRect@21454" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21455" to="board/@ColorRect@21455" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21456" to="board/@ColorRect@21456" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21457" to="board/@ColorRect@21457" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21458" to="board/@ColorRect@21458" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21459" to="board/@ColorRect@21459" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21460" to="board/@ColorRect@21460" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21461" to="board/@ColorRect@21461" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21462" to="board/@ColorRect@21462" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21463" to="board/@ColorRect@21463" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21464" to="board/@ColorRect@21464" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21465" to="board/@ColorRect@21465" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21466" to="board/@ColorRect@21466" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21467" to="board/@ColorRect@21467" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21468" to="board/@ColorRect@21468" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21469" to="board/@ColorRect@21469" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21470" to="board/@ColorRect@21470" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21471" to="board/@ColorRect@21471" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21472" to="board/@ColorRect@21472" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21473" to="board/@ColorRect@21473" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21474" to="board/@ColorRect@21474" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21475" to="board/@ColorRect@21475" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21476" to="board/@ColorRect@21476" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21477" to="board/@ColorRect@21477" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21478" to="board/@ColorRect@21478" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21479" to="board/@ColorRect@21479" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21480" to="board/@ColorRect@21480" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21481" to="board/@ColorRect@21481" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21482" to="board/@ColorRect@21482" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21483" to="board/@ColorRect@21483" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21484" to="board/@ColorRect@21484" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21485" to="board/@ColorRect@21485" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21486" to="board/@ColorRect@21486" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21487" to="board/@ColorRect@21487" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21488" to="board/@ColorRect@21488" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21489" to="board/@ColorRect@21489" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21490" to="board/@ColorRect@21490" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21491" to="board/@ColorRect@21491" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21492" to="board/@ColorRect@21492" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21493" to="board/@ColorRect@21493" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21494" to="board/@ColorRect@21494" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21495" to="board/@ColorRect@21495" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21496" to="board/@ColorRect@21496" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21497" to="board/@ColorRect@21497" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21498" to="board/@ColorRect@21498" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21499" to="board/@ColorRect@21499" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21500" to="board/@ColorRect@21500" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21501" to="board/@ColorRect@21501" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21502" to="board/@ColorRect@21502" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21503" to="board/@ColorRect@21503" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21504" to="board/@ColorRect@21504" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21505" to="board/@ColorRect@21505" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@21506" to="board/@ColorRect@21506" method="_on_gui_input"]
+[connection signal="pressed" from="left_check" to="." method="_on_left_check_pressed"]
+[connection signal="pressed" from="top_check" to="." method="_on_top_check_pressed"]
+[connection signal="pressed" from="right_check" to="." method="_on_right_check_pressed"]
+[connection signal="pressed" from="bottom_check" to="." method="_on_bottom_check_pressed"]
+[connection signal="pressed" from="target_check" to="." method="_on_target_check_pressed"]
+[connection signal="pressed" from="save_button" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="load_button" to="." method="_on_load_button_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

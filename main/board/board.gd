@@ -2,11 +2,11 @@
 class_name Board
 extends ColorRect
 
-@onready var SquareTemplate = preload("res://main/board/square/square.tscn")
-@onready var LineTemplate = preload("res://main/board/line/Line.tscn")
+@onready var SquareTemplate = preload("res://main/board/square_view/square_view.tscn")
+@onready var LineTemplate = preload("res://main/board/line_view/line_view.tscn")
 
 var grid_dimension = Vector2(8,8)
-var target = Square
+var target = SquareView
 
 var square_size
 var squares:MultiArray
