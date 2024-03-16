@@ -1,0 +1,142 @@
+[gd_scene load_steps=7 format=3 uid="uid://tqpt66wvsbue"]
+
+[ext_resource type="Script" path="res://main/board/game.gd" id="1_5it5f"]
+[ext_resource type="Script" path="res://main/board/board.gd" id="2_jvigl"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_l05u7"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_i0bq6"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_88l8l"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_6kdgt"]
+
+[node name="game" type="Node2D"]
+script = ExtResource("1_5it5f")
+
+[node name="board" type="ColorRect" parent="."]
+offset_left = 45.0
+offset_top = 73.0
+offset_right = 613.0
+offset_bottom = 641.0
+color = Color(0.52549, 1, 1, 1)
+script = ExtResource("2_jvigl")
+metadata/_edit_use_anchors_ = true
+
+[node name="editor_button" type="Button" parent="."]
+offset_left = 512.0
+offset_top = 16.0
+offset_right = 605.0
+offset_bottom = 47.0
+text = "Editor"
+
+[node name="GameState" type="Node" parent="."]
+script = ExtResource("3_l05u7")
+
+[node name="CompoundState" type="Node" parent="GameState"]
+script = ExtResource("4_i0bq6")
+initial_state = NodePath("Playing")
+
+[node name="NotStarted" type="Node" parent="GameState/CompoundState"]
+script = ExtResource("5_88l8l")
+
+[node name="StartGane" type="Node" parent="GameState/CompoundState/NotStarted"]
+script = ExtResource("6_6kdgt")
+to = NodePath("../../Playing/Ready")
+event = &"StartGame"
+
+[node name="Playing" type="Node" parent="GameState/CompoundState"]
+script = ExtResource("4_i0bq6")
+initial_state = NodePath("Ready")
+
+[node name="Ready" type="Node" parent="GameState/CompoundState/Playing"]
+script = ExtResource("5_88l8l")
+
+[node name="StartMoving" type="Node" parent="GameState/CompoundState/Playing/Ready"]
+script = ExtResource("6_6kdgt")
+to = NodePath("../../Moving")
+event = &"StartMoving"
+
+[node name="Moving" type="Node" parent="GameState/CompoundState/Playing"]
+script = ExtResource("5_88l8l")
+
+[node name="StopMoving" type="Node" parent="GameState/CompoundState/Playing/Moving"]
+script = ExtResource("6_6kdgt")
+to = NodePath("../../Ready")
+event = &"StopMoving"
+
+[node name="EndGame" type="Node" parent="GameState/CompoundState/Playing"]
+script = ExtResource("6_6kdgt")
+to = NodePath("../../GameOver")
+event = &"EndGame"
+
+[node name="GameOver" type="Node" parent="GameState/CompoundState"]
+script = ExtResource("5_88l8l")
+
+[node name="StartGame" type="Node" parent="GameState/CompoundState/GameOver"]
+script = ExtResource("6_6kdgt")
+to = NodePath("../../Playing/Ready")
+event = &"StartGame"
+
+[connection signal="gui_input" from="board/Square" to="board/Square" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17510" to="board/@ColorRect@17510" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17511" to="board/@ColorRect@17511" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17512" to="board/@ColorRect@17512" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17513" to="board/@ColorRect@17513" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17514" to="board/@ColorRect@17514" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17515" to="board/@ColorRect@17515" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17516" to="board/@ColorRect@17516" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17517" to="board/@ColorRect@17517" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17518" to="board/@ColorRect@17518" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17519" to="board/@ColorRect@17519" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17520" to="board/@ColorRect@17520" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17521" to="board/@ColorRect@17521" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17522" to="board/@ColorRect@17522" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17523" to="board/@ColorRect@17523" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17524" to="board/@ColorRect@17524" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17525" to="board/@ColorRect@17525" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17526" to="board/@ColorRect@17526" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17527" to="board/@ColorRect@17527" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17528" to="board/@ColorRect@17528" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17529" to="board/@ColorRect@17529" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17530" to="board/@ColorRect@17530" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17531" to="board/@ColorRect@17531" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17532" to="board/@ColorRect@17532" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17533" to="board/@ColorRect@17533" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17534" to="board/@ColorRect@17534" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17535" to="board/@ColorRect@17535" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17536" to="board/@ColorRect@17536" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17537" to="board/@ColorRect@17537" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17538" to="board/@ColorRect@17538" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17539" to="board/@ColorRect@17539" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17540" to="board/@ColorRect@17540" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17541" to="board/@ColorRect@17541" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17542" to="board/@ColorRect@17542" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17543" to="board/@ColorRect@17543" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17544" to="board/@ColorRect@17544" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17545" to="board/@ColorRect@17545" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17546" to="board/@ColorRect@17546" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17547" to="board/@ColorRect@17547" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17548" to="board/@ColorRect@17548" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17549" to="board/@ColorRect@17549" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17550" to="board/@ColorRect@17550" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17551" to="board/@ColorRect@17551" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17552" to="board/@ColorRect@17552" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17553" to="board/@ColorRect@17553" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17554" to="board/@ColorRect@17554" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17555" to="board/@ColorRect@17555" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17556" to="board/@ColorRect@17556" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17557" to="board/@ColorRect@17557" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17558" to="board/@ColorRect@17558" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17559" to="board/@ColorRect@17559" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17560" to="board/@ColorRect@17560" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17561" to="board/@ColorRect@17561" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17562" to="board/@ColorRect@17562" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17563" to="board/@ColorRect@17563" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17564" to="board/@ColorRect@17564" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17565" to="board/@ColorRect@17565" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17566" to="board/@ColorRect@17566" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17567" to="board/@ColorRect@17567" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17568" to="board/@ColorRect@17568" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17569" to="board/@ColorRect@17569" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17570" to="board/@ColorRect@17570" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17571" to="board/@ColorRect@17571" method="_on_gui_input"]
+[connection signal="gui_input" from="board/@ColorRect@17572" to="board/@ColorRect@17572" method="_on_gui_input"]
+[connection signal="pressed" from="editor_button" to="." method="_on_editor_button_pressed"]
+[connection signal="state_unhandled_input" from="GameState/CompoundState/Playing/Ready" to="." method="_on_ready_state_unhandled_input"]
