@@ -5,9 +5,12 @@ extends Node2D
 @onready var top_check:CheckBox = $top_check
 @onready var bottom_check:CheckBox = $bottom_check
 @onready var target_check:CheckBox = $target_check
-@onready var board = $board
+@onready var board:Board = $board
 @onready var robot 
 @onready var RobotTemplate = preload("res://main/board/robot/robot.tscn")
+
+var level_mgr:LevelMgr:
+	set = set_level_mgr
 
 
 var selected_square:SquareView
@@ -15,14 +18,16 @@ signal go_to_editor()
 
 
 func _ready():
-	$board.square_selected.connect(_on_square_selected)
 	robot = RobotTemplate.instantiate()
 	robot.set_square_size(board.square_size)
 	robot.on_finished_moving.connect(robot_finished_moving)
 	board.add_robot(robot)	
-	load_all()
 #	_on_board_setup_complete()
 	
+func set_level_mgr(new_level_mgr:LevelMgr):
+	level_mgr = new_level_mgr
+	board.level = level_mgr.current_level
+
 
 func _on_board_setup_complete():
 	load_all()
@@ -57,12 +62,8 @@ func save():
 
 
 func load_all():
-	var file = FileAccess.open("user://level1.dat", FileAccess.READ)
-	var target_pos = file.get_var()
-	board.set_target_pos(target_pos)
-	var edges = file.get_var()
-	board.parse_edge_layout(edges)
-	file.close()
+	board.load_level(2)
+
 
 
 func _on_editor_button_pressed():
@@ -70,9 +71,11 @@ func _on_editor_button_pressed():
 
 
 func move(direction):	
-	$GameState.send_event("StartMoving")	
-	var next_pos = board.get_next_wall(robot.pos, direction)
-	robot.set_pos(next_pos)
+	$GameState.send_event("StartMoving")
+	var moves = board.get_moves(robot.pos, direction)
+#	var next_pos = moves[0]
+	robot.set_moves(moves)
+#	robot.set_pos(next_pos)
 
 func robot_finished_moving(robot):
 	$GameState.send_event("StopMoving")	

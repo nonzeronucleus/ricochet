@@ -3,9 +3,13 @@ extends Control
 @onready var game_screen = $game
 @onready var editor_screen = $editor
 
+var level_mgr = LevelMgr.new()
+
 func _ready():
 	game_screen.go_to_editor.connect(_on_go_to_editor)
 	editor_screen.go_to_game.connect(_on_go_to_game)
+	game_screen.level_mgr = level_mgr
+	editor_screen.level_mgr = level_mgr
 	
 	
 	

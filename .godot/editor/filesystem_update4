@@ -10,3 +10,8 @@ res://main/level_mgr/level_mgr.gd
 res://main/board/square_view/square_view.gd
 res://main/board/line_view/line_view.gd
 res://main/level_mgr/square.gd
+res://main/level_mgr/line.gd
+res://main/board/robot/robot.tscn
+res://main/game/robot.gd
+res://main/board/robot/move.gd
+res://main/SceneLoader.gd

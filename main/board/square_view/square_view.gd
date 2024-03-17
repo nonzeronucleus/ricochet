@@ -2,6 +2,8 @@
 class_name SquareView
 extends ColorRect
 
+var square:Square
+
 var left:LineView:set = set_left
 var top:LineView:set = set_top
 var right:LineView:set = set_right
@@ -11,6 +13,13 @@ var pos:Vector2:set = set_pos
 var is_target:bool = false
 
 signal square_selected(square)
+
+func init(init_square:Square):
+	square = init_square
+	left.init_with_line(square.left)
+	top.init_with_line(square.top)
+	right.init_with_line(square.right)
+	bottom.init_with_line(square.bottom)
 
 func _ready():
 	set_as_target(false)

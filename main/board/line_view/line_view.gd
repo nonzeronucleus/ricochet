@@ -7,11 +7,35 @@ var square_size:SquareSize = SquareSize.new(0):set = set_square_size
 var pos:Vector2 = Vector2(0,0)
 var default_gradient:Gradient
 var selected_gradient:Gradient
-var is_border
-var is_solid:bool = false:set = set_is_solid
 
-var is_passable:bool : get = get_is_passable, set = set_is_passable 
+var line:Line = Line.new()
+
+func _init():
+	line = Line.new()
+
+func _on_line_changed(line):
+	print("Changed")
+
+	show_line()
 	
+func init_with_line(new_line:Line):
+	line = new_line
+	line.line_changed.connect(_on_line_changed)
+	show_line()
+	
+func show_line():
+	if line.is_solid:
+		width = 8
+	else:
+		width = 1
+
+
+
+
+var is_solid:bool:
+	get = get_is_solid,
+	set = set_is_solid
+
 func _ready():
 	default_gradient = Gradient.new()
 	default_gradient.colors = [Color.WHITE, Color.WHITE]
@@ -23,31 +47,37 @@ func _ready():
 
 
 	
-func init(new_pos, new_is_horizontal, new_square_size, new_is_border = false):
+func init(new_pos, new_is_horizontal, new_square_size):
 	set_pos(new_pos)
 	set_horizontal(new_is_horizontal)
 	set_square_size(new_square_size)
-	is_border = new_is_border
-	if is_border:
-		width = 8
-		
-	else:
-		width = 1
+	width = 1
 	
 func select(new_selected):
-	if new_selected || is_border:
+	if new_selected:
 		gradient = selected_gradient
 	else:
 		gradient = default_gradient
 		
+		
+func set_is_border(new_border):
+	if not is_inside_tree():
+		await ready
+			
+	line.is_border = new_border
+	
+
 func set_is_solid(new_is_solid):
-	is_solid = new_is_solid
-	if is_border:
-		return
+	line.is_solid = new_is_solid
 	if is_solid:
 		width = 8
 	else:
 		width = 1
+		
+		
+		
+func get_is_solid():
+	return line.is_solid
 			
 func set_pos(_pos):
 	pos = _pos
@@ -69,8 +99,3 @@ func refresh_view():
 		points = PackedVector2Array([square_size.screen_pos(pos), square_size.screen_pos(pos + Vector2(1,0))])
 	pass
 
-func get_is_passable():
-	return !is_border && !is_solid
-
-func set_is_passable(new_is_passable):
-	assert( true, "set_is_passable should not be called")

@@ -7,6 +7,9 @@ extends Node2D
 @onready var target_check:CheckBox = $target_check
 @onready var board = $board
 
+var level_mgr:LevelMgr:
+	set = set_level_mgr
+
 var selected_square:SquareView
 
 signal go_to_game()
@@ -14,10 +17,18 @@ signal go_to_game()
 
 func _ready():
 	$board.square_selected.connect(_on_square_selected)
-	load_all()
-	var level_mgr = LevelMgr.new()
 	
-	level_mgr.load_level(1)
+	
+func set_level_mgr(new_level_mgr:LevelMgr):
+	level_mgr = new_level_mgr
+	board.level = level_mgr.current_level
+#	if not is_inside_tree():
+#		await ready
+#		board.level_mgr = level_mgr
+#				
+#	else:
+#		board.level_mgr = level_mgr
+#		load_all()
 
 	
 func _on_board_setup_complete():
@@ -26,15 +37,15 @@ func _on_board_setup_complete():
 	
 func _on_square_selected(_square):
 	selected_square = _square
-	left_check.disabled = _square.left.is_border
-	right_check.disabled = _square.right.is_border
-	top_check.disabled = _square.top.is_border
-	bottom_check.disabled = _square.bottom.is_border
+#	left_check.disabled = _square.left.is_border
+#	right_check.disabled = _square.right.is_border
+#	top_check.disabled = _square.top.is_border
+#	bottom_check.disabled = _square.bottom.is_border
 
-	left_check.visible = !_square.left.is_border
-	right_check.visible = !_square.right.is_border
-	top_check.visible = !_square.top.is_border
-	bottom_check.visible = !_square.bottom.is_border
+#	left_check.visible = !_square.left.is_border
+#	right_check.visible = !_square.right.is_border
+#	top_check.visible = !_square.top.is_border
+#	bottom_check.visible = !_square.bottom.is_border
 	
 	left_check.button_pressed = _square.left.is_solid
 	right_check.button_pressed = _square.right.is_solid
@@ -81,16 +92,11 @@ func save():
 
 
 func load_all():
-	var file = FileAccess.open("user://level1.dat", FileAccess.READ)
-	var target_pos = file.get_var()
-	board.set_target_pos(target_pos)
-	var edges = file.get_var()
-	board.parse_edge_layout(edges)
-	file.close()
+	level_mgr.load_level(level_mgr.current_level.level_id)
 
 
 func _on_save_button_pressed():
-	save()
+	level_mgr.save(board.level)
 
 
 func _on_load_button_pressed():

@@ -9,103 +9,103 @@ var grid_dimension = Vector2(8,8)
 var target = SquareView
 
 var square_size
-var squares:MultiArray
+var square_views:MultiArray
+var squares:Array
+var level:Level:
+	set = set_level
+
+var level_mgr
 
 signal square_selected(square)
 signal setup_complete()
 
-var edge_rows = [
-	"|.......",
-	".|_J....",
-	"........",
-	"...._...",
-	"....|...",
-	".|......",
-	"........",
-	"....|..."]
-
 func _init():
 	pass
-		
+
+
+#func load_level(level_id:int):
+#	level = level_mgr.load_level(level_id)	
+#	init_squares(level.squares)
+#	set_target_pos(level.target_pos)
+func set_level(new_level):
+	level = new_level
+	init_squares(level.squares)
+	set_target_pos(level.target_pos)
+
+
+func init_squares(init_squares:Array):
+	for y in init_squares.size():	
+		var row = init_squares[y]
+		for x in row.size():
+			var square_view = square_views.at(x,y)
+			square_view.init(row[x])
+	squares = init_squares
+
 
 func _ready():
 	var board_size = get_size()
 	
 	square_size = SquareSize.new(board_size.x / grid_dimension.x)
-	squares = MultiArray.new(grid_dimension)
+	square_views = MultiArray.new(grid_dimension)
 	
 	#Add all squares
 	for x in grid_dimension.x:
 		for y in grid_dimension.y:
-			var square = SquareTemplate.instantiate()
-			square.square_size = square_size
-			square.pos = Vector2(x,y)
-			squares.set_at(x,y,square)
-			mark_square_target(square)
-			square.square_selected.connect(_on_square_selected)
-			add_child(square)
-	set_target(squares.at(0,0))
+			var square_view = SquareTemplate.instantiate()
+#			square_view.init()
+			square_view.square_size = square_size
+			square_view.pos = Vector2(x,y)
+			square_views.set_at(x,y,square_view)
+			mark_square_target(square_view)
+			square_view.square_selected.connect(_on_square_selected)
+			add_child(square_view)
+	set_target(square_views.at(0,0))
 			
 	#Add all lines
 	for x in grid_dimension.x:
 		for y in grid_dimension.y:
 			if x == 0:
 				var left_line = LineTemplate.instantiate()
-				left_line.init(Vector2(x,y), true, square_size, true)
-				squares.at(x,y).left = left_line
+				left_line.init(Vector2(x,y), true, square_size)
+				square_views.at(x,y).left = left_line
 				add_child(left_line)
 				
 			if y == 0:
 				var top_line = LineTemplate.instantiate()
-				top_line.init(Vector2(x,y), false, square_size, true)
-				squares.at(x,y).top = top_line
+				top_line.init(Vector2(x,y), false, square_size)
+				square_views.at(x,y).top = top_line
 				add_child(top_line)
 				
 			var right_line = LineTemplate.instantiate()
-			right_line.init(Vector2(x+1,y), true, square_size, x == grid_dimension.x-1)
-			squares.at(x,y).right = right_line
+			right_line.init(Vector2(x+1,y), true, square_size)
+			square_views.at(x,y).right = right_line
 			if x<grid_dimension.x-1:
-				squares.at(x+1,y).left = right_line
+				square_views.at(x+1,y).left = right_line
 			else:
 				right_line.width = 4
 			add_child(right_line)
 
 			var bottom_line = LineTemplate.instantiate()
-			bottom_line.init(Vector2(x,y+1), false, square_size, y == grid_dimension.y-1)
-			squares.at(x,y).bottom = bottom_line
+			bottom_line.init(Vector2(x,y+1), false, square_size)
+			square_views.at(x,y).bottom = bottom_line
 			if y<grid_dimension.y-1:
-				squares.at(x,y+1).top = bottom_line
+				square_views.at(x,y+1).top = bottom_line
 			else:
 				bottom_line.width = 4
 			add_child(bottom_line)
-	parse_edge_layout(edge_rows)
-
-
-func parse_edge_layout(edge_rows):
-	for x in grid_dimension.x:
-		for y in grid_dimension.y:
-			var edge = edge_rows[y][x]
-			var square = squares.at(x,y)
-			square.right.is_solid = (edge == 'J' or edge == '|')
-			square.bottom.is_solid = (edge == 'J' or edge =='_')
-			
 
 
 func _on_square_selected(selected_square):
 	for x in grid_dimension.x:
 		for y in grid_dimension.y:
-			squares.at(x,y).set_selected(false)
+			square_views.at(x,y).set_selected(false)
 		
 	selected_square.set_selected(true)
 	square_selected.emit(selected_square)
 
 
-func get_edge(x,y):
-	return edge_rows[y][x]
-
-	
 func set_target_pos(target_pos:Vector2):
-	set_target(squares.at(target_pos.x, target_pos.y))
+	set_target(square_views.at(target_pos.x, target_pos.y))
 
 		
 func set_target(new_target):
@@ -129,7 +129,7 @@ func get_edge_text():
 	for y in grid_dimension.y:
 		text+="\t\""
 		for x in grid_dimension.x:
-			var square = squares.at(x,y)
+			var square = square_views.at(x,y)
 			if square.right.is_solid == true:
 				if square.bottom.is_solid == true:
 					text += "J"
@@ -145,25 +145,6 @@ func get_edge_text():
 			text+="\"]\n"
 	print (text)
 	print("\n**************\n")
-	
-	
-func get_edges() -> Array:
-	var edges = []
-	for y in grid_dimension.y:
-		var text = ""
-		for x in grid_dimension.x:
-			var square = squares.at(x,y)
-			if square.right.is_solid == true:
-				if square.bottom.is_solid == true:
-					text += "J"
-				else:
-					text += "|"
-			elif square.bottom.is_solid == true:
-				text += "_"
-			else:
-				text += "."
-		edges.append(text)
-	return edges
 				
 	
 func add_robot(robot):
@@ -178,22 +159,49 @@ func _on_robot_finished_moving(robot):
 	
 
 func is_wall_open(pos, direction) -> bool:
-	var square = squares.at(pos.x, pos.y)
+	var square = square_views.at(pos.x, pos.y)
 	match(direction):
 		Direction.Up:
-			return square.top.is_passable
+			return !square.top.is_solid
 		Direction.Down:
-			return square.bottom.is_passable
+			return !square.bottom.is_solid
 		Direction.Left:
-			return square.left.is_passable
+			return !square.left.is_solid
 		Direction.Right:
-			return square.right.is_passable
+			return !square.right.is_solid
 			
 	return false
 	
-func get_next_wall(init_pos, direction) -> Vector2:
+func get_moves(init_pos, direction) -> Array:
+	var moves:Array = []
 	var end_pos = init_pos
-	while(is_wall_open(end_pos,direction)):
-		end_pos += direction
+	var looped_round = false
 	
-	return end_pos
+	while(is_wall_open(end_pos,direction) && !looped_round):
+		end_pos += direction
+		
+		#check for whether needs to loop round
+		if end_pos.x < 0:
+			moves.append(Move.new(end_pos))
+			moves.append(Move.new(Vector2(square_views.dimensions.x,end_pos.y),true))
+			end_pos.x = square_views.dimensions.x-1
+		if end_pos.y < 0:
+			moves.append(Move.new(end_pos))
+			moves.append(Move.new(Vector2(end_pos.x,square_views.dimensions.y),true))
+			end_pos.y = square_views.dimensions.y -1
+		if end_pos.x >= square_views.dimensions.x:
+			moves.append(Move.new(end_pos))
+			moves.append(Move.new(Vector2(-1,end_pos.y),true))
+			end_pos.x = 0
+		if end_pos.y >= square_views.dimensions.y:
+			moves.append(Move.new(end_pos))
+			moves.append(Move.new(Vector2(end_pos.x,-1), true))
+			end_pos.y = 0
+		#Check to see if looped all the way round
+		
+		if end_pos == init_pos:
+			looped_round = true
+		
+	
+	moves.append(Move.new(end_pos))
+	return moves
