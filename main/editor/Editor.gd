@@ -6,46 +6,68 @@ extends Node2D
 @onready var bottom_check:CheckBox = $bottom_check
 @onready var target_check:CheckBox = $target_check
 @onready var board = $board
+@onready var level_combo = $level_combo
+@onready var confirmation_dialog = $Control/CenterContainer/confirmation_dialog
 
 var level_mgr:LevelMgr:
 	set = set_level_mgr
+	
+var next_level:Level
 
 var selected_square:SquareView
+var selected_level_listbox_id:int
 
 signal go_to_game()
 
 
 func _ready():
 	$board.square_selected.connect(_on_square_selected)
-	
+	confirmation_dialog.move_to_center()
+	confirmation_dialog.position = Vector2(0,0)
+	confirmation_dialog.yes_pressed.connect(on_confirm_yes_pressed)
+	confirmation_dialog.no_pressed.connect(on_confirm_no_pressed)
+	confirmation_dialog.cancel_pressed.connect(on_confirmation_cancelled)
+	selected_level_listbox_id = 0
 	
 func set_level_mgr(new_level_mgr:LevelMgr):
 	level_mgr = new_level_mgr
 	board.level = level_mgr.current_level
-#	if not is_inside_tree():
-#		await ready
-#		board.level_mgr = level_mgr
-#				
-#	else:
-#		board.level_mgr = level_mgr
-#		load_all()
+	for level_name in level_mgr.available_levels:
+		level_combo.add_item(level_name)
+	level_mgr.level_changed.connect(_on_level_changed)
 
+
+func _on_level_changed(new_level):
+	selected_level_listbox_id = level_combo.get_selected_id()
+	next_level = new_level
+	confirmation_dialog.visible = true
 	
 func _on_board_setup_complete():
 	load_all()
+
+
+func on_confirm_yes_pressed():
+	level_mgr.save(board.level)
+	board.set_level(next_level)	
+	confirmation_dialog.visible = false
+	pass
+
+
+func on_confirm_no_pressed():
+	board.set_level(next_level)	
+	confirmation_dialog.visible = false
+	pass
+
 	
+func on_confirmation_cancelled():
+	next_level = board.level
+	level_combo.select(selected_level_listbox_id)
+	confirmation_dialog.visible = false
+	pass
+
 	
 func _on_square_selected(_square):
 	selected_square = _square
-#	left_check.disabled = _square.left.is_border
-#	right_check.disabled = _square.right.is_border
-#	top_check.disabled = _square.top.is_border
-#	bottom_check.disabled = _square.bottom.is_border
-
-#	left_check.visible = !_square.left.is_border
-#	right_check.visible = !_square.right.is_border
-#	top_check.visible = !_square.top.is_border
-#	bottom_check.visible = !_square.bottom.is_border
 	
 	left_check.button_pressed = _square.left.is_solid
 	right_check.button_pressed = _square.right.is_solid
@@ -57,26 +79,22 @@ func _on_square_selected(_square):
 func _on_left_check_pressed():
 	if selected_square:
 		selected_square.left.is_solid = left_check.button_pressed
-		board.get_edge_text()
 
 
 
 func _on_top_check_pressed():
 	if selected_square:
 		selected_square.top.is_solid = top_check.button_pressed
-		board.get_edge_text()
 
 
 func _on_right_check_pressed():
 	if selected_square:
 		selected_square.right.is_solid = right_check.button_pressed
-		board.get_edge_text()
 
 
 func _on_bottom_check_pressed():
 	if selected_square:
 		selected_square.bottom.is_solid = bottom_check.button_pressed
-		board.get_edge_text()
 
 
 func _on_target_check_pressed():
@@ -105,3 +123,12 @@ func _on_load_button_pressed():
 
 func _on_button_pressed():
 	go_to_game.emit()
+
+
+func _on_new_button_pressed():
+	level_mgr.new_level()
+
+
+func _on_level_combo_item_selected(index):
+	var level_name = level_combo.get_item_text(index)
+	level_mgr.select_level(level_name)

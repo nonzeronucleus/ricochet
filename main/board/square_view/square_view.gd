@@ -20,6 +20,7 @@ func init(init_square:Square):
 	top.init_with_line(square.top)
 	right.init_with_line(square.right)
 	bottom.init_with_line(square.bottom)
+	
 
 func _ready():
 	set_as_target(false)

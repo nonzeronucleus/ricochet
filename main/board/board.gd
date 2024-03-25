@@ -28,7 +28,10 @@ func _init():
 #	init_squares(level.squares)
 #	set_target_pos(level.target_pos)
 func set_level(new_level):
+#	for child in square_views.data:
+#		child.queue_free()
 	level = new_level
+#	level.print()
 	init_squares(level.squares)
 	set_target_pos(level.target_pos)
 
@@ -122,29 +125,7 @@ func mark_square_target(new_target_square):
 		new_target_square.set_as_target(true)
 	else:
 		new_target_square.set_as_target(false)
-	
-	
-func get_edge_text():
-	var text = ""
-	for y in grid_dimension.y:
-		text+="\t\""
-		for x in grid_dimension.x:
-			var square = square_views.at(x,y)
-			if square.right.is_solid == true:
-				if square.bottom.is_solid == true:
-					text += "J"
-				else:
-					text += "|"
-			elif square.bottom.is_solid == true:
-				text += "_"
-			else:
-				text += "."
-		if y<grid_dimension.y-1:
-			text+="\",\n"
-		else:
-			text+="\"]\n"
-	print (text)
-	print("\n**************\n")
+
 				
 	
 func add_robot(robot):

@@ -14,11 +14,11 @@ func _init():
 	line = Line.new()
 
 func _on_line_changed(line):
-	print("Changed")
-
 	show_line()
 	
 func init_with_line(new_line:Line):
+	if line:
+		line.line_changed.disconnect(_on_line_changed)
 	line = new_line
 	line.line_changed.connect(_on_line_changed)
 	show_line()

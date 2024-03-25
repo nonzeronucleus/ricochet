@@ -1,13 +1,18 @@
 class_name LevelMgr
 extends Node
 
-var current_level: Level
-
-var dir
+var current_level: Level : 
+	set = set_current_level
 
 var level_dirname:String = "user://levels"
+var level_prefix = "Level-"
+var level_suffix = ".eiffel65"
+var available_levels:Array
+var max_level:int = 0
 
 signal level_changed(current_level)
+signal level_added()
+
 
 var default_edge_rows = [
 	"|.......",
@@ -20,24 +25,57 @@ var default_edge_rows = [
 	"|...|..."]
 
 
+
 func _init():
-	dir = DirAccess.open(level_dirname)
+	var str = "AAABB"
+	
+	var dir = DirAccess.open(level_dirname)
 	if !dir:
 		dir = DirAccess.open("user://")
 		dir.make_dir("levels")
 		dir = DirAccess.open(level_dirname)
-	current_level = load_level(1)		
+	for level_name in dir.get_files():
+		if level_name.left(level_prefix.length())==level_prefix:
+			var id_text = level_name.trim_prefix(level_prefix).trim_suffix(level_suffix)
+			var id = int(id_text)
+			max_level = max(max_level, id) 
+			available_levels.append(level_name.trim_suffix(level_suffix))
+			
+	level_added.emit()
+	current_level = load_level(create_level_name(1))
 
+func create_level(dimensions:Vector2) -> Level:
+	var square_array = Array()
+	var prev_row:Array
+	for y in dimensions.y:
+		var square_line = Array()
+		var square_row = create_empty_row(dimensions.x, y == dimensions.y-1)
+		square_row.resize(dimensions.x)
+		square_array.append(square_row)
+		if prev_row:
+			populate_top_edge(prev_row, square_row)
+		prev_row = square_row
+		
+	populate_top_edge(prev_row, square_array[0])
+	
+	max_level += 1
 
-#func set_current_level(new_level:int):
-#	current_level = new_level
-#	level_changed.emit(current_level)
+	return Level.new(create_level_name(max_level), square_array, dimensions-Vector2(1,1))
 	
 	
-func get_level_filename(level_id:int) -> String:
-	return level_dirname+"//level"+str(level_id)+".dat"
+func create_level_name(id)->String:
+	return level_prefix+str(id)
 
-func load_level(level_id:int) -> Level:
+	
+func get_level_filename(level_id:String) -> String:
+	return level_dirname+"//"+level_id+level_suffix
+
+
+func select_level(level_id):
+	current_level = load_level(level_id)
+
+
+func load_level(level_id:String) -> Level:
 	var edges
 	var target_pos 
 	var file = FileAccess.open(get_level_filename(level_id), FileAccess.READ)
@@ -52,8 +90,7 @@ func load_level(level_id:int) -> Level:
 	else:
 		edges = default_edge_rows
 		target_pos = Vector2(edges[0].length()-1,edges.size()-1)
-	
-	
+		
 	var square_array = Array()
 	var prev_row:Array
 	for y in edges.size():		
@@ -90,6 +127,21 @@ func parse_edge_layout(edge_row) -> Array:
 		prev_square = square
 	square_row[0].left = prev_square.right 
 	return square_row
+	
+func create_empty_row(width, is_bottom) -> Array:
+	var square_row = Array()
+	var prev_square:Square	
+	for x in width:
+		var square = Square.new()
+		
+		square.right.is_solid = false #(x == width - 1)
+		square.bottom.is_solid = false #is_bottom
+		square_row.append(square)
+		if prev_square:
+			square.left = prev_square.right
+		prev_square = square
+	square_row[0].left = prev_square.right 
+	return square_row
 
 
 func save(level:Level):
@@ -113,25 +165,11 @@ func save(level:Level):
 	file.close()
 
 
-func get_edge_text():
-	var text = ""
-#	for y in grid_dimension.y:
-#		text+="\t\""
-#		for x in grid_dimension.x:
-#			var square = squares.at(x,y)
-#			if square.right.is_solid == true:
-#				if square.bottom.is_solid == true:
-#					text += "J"
-#				else:
-#					text += "|"
-#			elif square.bottom.is_solid == true:
-#				text += "_"
-#			else:
-#				text += "."
-#		if y<grid_dimension.y-1:
-#			text+="\",\n"
-#		else:
-#			text+="\"]\n"
-#	print (text)
-#	print("\n**************\n")
+func set_current_level(new_level):
+	current_level = new_level
+	level_changed.emit(current_level)
 
+func new_level():
+	var new_level = create_level(Vector2(8,8))
+	save(new_level)
+	set_current_level(new_level)

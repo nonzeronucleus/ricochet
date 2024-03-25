@@ -22,15 +22,24 @@ func _ready():
 	robot.set_square_size(board.square_size)
 	robot.on_finished_moving.connect(robot_finished_moving)
 	board.add_robot(robot)	
-#	_on_board_setup_complete()
+	reset()
+	
+func reset():
+	robot.set_instant_pos(Vector2())
+	robot.reset_size()
+	robot.position = Vector2()
 	
 func set_level_mgr(new_level_mgr:LevelMgr):
 	level_mgr = new_level_mgr
 	board.level = level_mgr.current_level
+	level_mgr.level_changed.connect(_on_level_changed)
 
 
-func _on_board_setup_complete():
-	load_all()
+func _on_level_changed(level):
+	board.set_level(level)	
+
+#func _on_board_setup_complete():
+#	load_all()
 	
 	
 func _on_square_selected(new_square):
@@ -61,8 +70,8 @@ func save():
 	file.close()
 
 
-func load_all():
-	board.load_level(2)
+#func load_all():
+#	board.load_level(2)
 
 
 
@@ -75,7 +84,7 @@ func move(direction):
 	var moves = board.get_moves(robot.pos, direction)
 #	var next_pos = moves[0]
 	robot.set_moves(moves)
-#	robot.set_pos(next_pos)
+#
 
 func robot_finished_moving(robot):
 	$GameState.send_event("StopMoving")	
@@ -93,3 +102,7 @@ func _on_ready_state_unhandled_input(event):
 		move(Direction.Up)
 	elif Input.is_action_pressed("ui_down"):
 		move(Direction.Down)
+
+
+func _on_restart_button_pressed():
+	robot.reset_size()

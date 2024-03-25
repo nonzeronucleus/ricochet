@@ -1,0 +1,84 @@
+[gd_scene load_steps=4 format=3 uid="uid://5uiopnnkk16l"]
+
+[ext_resource type="Theme" uid="uid://beutoykswn83t" path="res://main/themes/options_theme.tres" id="1_upwlt"]
+[ext_resource type="Script" path="res://main/objects/confirmation_dialog/confirmation_dialog.gd" id="2_po7v3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lidoy"]
+bg_color = Color(0, 0, 0, 1)
+corner_detail = 20
+
+[node name="confirmation_dialog" type="PopupPanel"]
+initial_position = 2
+size = Vector2i(1000, 1000)
+visible = true
+always_on_top = true
+max_size = Vector2i(1000, 1000)
+theme = ExtResource("1_upwlt")
+theme_override_styles/panel = SubResource("StyleBoxFlat_lidoy")
+script = ExtResource("2_po7v3")
+confirmation_text = "Save Level?"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1000.0
+offset_bottom = 1000.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+layout_mode = 2
+color = Color(0.196078, 0.196078, 0.196078, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 200
+
+[node name="confirmation_text_field" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+theme = ExtResource("1_upwlt")
+theme_override_font_sizes/font_size = 128
+text = "Save Level?"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_right = 60
+
+[node name="confirm_button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 128
+text = "Yes"
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 60
+
+[node name="no_button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 128
+text = "No"
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 60
+
+[node name="cancel_button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 128
+text = "Cancel"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/confirm_button" to="." method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2/no_button" to="." method="_on_no_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer3/cancel_button" to="." method="_on_cancel_button_pressed"]
