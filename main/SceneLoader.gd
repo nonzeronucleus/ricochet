@@ -7,23 +7,10 @@ extends Control
 var level_mgr = LevelMgr.new()
 
 func _ready():
-#	game_screen.go_to_editor.connect(_on_go_to_editor)
-#	editor_screen.go_to_game.connect(_on_go_to_game)
 	for child in get_children():
 		if child.has_method("set_level_mgr"):
 			child.set_level_mgr(level_mgr)
 			child.set_navigator($Navigation)
-#			print(child)
-#	game_screen.level_mgr = level_mgr
-#	editor_screen.level_mgr = level_mgr
-	
-	
-	
-#func _on_go_to_editor():
-#	$Navigation.send_event("GoToEditor")	
-
-#func _on_go_to_game():
-#	$Navigation.send_event("GoToGame")	
 
 
 func _on_editor_screen_state_entered():

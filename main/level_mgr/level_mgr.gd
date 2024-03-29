@@ -29,7 +29,8 @@ var default_edge_rows = [
 func _init():	
 	var dir = DirAccess.open(level_dirname)
 	if !dir:
-		dir = DirAccess.open("user://")
+#		dir = DirAccess.open("user://")
+		dir = DirAccess.open("levels")
 		dir.make_dir("levels")
 		dir = DirAccess.open(level_dirname)
 	for level_name in dir.get_files():

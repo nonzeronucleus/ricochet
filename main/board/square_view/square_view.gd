@@ -63,4 +63,5 @@ func _on_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.pressed:
 			square_selected.emit(self)
+			print("X")
 

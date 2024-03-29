@@ -23,15 +23,8 @@ func _init():
 	pass
 
 
-#func load_level(level_id:int):
-#	level = level_mgr.load_level(level_id)	
-#	init_squares(level.squares)
-#	set_target_pos(level.target_pos)
 func set_level(new_level):
-#	for child in square_views.data:
-#		child.queue_free()
 	level = new_level
-#	level.print()
 	init_squares(level.squares)
 	set_target_pos(level.target_pos)
 
@@ -96,7 +89,8 @@ func _ready():
 			else:
 				bottom_line.width = 4
 			add_child(bottom_line)
-
+#	if Engine.is_editor_hint():
+#		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _on_square_selected(selected_square):
 	for x in grid_dimension.x:
@@ -186,3 +180,7 @@ func get_moves(init_pos, direction) -> Array:
 	
 	moves.append(Move.new(end_pos))
 	return moves
+
+
+func forward_canvas_gui_input(event):
+	print(event)
