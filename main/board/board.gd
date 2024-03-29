@@ -89,8 +89,7 @@ func _ready():
 			else:
 				bottom_line.width = 4
 			add_child(bottom_line)
-#	if Engine.is_editor_hint():
-#		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
 
 func _on_square_selected(selected_square):
 	for x in grid_dimension.x:
@@ -123,16 +122,11 @@ func mark_square_target(new_target_square):
 				
 	
 func add_robot(robot):
-	robot.on_finished_moving.connect(_on_robot_finished_moving)
+#	robot.on_finished_moving.connect(_on_robot_finished_moving)
 	add_child(robot)
 	robot.set_init_pos(Vector2())
 	
 	
-func _on_robot_finished_moving(robot):
-	if robot.pos == target.pos:
-		robot.shrink()
-	
-
 func is_wall_open(pos, direction) -> bool:
 	var square = square_views.at(pos.x, pos.y)
 	match(direction):
@@ -147,40 +141,3 @@ func is_wall_open(pos, direction) -> bool:
 			
 	return false
 	
-func get_moves(init_pos, direction) -> Array:
-	var moves:Array = []
-	var end_pos = init_pos
-	var looped_round = false
-	
-	while(is_wall_open(end_pos,direction) && !looped_round):
-		end_pos += direction
-		
-		#check for whether needs to loop round
-		if end_pos.x < 0:
-			moves.append(Move.new(end_pos))
-			moves.append(Move.new(Vector2(square_views.dimensions.x,end_pos.y),true))
-			end_pos.x = square_views.dimensions.x-1
-		if end_pos.y < 0:
-			moves.append(Move.new(end_pos))
-			moves.append(Move.new(Vector2(end_pos.x,square_views.dimensions.y),true))
-			end_pos.y = square_views.dimensions.y -1
-		if end_pos.x >= square_views.dimensions.x:
-			moves.append(Move.new(end_pos))
-			moves.append(Move.new(Vector2(-1,end_pos.y),true))
-			end_pos.x = 0
-		if end_pos.y >= square_views.dimensions.y:
-			moves.append(Move.new(end_pos))
-			moves.append(Move.new(Vector2(end_pos.x,-1), true))
-			end_pos.y = 0
-		#Check to see if looped all the way round
-		
-		if end_pos == init_pos:
-			looped_round = true
-		
-	
-	moves.append(Move.new(end_pos))
-	return moves
-
-
-func forward_canvas_gui_input(event):
-	print(event)

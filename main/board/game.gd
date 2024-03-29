@@ -9,6 +9,8 @@ extends Node2D
 @onready var robot 
 @onready var RobotTemplate = preload("res://main/board/robot/robot.tscn")
 
+var cmds = []
+
 var level_mgr:LevelMgr:
 	set = set_level_mgr
 
@@ -17,13 +19,12 @@ var navigator:StateChart:
 
 
 var selected_square:SquareView
-#signal go_to_editor()
 
 
 func _ready():
 	robot = RobotTemplate.instantiate()
 	robot.set_square_size(board.square_size)
-	robot.on_finished_moving.connect(robot_finished_moving)
+#	robot.on_finished_moving.connect(robot_finished_moving)
 	board.add_robot(robot)	
 	reset()
 	
@@ -31,6 +32,7 @@ func reset():
 	robot.set_instant_pos(Vector2())
 	robot.reset_size()
 	robot.position = Vector2()
+	cmds = []
 	
 func set_level_mgr(new_level_mgr:LevelMgr) -> void:
 	level_mgr = new_level_mgr
@@ -44,41 +46,6 @@ func set_navigator(new_navigator:StateChart) -> void:
 func _on_level_changed(level):
 	board.set_level(level)	
 
-#func _on_board_setup_complete():
-#	load_all()
-	
-	
-#func _on_square_selected(new_square):
-#	selected_square = new_square
-#	left_check.disabled = selected_square.left.is_border
-#	right_check.disabled = selected_square.right.is_border
-#	bottom_check.disabled = selected_square.bottom.is_border
-#	top_check.disabled = selected_square.top.is_border
-
-#	left_check.visible = !selected_square.left.is_border
-#	right_check.visible = !selected_square.right.is_border
-#	top_check.visible = !selected_square.top.is_border
-#	bottom_check.visible = !selected_square.bottom.is_border
-	
-#	left_check.button_pressed = selected_square.left.is_solid
-#	right_check.button_pressed = selected_square.right.is_solid
-#	top_check.button_pressed = selected_square.top.is_solid
-#	bottom_check.button_pressed = selected_square.bottom.is_solid
-#	target_check.button_pressed = selected_square.is_target
-
-
-		
-#func save():
-#	var file = FileAccess.open("user://level1.dat", FileAccess.WRITE)
-#	file.store_var(board.target.pos)
-#	file.store_var(board.get_edges())
-#
-#	file.close()
-
-
-#func load_all():
-#	board.load_level(2)
-
 
 
 func _on_editor_button_pressed():
@@ -87,17 +54,8 @@ func _on_editor_button_pressed():
 	
 
 
-func move(direction):	
-	$GameState.send_event("StartMoving")
-	var moves = board.get_moves(robot.pos, direction)
-#	var next_pos = moves[0]
-	robot.set_moves(moves)
-#
-
-func robot_finished_moving(robot):
-	$GameState.send_event("StopMoving")	
-	
-
+func move(direction):
+	cmds.append(MoveRobotCmd.new($GameState,board, robot, direction))
 
 func _on_ready_state_unhandled_input(event):
 	var direction = null
@@ -118,3 +76,9 @@ func _on_restart_button_pressed():
 
 func _on_back_button_pressed():
 	navigator.send_event("Back")	
+
+
+func _on_ready_state_processing(delta):
+	var next_cmd = cmds.pop_back()
+	if next_cmd:
+		next_cmd.execute()	

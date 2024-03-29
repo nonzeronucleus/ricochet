@@ -1,3 +1,4 @@
+class_name Robot
 extends Sprite2D
 
 var square_size:SquareSize:set = set_square_size
@@ -5,14 +6,14 @@ var pos:Vector2
 var moves:Array
 var init_scale:Vector2
 
-signal on_finished_moving(robot)
+signal finished_moving(robot)
+signal finished_shrinking(robot)
 
 func  _ready():
 	init_scale = scale
 
 func set_square_size(_square_size):
 	square_size = _square_size
-	#set_size(Vector2(square_size.length, square_size.length))
 
 
 func set_init_pos(new_pos:Vector2):
@@ -52,7 +53,7 @@ func set_next_move():
 		else:
 			set_pos(next_move.pos)
 	else:
-		on_finished_moving.emit(self)
+		finished_moving.emit(self)
 	
 
 func shrink():
@@ -63,6 +64,8 @@ func shrink():
 		tween.tween_property(self, "rotation", TAU, 0.3) 
 		tween.tween_property(self, "scale", Vector2(), 0.3 )	
 		await(tween.finished)
+	finished_shrinking.emit(self)
+		
 	
 func reset_size():
 	rotation = 0
