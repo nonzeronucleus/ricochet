@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://ynguyiymr2nr"]
+
+[ext_resource type="Texture2D" uid="uid://qo1rg7yegj0u" path="res://main/level_select/level-select-normal.png" id="1_gww3f"]
+[ext_resource type="Theme" uid="uid://c4h4g8nlv07rv" path="res://main/themes/main_theme.tres" id="1_if7aa"]
+[ext_resource type="Script" path="res://main/level_select/level_select_button.gd" id="2_8i2nv"]
+[ext_resource type="Texture2D" uid="uid://bhm5l4xiwijn4" path="res://main/level_select/level-select-hover.png" id="3_qsflp"]
+
+[node name="MarginContainer" type="MarginContainer"]
+offset_right = 276.0
+offset_bottom = 276.0
+scale = Vector2(0.5, 0.5)
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("2_8i2nv")
+
+[node name="TextureButton" type="TextureButton" parent="."]
+layout_mode = 2
+focus_mode = 0
+keep_pressed_outside = true
+texture_normal = ExtResource("1_gww3f")
+texture_pressed = ExtResource("3_qsflp")
+texture_hover = ExtResource("3_qsflp")
+texture_disabled = ExtResource("1_gww3f")
+texture_focused = ExtResource("3_qsflp")
+
+[node name="Label" type="Label" parent="TextureButton"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 82.0
+offset_right = 224.0
+offset_bottom = 164.0
+theme = ExtResource("1_if7aa")
+text = "1"
+horizontal_alignment = 1
+
+[connection signal="button_down" from="TextureButton" to="." method="_on_texture_button_button_down"]
+[connection signal="button_up" from="TextureButton" to="." method="_on_texture_button_button_up"]
+[connection signal="pressed" from="TextureButton" to="." method="_on_texture_button_pressed"]
+[connection signal="toggled" from="TextureButton" to="." method="_on_texture_button_toggled"]

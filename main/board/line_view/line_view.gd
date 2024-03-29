@@ -8,10 +8,10 @@ var pos:Vector2 = Vector2(0,0)
 var default_gradient:Gradient
 var selected_gradient:Gradient
 
-var line:Line = Line.new()
+var line:Line
 
 func _init():
-	line = Line.new()
+	pass
 
 func _on_line_changed(line):
 	show_line()

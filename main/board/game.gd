@@ -12,9 +12,12 @@ extends Node2D
 var level_mgr:LevelMgr:
 	set = set_level_mgr
 
+var navigator:StateChart:
+	set = set_navigator
+
 
 var selected_square:SquareView
-signal go_to_editor()
+#signal go_to_editor()
 
 
 func _ready():
@@ -29,11 +32,14 @@ func reset():
 	robot.reset_size()
 	robot.position = Vector2()
 	
-func set_level_mgr(new_level_mgr:LevelMgr):
+func set_level_mgr(new_level_mgr:LevelMgr) -> void:
 	level_mgr = new_level_mgr
 	board.level = level_mgr.current_level
 	level_mgr.level_changed.connect(_on_level_changed)
 
+
+func set_navigator(new_navigator:StateChart) -> void:
+	navigator = new_navigator
 
 func _on_level_changed(level):
 	board.set_level(level)	
@@ -42,32 +48,32 @@ func _on_level_changed(level):
 #	load_all()
 	
 	
-func _on_square_selected(new_square):
-	selected_square = new_square
-	left_check.disabled = selected_square.left.is_border
-	right_check.disabled = selected_square.right.is_border
-	top_check.disabled = selected_square.top.is_border
-	bottom_check.disabled = selected_square.bottom.is_border
+#func _on_square_selected(new_square):
+#	selected_square = new_square
+#	left_check.disabled = selected_square.left.is_border
+#	right_check.disabled = selected_square.right.is_border
+#	bottom_check.disabled = selected_square.bottom.is_border
+#	top_check.disabled = selected_square.top.is_border
 
-	left_check.visible = !selected_square.left.is_border
-	right_check.visible = !selected_square.right.is_border
-	top_check.visible = !selected_square.top.is_border
-	bottom_check.visible = !selected_square.bottom.is_border
+#	left_check.visible = !selected_square.left.is_border
+#	right_check.visible = !selected_square.right.is_border
+#	top_check.visible = !selected_square.top.is_border
+#	bottom_check.visible = !selected_square.bottom.is_border
 	
-	left_check.button_pressed = selected_square.left.is_solid
-	right_check.button_pressed = selected_square.right.is_solid
-	top_check.button_pressed = selected_square.top.is_solid
-	bottom_check.button_pressed = selected_square.bottom.is_solid
-	target_check.button_pressed = selected_square.is_target
+#	left_check.button_pressed = selected_square.left.is_solid
+#	right_check.button_pressed = selected_square.right.is_solid
+#	top_check.button_pressed = selected_square.top.is_solid
+#	bottom_check.button_pressed = selected_square.bottom.is_solid
+#	target_check.button_pressed = selected_square.is_target
 
 
 		
-func save():
-	var file = FileAccess.open("user://level1.dat", FileAccess.WRITE)
-	file.store_var(board.target.pos)
-	file.store_var(board.get_edges())
-
-	file.close()
+#func save():
+#	var file = FileAccess.open("user://level1.dat", FileAccess.WRITE)
+#	file.store_var(board.target.pos)
+#	file.store_var(board.get_edges())
+#
+#	file.close()
 
 
 #func load_all():
@@ -76,7 +82,9 @@ func save():
 
 
 func _on_editor_button_pressed():
-	go_to_editor.emit()
+	navigator.send_event("GoToEditor")		
+	#go_to_editor.emit()
+	
 
 
 func move(direction):	
@@ -106,3 +114,7 @@ func _on_ready_state_unhandled_input(event):
 
 func _on_restart_button_pressed():
 	robot.reset_size()
+
+
+func _on_back_button_pressed():
+	navigator.send_event("Back")	

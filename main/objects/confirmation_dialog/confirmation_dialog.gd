@@ -1,11 +1,12 @@
 @tool
 extends PopupPanel
 
-signal yes_pressed()
-signal no_pressed()
-signal cancel_pressed()
+signal yes_pressed(data)
+signal no_pressed(data)
+signal cancel_pressed(data)
 
 @export var confirmation_text:String = "Placeholder" : set = set_confirmation_text
+var data
 
 
 func _ready():
@@ -24,16 +25,16 @@ func populate_confirmation_text():
 
 func _on_confirm_button_pressed():
 	visible = false
-	yes_pressed.emit()
+	yes_pressed.emit(data)
 
 
 func _on_no_button_pressed():
 	visible = false
-	no_pressed.emit()
+	no_pressed.emit(data)
 
 
 func _on_cancel_button_pressed():
 	visible = false
-	cancel_pressed.emit()
+	cancel_pressed.emit(data)
 
 

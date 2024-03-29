@@ -20,9 +20,11 @@ func set_init_pos(new_pos:Vector2):
 	position = square_size.screen_pos_centred(pos)
 	
 func set_instant_pos(new_pos:Vector2):
+	reset_size()
 	pos = new_pos
 	position = square_size.screen_pos_centred(pos)
-	set_next_move()	
+	if moves.size()>0:
+		set_next_move()	
 	
 
 

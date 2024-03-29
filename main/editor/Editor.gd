@@ -9,16 +9,17 @@ extends Node2D
 @onready var level_combo = $level_combo
 @onready var confirmation_dialog = $Control/CenterContainer/confirmation_dialog
 
+#var current_level:Level
+
 var level_mgr:LevelMgr:
 	set = set_level_mgr
+var navigator:StateChart:
+	set = set_navigator
 	
 var next_level:Level
 
 var selected_square:SquareView
 var selected_level_listbox_id:int
-
-signal go_to_game()
-
 
 func _ready():
 	$board.square_selected.connect(_on_square_selected)
@@ -32,38 +33,44 @@ func _ready():
 func set_level_mgr(new_level_mgr:LevelMgr):
 	level_mgr = new_level_mgr
 	board.level = level_mgr.current_level
-	for level_name in level_mgr.available_levels:
+	for level_name in level_mgr.level_names:
 		level_combo.add_item(level_name)
 	level_mgr.level_changed.connect(_on_level_changed)
 
+func set_navigator(new_navigator:StateChart) -> void:
+	navigator = new_navigator
 
-func _on_level_changed(new_level):
-	selected_level_listbox_id = level_combo.get_selected_id()
-	next_level = new_level
-	confirmation_dialog.visible = true
+
+
+func _on_level_changed(level):
+	board.set_level(level)	
 	
 func _on_board_setup_complete():
 	load_all()
 
 
-func on_confirm_yes_pressed():
+func switch_to_level_idx(idx):
+	board.level.dirty = false
+	var next_level = level_mgr.load_level_by_idx(idx)
+	board.set_level(next_level)	
+	
+
+
+func on_confirm_yes_pressed(selected_idx):
 	level_mgr.save(board.level)
-	board.set_level(next_level)	
-	confirmation_dialog.visible = false
-	pass
+	switch_to_level_idx(selected_idx)
 
 
-func on_confirm_no_pressed():
-	board.set_level(next_level)	
-	confirmation_dialog.visible = false
-	pass
+func on_confirm_no_pressed(selected_idx):
+	switch_to_level_idx(selected_idx)
+#	board.set_level(next_level)	
+	
 
 	
-func on_confirmation_cancelled():
+func on_confirmation_cancelled(selected_idx):
 	next_level = board.level
+	print(selected_level_listbox_id)
 	level_combo.select(selected_level_listbox_id)
-	confirmation_dialog.visible = false
-	pass
 
 	
 func _on_square_selected(_square):
@@ -122,7 +129,7 @@ func _on_load_button_pressed():
 
 
 func _on_button_pressed():
-	go_to_game.emit()
+	navigator.send_event("GoToGame")		
 
 
 func _on_new_button_pressed():
@@ -130,5 +137,20 @@ func _on_new_button_pressed():
 
 
 func _on_level_combo_item_selected(index):
-	var level_name = level_combo.get_item_text(index)
-	level_mgr.select_level(level_name)
+	print(board.level.dirty)
+	
+	if board.level.dirty:
+		confirmation_dialog.visible = true
+		confirmation_dialog.data = index
+	else:
+		switch_to_level_idx(index)
+
+#	selected_level_listbox_id = level_combo.get_selected_id()
+	
+	
+#	var level_name = level_combo.get_item_text(index)
+#	level_mgr.select_level(level_name)
+
+
+func _on_back_button_pressed():
+	navigator.send_event("Back")
