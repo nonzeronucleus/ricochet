@@ -29,7 +29,8 @@ func _ready():
 	confirmation_dialog.no_pressed.connect(on_confirm_no_pressed)
 	confirmation_dialog.cancel_pressed.connect(on_confirmation_cancelled)
 	selected_level_listbox_id = 0
-	
+
+
 func set_level_mgr(new_level_mgr:LevelMgr):
 	level_mgr = new_level_mgr
 	board.level = level_mgr.current_level
@@ -37,14 +38,15 @@ func set_level_mgr(new_level_mgr:LevelMgr):
 		level_combo.add_item(level_name)
 	level_mgr.level_changed.connect(_on_level_changed)
 
+
 func set_navigator(new_navigator:StateChart) -> void:
 	navigator = new_navigator
 
 
-
 func _on_level_changed(level):
 	board.set_level(level)	
-	
+
+
 func _on_board_setup_complete():
 	load_all()
 

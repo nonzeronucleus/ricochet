@@ -62,3 +62,4 @@ func on_robot_finished_moving(robot):
 
 func on_robot_finished_shrinking(robot):
 	game_state.send_event("StopMoving")
+	game_state.send_event("EndGame")

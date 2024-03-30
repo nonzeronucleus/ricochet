@@ -12,6 +12,7 @@ signal finished_shrinking(robot)
 func  _ready():
 	init_scale = scale
 
+
 func set_square_size(_square_size):
 	square_size = _square_size
 
@@ -39,6 +40,7 @@ func set_pos(new_pos:Vector2):
 		tween.tween_property(self, "position", square_size.screen_pos_centred(pos), 0.1 * dif.length() )	
 		await(tween.finished)
 		set_next_move()		
+
 
 func set_moves(new_moves:Array):
 	moves = new_moves

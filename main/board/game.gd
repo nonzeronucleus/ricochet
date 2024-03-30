@@ -79,6 +79,25 @@ func _on_back_button_pressed():
 
 
 func _on_ready_state_processing(delta):
+	check_cmds()
+	
+func check_cmds():	
 	var next_cmd = cmds.pop_back()
 	if next_cmd:
 		next_cmd.execute()	
+
+
+func _on_playing_state_entered():
+	$next_level_button.visible = false
+	
+	
+func _on_game_over_state_entered():
+	$next_level_button.visible = true
+
+
+func _on_next_level_button_pressed():
+	cmds.append(NextLevelCmd.new(level_mgr, robot))
+	$GameState.send_event("StartGame")
+
+func _on_game_over_state_processing(delta):
+	check_cmds()

@@ -7,6 +7,7 @@ var current_level: Level :
 var level_dirname:String = "user://levels"
 var level_prefix = "Level-"
 var level_suffix = ".eiffel65"
+var version_prefix = "Version:"
 var level_names:Array
 var max_level:int = 0
 
@@ -90,8 +91,9 @@ func select_level(level_id):
 	current_level = load_level(level_id)
 	
 
-func load_next_level():
-	var current_level_idx = level_names.find(current_level)
+#func load_next_level():
+#	var level_idx = level_names.find(current_level)
+	
 	
 
 func load_level_by_idx(idx:int) -> Level:
@@ -99,21 +101,35 @@ func load_level_by_idx(idx:int) -> Level:
 
 
 func load_level(level_id:String) -> Level:
-	var edges
-	var target_pos 
 	var file = FileAccess.open(get_level_filename(level_id), FileAccess.READ)
+	var level
 	if file:
-		edges = file.get_var()
-		if edges == null or typeof(edges) != typeof(Array()):
-			edges = default_edge_rows
-		target_pos = file.get_var()
-		if target_pos == null  or typeof(edges) != typeof(Vector2()):
-			target_pos = Vector2(edges[0].length()-1,edges.size()-1)
-		file.close()
-	else:
-		edges = default_edge_rows
+		var version_text = file.get_var()
+		if version_text is String:
+			var version = int(version_text.trim_prefix(version_prefix))
+			match version:
+				2:
+					level = load_v2(file, level_id)
+	if !level:
+		# Couldn't load. Get a default
+		var edges = default_edge_rows
+		var target_pos = Vector2(edges[0].length()-1,edges.size()-1)
+		level = populate_level(level_id, edges, target_pos)
+	return level 
+
+
+func load_v2(file:FileAccess, level_id:String) -> Level:
+	var edges = file.get_var()
+	if edges == null or typeof(edges) != typeof(Array()):
+		return null
+	var target_pos = file.get_var()
+	if target_pos == null  or typeof(edges) != typeof(Vector2()):
 		target_pos = Vector2(edges[0].length()-1,edges.size()-1)
-		
+	file.close()
+	return populate_level(level_id, edges, target_pos)
+
+
+func populate_level(level_id, edges:Array, target_pos:Vector2) -> Level:
 	var square_array = Array()
 	var prev_row:Array
 	for y in edges.size():		
@@ -127,7 +143,7 @@ func load_level(level_id:String) -> Level:
 		
 	populate_top_edge(prev_row, square_array[0])
 
-	return Level.new(level_id, square_array, target_pos)
+	return Level.new(level_id, square_array, target_pos)	
 
 
 func populate_top_edge(prev_row, square_row):
@@ -148,6 +164,7 @@ func parse_edge_layout(edge_row) -> Array:
 	square_row[0].left = prev_square.right 
 	return square_row
 	
+
 func create_empty_row(width, is_bottom) -> Array:
 	var square_row = Array()
 	var prev_square:Square	
@@ -179,13 +196,17 @@ func save(level:Level):
 			else:
 				text += "."
 		level_text.append(text)
-	var file = FileAccess.open(get_level_filename(level.level_id), FileAccess.WRITE)
+	save_v2(level.level_id, level_text, level.target_pos)
+
+
+func save_v2(level_id: String, level_text:Array, target_pos:Vector2):
+	var file = FileAccess.open(get_level_filename(level_id), FileAccess.WRITE)
+	file.store_var(version_prefix + "2")
 	file.store_var(level_text)
-	file.store_var(level.target_pos)
+	file.store_var(target_pos)
 	file.close()
 
-
-func set_current_level(new_level):
+func set_current_level(new_level:Level):
 	current_level = new_level
 	level_changed.emit(current_level)
 
