@@ -23,6 +23,20 @@ func _init():
 	pass
 
 
+func _ready():
+	var board_size = get_size()
+	
+	square_size = SquareSize.new(board_size.x / grid_dimension.x)
+	square_views = MultiArray.new(grid_dimension)
+	add_all_squares()
+#	if icon_group:
+#		icon_group.selection_changed.connect(_on_icon_selection_changed)
+
+
+#func _on_icon_selection_changed(selection):
+	
+
+
 func set_level(new_level):
 	level = new_level
 	init_squares(level.squares)
@@ -39,12 +53,6 @@ func init_squares(init_squares:Array):
 	squares = init_squares
 
 
-func _ready():
-	var board_size = get_size()
-	
-	square_size = SquareSize.new(board_size.x / grid_dimension.x)
-	square_views = MultiArray.new(grid_dimension)
-	add_all_squares()
 	
 func add_all_squares():
 	#Add all squares

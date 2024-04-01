@@ -109,7 +109,6 @@ offset_left = 55.0
 offset_top = 771.0
 offset_right = 740.0
 offset_bottom = 1073.0
-enabled = false
 initial_node_to_watch = NodePath("../GameState")
 
 [connection signal="pressed" from="editor_button" to="." method="_on_editor_button_pressed"]

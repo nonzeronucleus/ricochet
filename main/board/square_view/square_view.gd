@@ -5,6 +5,7 @@ extends ColorRect
 @onready var LineTemplate = preload("res://main/board/line_view/line_view.tscn")
 
 
+@export var is_editor_square:bool = false
 var square:Square
 
 var left:LineView:set = set_left
@@ -15,6 +16,8 @@ var square_size:SquareSize:set = set_square_size
 var pos:Vector2:set = set_pos
 var is_target:bool = false
 
+var debug = false
+
 signal square_selected(square)
 
 func _ready():
@@ -22,6 +25,12 @@ func _ready():
 	left = create_line(false)
 	right = create_line(false)
 	bottom = create_line(true)
+	
+	if !is_editor_square:
+		gui_input.connect(_on_gui_input)
+	
+	if !square_size:
+		square_size = SquareSize.new(size.x)
 	
 	set_as_target(false)
 
@@ -37,6 +46,9 @@ func init(init_square:Square):
 	square = init_square
 	if not is_inside_tree():
 		await ready
+		
+	if debug:
+		print(square)
 	if top:
 		top.init_with_line(square.top)
 	if left:
@@ -107,6 +119,7 @@ func set_as_target(_is_target):
 func _on_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.pressed:
+			print(event)
 			square_selected.emit(self)
 
 

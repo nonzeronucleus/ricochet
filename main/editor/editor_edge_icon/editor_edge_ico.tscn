@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckppsli3a13o1"]
+
+[ext_resource type="Script" path="res://main/editor/editor_square.gd" id="1_e3q6b"]
+[ext_resource type="PackedScene" uid="uid://qwqwoudt3l1f" path="res://main/board/square_view/square_view.tscn" id="2_2j2vf"]
+
+[node name="border_icon" type="Node2D"]
+position = Vector2(207, 48)
+script = ExtResource("1_e3q6b")
+top_enabled = true
+left_enabled = true
+right_enabled = true
+bottom_enabled = true
+
+[node name="Square" parent="." instance=ExtResource("2_2j2vf")]
+offset_left = 1.0
+offset_right = 41.0
+is_editor_square = true
+metadata/_edit_use_anchors_ = true
+
+[connection signal="gui_input" from="Square" to="." method="_on_square_gui_input"]

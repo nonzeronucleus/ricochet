@@ -8,7 +8,7 @@ var pos:Vector2 = Vector2(0,0)
 var default_gradient:Gradient
 var selected_gradient:Gradient
 
-var line:Line = Line.new(false)
+var line:Line = null #Line.new(false)
 var debug:
 	set(val):
 		if debug:
@@ -42,7 +42,7 @@ func _on_line_changed(line):
 	show_line()
 	
 func init_with_line(new_line:Line):
-	if line:
+	if line && line.line_changed.is_connected(_on_line_changed):
 		line.line_changed.disconnect(_on_line_changed)
 	line = new_line
 	line.line_changed.connect(_on_line_changed)

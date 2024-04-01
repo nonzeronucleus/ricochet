@@ -9,6 +9,8 @@ extends Node2D
 @onready var level_combo = $level_combo
 @onready var confirmation_dialog = $Control/CenterContainer/confirmation_dialog
 
+var icon_group:IconGroup
+
 #var current_level:Level
 
 var level_mgr:LevelMgr:
@@ -29,6 +31,7 @@ func _ready():
 	confirmation_dialog.no_pressed.connect(on_confirm_no_pressed)
 	confirmation_dialog.cancel_pressed.connect(on_confirmation_cancelled)
 	selected_level_listbox_id = 0
+	icon_group = $icon_group
 
 
 func set_level_mgr(new_level_mgr:LevelMgr):
@@ -76,6 +79,15 @@ func on_confirmation_cancelled(selected_idx):
 	
 func _on_square_selected(_square):
 	selected_square = _square
+	
+	if icon_group:
+		var icon = icon_group.selected
+		
+		if icon:
+			selected_square.left.is_solid = icon.left_enabled
+			selected_square.right.is_solid = icon.right_enabled
+			selected_square.top.is_solid = icon.top_enabled
+			selected_square.bottom.is_solid = icon.bottom_enabled
 	
 	left_check.button_pressed = _square.left.is_solid
 	right_check.button_pressed = _square.right.is_solid
