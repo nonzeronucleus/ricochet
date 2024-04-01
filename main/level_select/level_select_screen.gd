@@ -20,7 +20,6 @@ func set_navigator(new_navigator:StateChart) -> void:
 
 
 func _ready():
-#	print(size)
 	var b:MarginContainer = button_template.instantiate()
 	var btn_size = b.get_actual_size()
 			

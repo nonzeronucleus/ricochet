@@ -1,7 +1,8 @@
+@tool
 class_name Line
 extends Node
 
-var is_solid:bool = false:set = set_is_solid
+@export var is_solid:bool = false:set = set_is_solid
 
 signal line_changed(line)
 

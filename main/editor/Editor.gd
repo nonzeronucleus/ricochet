@@ -71,7 +71,6 @@ func on_confirm_no_pressed(selected_idx):
 	
 func on_confirmation_cancelled(selected_idx):
 	next_level = board.level
-	print(selected_level_listbox_id)
 	level_combo.select(selected_level_listbox_id)
 
 	
@@ -131,16 +130,14 @@ func _on_load_button_pressed():
 
 
 func _on_button_pressed():
-	navigator.send_event("GoToGame")		
+	navigator.send_event("GoToGame")
 
 
 func _on_new_button_pressed():
 	level_mgr.new_level()
 
 
-func _on_level_combo_item_selected(index):
-	print(board.level.dirty)
-	
+func _on_level_combo_item_selected(index):	
 	if board.level.dirty:
 		confirmation_dialog.visible = true
 		confirmation_dialog.data = index

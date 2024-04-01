@@ -1,77 +1,79 @@
-[gd_scene load_steps=4 format=3 uid="uid://bsw2hh0316i2e"]
+[gd_scene load_steps=6 format=3 uid="uid://bsw2hh0316i2e"]
 
 [ext_resource type="Script" path="res://main/board/board.gd" id="1_30p0m"]
 [ext_resource type="Script" path="res://main/editor/Editor.gd" id="1_ihjyf"]
 [ext_resource type="PackedScene" uid="uid://5uiopnnkk16l" path="res://main/objects/confirmation_dialog/confirmation_dialog.tscn" id="3_8v2ai"]
+[ext_resource type="Script" path="res://main/editor/editor_square.gd" id="4_iuf5u"]
+[ext_resource type="PackedScene" uid="uid://qwqwoudt3l1f" path="res://main/board/square_view/square_view.tscn" id="4_y5102"]
 
 [node name="Editor" type="Node2D"]
 script = ExtResource("1_ihjyf")
 
 [node name="board" type="ColorRect" parent="."]
-offset_left = 46.0
-offset_top = 158.0
-offset_right = 614.0
-offset_bottom = 726.0
+offset_left = 43.0
+offset_top = 62.0
+offset_right = 611.0
+offset_bottom = 630.0
 color = Color(0.52549, 1, 1, 1)
 script = ExtResource("1_30p0m")
 metadata/_edit_use_anchors_ = true
 
 [node name="left_check" type="CheckBox" parent="."]
 offset_left = 292.0
-offset_top = 764.0
+offset_top = 662.0
 offset_right = 316.0
-offset_bottom = 788.0
+offset_bottom = 686.0
 metadata/_edit_use_anchors_ = true
 
 [node name="top_check" type="CheckBox" parent="."]
 offset_left = 318.0
-offset_top = 740.0
+offset_top = 638.0
 offset_right = 342.0
-offset_bottom = 764.0
+offset_bottom = 662.0
 metadata/_edit_use_anchors_ = true
 
 [node name="right_check" type="CheckBox" parent="."]
 offset_left = 350.0
-offset_top = 765.0
+offset_top = 663.0
 offset_right = 374.0
-offset_bottom = 789.0
+offset_bottom = 687.0
 metadata/_edit_use_anchors_ = true
 
 [node name="bottom_check" type="CheckBox" parent="."]
 offset_left = 319.0
-offset_top = 788.0
+offset_top = 686.0
 offset_right = 343.0
-offset_bottom = 812.0
+offset_bottom = 710.0
 metadata/_edit_use_anchors_ = true
 
 [node name="target_check" type="CheckBox" parent="."]
 offset_left = 318.0
-offset_top = 765.0
+offset_top = 663.0
 offset_right = 342.0
-offset_bottom = 789.0
+offset_bottom = 687.0
 metadata/_edit_use_anchors_ = true
 
 [node name="save_button" type="Button" parent="."]
 offset_left = 131.0
-offset_top = 760.0
+offset_top = 658.0
 offset_right = 187.0
-offset_bottom = 791.0
+offset_bottom = 689.0
 text = "Save"
 metadata/_edit_use_anchors_ = true
 
 [node name="load_button" type="Button" parent="."]
 offset_left = 447.0
-offset_top = 757.0
+offset_top = 655.0
 offset_right = 503.0
-offset_bottom = 788.0
+offset_bottom = 686.0
 text = "Load"
 metadata/_edit_use_anchors_ = true
 
 [node name="new_button" type="Button" parent="."]
-offset_left = 322.0
-offset_top = 22.0
-offset_right = 378.0
-offset_bottom = 53.0
+offset_left = 335.0
+offset_top = 18.0
+offset_right = 391.0
+offset_bottom = 49.0
 text = "New"
 metadata/_edit_use_anchors_ = true
 
@@ -108,76 +110,21 @@ visible = false
 content_scale_factor = 0.5
 
 [node name="back_button" type="Button" parent="."]
-offset_left = 76.0
-offset_top = 822.0
-offset_right = 121.0
-offset_bottom = 853.0
+offset_left = 57.0
+offset_top = 657.0
+offset_right = 102.0
+offset_bottom = 688.0
 text = "Back"
 
-[connection signal="gui_input" from="board/Square" to="board/Square" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29494" to="board/@ColorRect@29494" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29495" to="board/@ColorRect@29495" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29496" to="board/@ColorRect@29496" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29497" to="board/@ColorRect@29497" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29498" to="board/@ColorRect@29498" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29499" to="board/@ColorRect@29499" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29500" to="board/@ColorRect@29500" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29501" to="board/@ColorRect@29501" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29502" to="board/@ColorRect@29502" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29503" to="board/@ColorRect@29503" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29504" to="board/@ColorRect@29504" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29505" to="board/@ColorRect@29505" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29506" to="board/@ColorRect@29506" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29507" to="board/@ColorRect@29507" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29508" to="board/@ColorRect@29508" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29509" to="board/@ColorRect@29509" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29510" to="board/@ColorRect@29510" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29511" to="board/@ColorRect@29511" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29512" to="board/@ColorRect@29512" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29513" to="board/@ColorRect@29513" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29514" to="board/@ColorRect@29514" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29515" to="board/@ColorRect@29515" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29516" to="board/@ColorRect@29516" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29517" to="board/@ColorRect@29517" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29518" to="board/@ColorRect@29518" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29519" to="board/@ColorRect@29519" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29520" to="board/@ColorRect@29520" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29521" to="board/@ColorRect@29521" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29522" to="board/@ColorRect@29522" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29523" to="board/@ColorRect@29523" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29524" to="board/@ColorRect@29524" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29525" to="board/@ColorRect@29525" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29526" to="board/@ColorRect@29526" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29527" to="board/@ColorRect@29527" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29528" to="board/@ColorRect@29528" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29529" to="board/@ColorRect@29529" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29530" to="board/@ColorRect@29530" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29531" to="board/@ColorRect@29531" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29532" to="board/@ColorRect@29532" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29533" to="board/@ColorRect@29533" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29534" to="board/@ColorRect@29534" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29535" to="board/@ColorRect@29535" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29536" to="board/@ColorRect@29536" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29537" to="board/@ColorRect@29537" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29538" to="board/@ColorRect@29538" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29539" to="board/@ColorRect@29539" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29540" to="board/@ColorRect@29540" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29541" to="board/@ColorRect@29541" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29542" to="board/@ColorRect@29542" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29543" to="board/@ColorRect@29543" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29544" to="board/@ColorRect@29544" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29545" to="board/@ColorRect@29545" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29546" to="board/@ColorRect@29546" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29547" to="board/@ColorRect@29547" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29548" to="board/@ColorRect@29548" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29549" to="board/@ColorRect@29549" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29550" to="board/@ColorRect@29550" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29551" to="board/@ColorRect@29551" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29552" to="board/@ColorRect@29552" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29553" to="board/@ColorRect@29553" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29554" to="board/@ColorRect@29554" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29555" to="board/@ColorRect@29555" method="_on_gui_input"]
-[connection signal="gui_input" from="board/@ColorRect@29556" to="board/@ColorRect@29556" method="_on_gui_input"]
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("4_iuf5u")
+
+[node name="Square" parent="Node2D" instance=ExtResource("4_y5102")]
+offset_left = 62.0
+offset_top = 739.0
+offset_right = 102.0
+offset_bottom = 779.0
+
 [connection signal="pressed" from="left_check" to="." method="_on_left_check_pressed"]
 [connection signal="pressed" from="top_check" to="." method="_on_top_check_pressed"]
 [connection signal="pressed" from="right_check" to="." method="_on_right_check_pressed"]

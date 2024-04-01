@@ -2,6 +2,9 @@
 class_name SquareView
 extends ColorRect
 
+@onready var LineTemplate = preload("res://main/board/line_view/line_view.tscn")
+
+
 var square:Square
 
 var left:LineView:set = set_left
@@ -14,31 +17,71 @@ var is_target:bool = false
 
 signal square_selected(square)
 
+func _ready():
+	top = create_line(true)
+	left = create_line(false)
+	right = create_line(false)
+	bottom = create_line(true)
+	
+	set_as_target(false)
+
+
+func create_line(is_horizontal:bool) -> LineView:
+	var line = LineTemplate.instantiate()
+	line.is_horizontal = is_horizontal
+	add_child(line)
+	return line
+
+
 func init(init_square:Square):
 	square = init_square
-	left.init_with_line(square.left)
-	top.init_with_line(square.top)
-	right.init_with_line(square.right)
-	bottom.init_with_line(square.bottom)
-	
+	if not is_inside_tree():
+		await ready
+	if top:
+		top.init_with_line(square.top)
+	if left:
+		left.init_with_line(square.left)
+	if right:
+		right.init_with_line(square.right)
+	if bottom:
+		bottom.init_with_line(square.bottom)
 
-func _ready():
-	set_as_target(false)
-	
+
 func set_square_size(_square_size):
 	square_size = _square_size
-	set_size(Vector2(square_size.length, square_size.length))
+	if not is_inside_tree():
+		await ready
+	
+	if top:
+		top.set_square_size(_square_size)
+	if left:
+		left.set_square_size(_square_size)
+	if right:
+		right.set_square_size(_square_size)
+	if bottom:
+		bottom.set_square_size(_square_size)
+	square_size.size_changed.connect(_on_size_changed)
+	_on_size_changed(square_size.length)
+
+
+
+func _on_size_changed(new_length):
+	set_size(Vector2(new_length, new_length))
+	if not is_inside_tree():
+		await ready
+	if top:
+		top.set_position(Vector2(0,0))
+	if left:
+		left.set_position(Vector2(0,0))
+	if right:
+		right.set_position(Vector2(new_length,0))
+	if bottom:
+		bottom.set_position(Vector2(0, new_length))
 
 func set_pos(_pos:Vector2):
 	pos = _pos
 	set_position(square_size.screen_pos(pos))
 		
-func set_selected(_selected):
-	left.select(_selected)
-	right.select(_selected)
-	top.select(_selected)
-	bottom.select(_selected)
-	
 
 func set_left(_left):
 	left = _left
@@ -47,6 +90,8 @@ func set_right(_right):
 	right = _right
 	
 func set_top(_top):
+	if !_top.debug:
+		pass
 	top = _top
 	
 func set_bottom(_bottom):
@@ -63,5 +108,14 @@ func _on_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.pressed:
 			square_selected.emit(self)
-			print("X")
+
+
+
+
+func set_selected(_selected):
+	left.select(_selected)
+	right.select(_selected)
+	top.select(_selected)
+
+	bottom.select(_selected)
 

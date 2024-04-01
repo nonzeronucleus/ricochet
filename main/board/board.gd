@@ -29,12 +29,13 @@ func set_level(new_level):
 	set_target_pos(level.target_pos)
 
 
-func init_squares(init_squares:Array):
+func init_squares(init_squares:Array):	
 	for y in init_squares.size():	
 		var row = init_squares[y]
 		for x in row.size():
 			var square_view = square_views.at(x,y)
-			square_view.init(row[x])
+			if square_view:
+				square_view.init(row[x])
 	squares = init_squares
 
 
@@ -43,7 +44,9 @@ func _ready():
 	
 	square_size = SquareSize.new(board_size.x / grid_dimension.x)
 	square_views = MultiArray.new(grid_dimension)
+	add_all_squares()
 	
+func add_all_squares():
 	#Add all squares
 	for x in grid_dimension.x:
 		for y in grid_dimension.y:
@@ -54,23 +57,26 @@ func _ready():
 			square_views.set_at(x,y,square_view)
 			mark_square_target(square_view)
 			square_view.square_selected.connect(_on_square_selected)
-			add_child(square_view)
+			add_child(square_view) #TODO
 	set_target(square_views.at(0,0))
-			
+	
+	
+func add_all_lines():
 	#Add all lines
 	for x in grid_dimension.x:
 		for y in grid_dimension.y:
 			if x == 0:
-				var left_line = LineTemplate.instantiate()
-				left_line.init(Vector2(x,y), true, square_size)
-				square_views.at(x,y).left = left_line
-				add_child(left_line)
+				#var left_line = LineTemplate.instantiate()
+				#left_line.init(Vector2(x,y), true, square_size)
+				square_views.at(x,y).init(Direction.Left, Vector2(x,y), true, square_size)
+				#square_views.at(x,y).left.init(Vector2(x,y), true, square_size)# = left_line
+				#add_child(left_line)
 				
 			if y == 0:
-				var top_line = LineTemplate.instantiate()
-				top_line.init(Vector2(x,y), false, square_size)
-				square_views.at(x,y).top = top_line
-				add_child(top_line)
+				#var top_line = LineTemplate.instantiate()
+				#top_line.init(Vector2(x,y), false, square_size)
+				square_views.at(x,y).top.init(Vector2(x,y), true, square_size) # = top_line #TODO
+				#add_child(top_line)
 				
 			var right_line = LineTemplate.instantiate()
 			right_line.init(Vector2(x+1,y), true, square_size)
@@ -85,10 +91,11 @@ func _ready():
 			bottom_line.init(Vector2(x,y+1), false, square_size)
 			square_views.at(x,y).bottom = bottom_line
 			if y<grid_dimension.y-1:
-				square_views.at(x,y+1).top = bottom_line
+				pass
+#				square_views.at(x,y+1).top = bottom_line TODO
 			else:
 				bottom_line.width = 4
-			add_child(bottom_line)
+			#add_child(bottom_line) TODO
 
 
 func _on_square_selected(selected_square):
@@ -114,6 +121,8 @@ func set_target(new_target):
 	
 	
 func mark_square_target(new_target_square):
+	if !new_target_square:
+		return
 	if new_target_square == target:
 		new_target_square.set_as_target(true)
 	else:

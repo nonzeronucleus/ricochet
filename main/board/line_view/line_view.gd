@@ -8,10 +8,35 @@ var pos:Vector2 = Vector2(0,0)
 var default_gradient:Gradient
 var selected_gradient:Gradient
 
-var line:Line
+var line:Line = Line.new(false)
+var debug:
+	set(val):
+		if debug:
+			print("resetting")
+		debug = val
 
-func _init():
-	pass
+
+func _ready():
+	default_gradient = Gradient.new()
+	default_gradient.colors = [Color.WHITE, Color.WHITE]
+	default_gradient.offsets = [0.5, 0.5]
+	selected_gradient = Gradient.new()
+	selected_gradient.colors = [Color.RED, Color.RED]
+	selected_gradient.offsets = [0.5, 0.5]
+	width = 1
+	select(false)
+
+
+
+
+#@export var is_solid:bool:
+#	set(value):
+#		is_solid = value
+#		line.is_solid = is_solid
+
+#func _init():
+#	if Engine.is_editor_hint():
+#		line = Line.new(false)
 
 func _on_line_changed(line):
 	show_line()
@@ -24,6 +49,8 @@ func init_with_line(new_line:Line):
 	show_line()
 	
 func show_line():
+#	if debug:
+#		print (line.is_solid)
 	if line.is_solid:
 		width = 8
 	else:
@@ -36,22 +63,13 @@ var is_solid:bool:
 	get = get_is_solid,
 	set = set_is_solid
 
-func _ready():
-	default_gradient = Gradient.new()
-	default_gradient.colors = [Color.WHITE, Color.WHITE]
-	default_gradient.offsets = [0.5, 0.5]
-	selected_gradient = Gradient.new()
-	selected_gradient.colors = [Color.RED, Color.RED]
-	selected_gradient.offsets = [0.5, 0.5]
-	select(false)
-
 
 	
 func init(new_pos, new_is_horizontal, new_square_size):
 	set_pos(new_pos)
 	set_horizontal(new_is_horizontal)
 	set_square_size(new_square_size)
-	width = 1
+	#width = 1
 	
 func select(new_selected):
 	if new_selected:
@@ -94,8 +112,8 @@ func set_horizontal(new_is_horizontal:bool):
 	
 func refresh_view():
 	if is_horizontal:
-		points = PackedVector2Array([square_size.screen_pos(pos), square_size.screen_pos(pos + Vector2(0,1))])
-	else:
 		points = PackedVector2Array([square_size.screen_pos(pos), square_size.screen_pos(pos + Vector2(1,0))])
+	else:
+		points = PackedVector2Array([square_size.screen_pos(pos), square_size.screen_pos(pos + Vector2(0,1))])
 	pass
 
