@@ -83,11 +83,13 @@ func _on_square_selected(_square):
 	if icon_group:
 		var icon = icon_group.selected
 		
+		
 		if icon:
-			selected_square.left.is_solid = icon.left_enabled
-			selected_square.right.is_solid = icon.right_enabled
-			selected_square.top.is_solid = icon.top_enabled
-			selected_square.bottom.is_solid = icon.bottom_enabled
+			icon.apply(_square)
+	#		selected_square.left.is_solid = icon.left_enabled
+	#		selected_square.right.is_solid = icon.right_enabled
+	#		selected_square.top.is_solid = icon.top_enabled
+	#		selected_square.bottom.is_solid = icon.bottom_enabled
 	
 	left_check.button_pressed = _square.left.is_solid
 	right_check.button_pressed = _square.right.is_solid

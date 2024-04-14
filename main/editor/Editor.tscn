@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://bsw2hh0316i2e"]
+[gd_scene load_steps=9 format=3 uid="uid://bsw2hh0316i2e"]
 
 [ext_resource type="Script" path="res://main/board/board.gd" id="1_30p0m"]
 [ext_resource type="Script" path="res://main/editor/Editor.gd" id="1_ihjyf"]
+[ext_resource type="PackedScene" uid="uid://yropy8d5rwmf" path="res://main/board/robot/robot.tscn" id="2_76bb7"]
 [ext_resource type="PackedScene" uid="uid://5uiopnnkk16l" path="res://main/objects/confirmation_dialog/confirmation_dialog.tscn" id="3_8v2ai"]
-[ext_resource type="PackedScene" uid="uid://ckppsli3a13o1" path="res://main/editor/editor_edge_icon/editor_edge_ico.tscn" id="6_kjku4"]
-[ext_resource type="Script" path="res://main/editor/icon_group.gd" id="7_q17rc"]
+[ext_resource type="PackedScene" uid="uid://ckppsli3a13o1" path="res://main/editor/editor_edge_icon/editor_edge_icon.tscn" id="6_kjku4"]
+[ext_resource type="Script" path="res://main/editor/icon/icon_group.gd" id="7_q17rc"]
+[ext_resource type="PackedScene" uid="uid://dgo7eqrbcffdm" path="res://main/editor/icon/icon.tscn" id="8_1ywb2"]
+[ext_resource type="Texture2D" uid="uid://csuocyxp4eapi" path="res://main/board/robot/blue-rook.png" id="9_5pfo7"]
 
 [node name="Editor" type="Node2D"]
 script = ExtResource("1_ihjyf")
@@ -118,106 +121,250 @@ text = "Back"
 
 [node name="grid" type="Node2D" parent="."]
 
-[node name="top_left" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(72, 728)
+[node name="icon3" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 56.0
+offset_top = 728.0
+offset_right = 112.0
+offset_bottom = 784.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+
+[node name="top_left" parent="grid/icon3" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 right_enabled = false
 bottom_enabled = false
 
-[node name="left" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(72, 776)
+[node name="icon4" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 56.0
+offset_top = 776.0
+offset_right = 112.0
+offset_bottom = 832.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+
+[node name="left" parent="grid/icon4" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 top_enabled = false
 right_enabled = false
 bottom_enabled = false
 
-[node name="bottom_left" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(72, 824)
+[node name="icon5" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 56.0
+offset_top = 824.0
+offset_right = 112.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+
+[node name="bottom_left" parent="grid/icon5" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 top_enabled = false
 right_enabled = false
 
-[node name="top" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(120, 728)
+[node name="icon6" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 104.0
+offset_top = 728.0
+offset_right = 160.0
+offset_bottom = 784.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+
+[node name="top" parent="grid/icon6" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 left_enabled = false
 right_enabled = false
 bottom_enabled = false
 
-[node name="middle" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(120, 776)
+[node name="icon7" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 104.0
+offset_top = 776.0
+offset_right = 160.0
+offset_bottom = 832.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+
+[node name="middle" parent="grid/icon7" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 top_enabled = false
 left_enabled = false
 right_enabled = false
 bottom_enabled = false
 
-[node name="bottom" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(120, 824)
+[node name="icon8" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 104.0
+offset_top = 824.0
+offset_right = 160.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+
+[node name="bottom" parent="grid/icon8" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 top_enabled = false
 left_enabled = false
 right_enabled = false
 
-[node name="top_right" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(168, 728)
+[node name="icon9" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 152.0
+offset_top = 728.0
+offset_right = 208.0
+offset_bottom = 784.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+
+[node name="top_right" parent="grid/icon9" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 left_enabled = false
 bottom_enabled = false
 
-[node name="right" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(168, 776)
+[node name="icon10" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 152.0
+offset_top = 776.0
+offset_right = 208.0
+offset_bottom = 832.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+
+[node name="right" parent="grid/icon10" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 top_enabled = false
 left_enabled = false
 bottom_enabled = false
 
-[node name="bottom_right" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(168, 824)
+[node name="icon11" parent="grid" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 152.0
+offset_top = 824.0
+offset_right = 208.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+
+[node name="bottom_right" parent="grid/icon11" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 top_enabled = false
 left_enabled = false
 
 [node name="across" type="Node2D" parent="."]
-position = Vector2(-195, 195)
+position = Vector2(56, 896)
 
-[node name="right_open" parent="across" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(267, 693)
+[node name="icon12" parent="across" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 56.0
+offset_bottom = 56.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+metadata/_edit_use_anchors_ = true
+
+[node name="right_open" parent="across/icon12" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 right_enabled = false
 
-[node name="left_right_open" parent="across" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(315, 693)
+[node name="icon13" parent="across" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 48.0
+offset_top = 0.0
+offset_right = 104.0
+offset_bottom = 56.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+metadata/_edit_use_anchors_ = true
+
+[node name="left_right_open" parent="across/icon13" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 left_enabled = false
 right_enabled = false
 
-[node name="left_open" parent="across" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(363, 693)
+[node name="icon14" parent="across" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 96.0
+offset_top = 0.0
+offset_right = 152.0
+offset_bottom = 56.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+metadata/_edit_use_anchors_ = true
+
+[node name="left_open" parent="across/icon14" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 left_enabled = false
 
 [node name="down" type="Node2D" parent="."]
-position = Vector2(-167, -8)
+position = Vector2(224, 728)
 
-[node name="bottom_open" parent="down" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(407, 736)
+[node name="icon15" parent="down" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 56.0
+offset_bottom = 56.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+metadata/_edit_use_anchors_ = true
+
+[node name="bottom_open" parent="down/icon15" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 bottom_enabled = false
 
-[node name="top_bottom_open" parent="down" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(407, 784)
+[node name="icon16" parent="down" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 0.0
+offset_top = 48.0
+offset_right = 56.0
+offset_bottom = 104.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+metadata/_edit_use_anchors_ = true
+
+[node name="top_bottom_open" parent="down/icon16" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 8)
 top_enabled = false
 bottom_enabled = false
 
-[node name="top_open" parent="down" node_paths=PackedStringArray("icon_group") instance=ExtResource("6_kjku4")]
-position = Vector2(407, 832)
+[node name="icon17" parent="down" node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 0.0
+offset_top = 104.0
+offset_right = 56.0
+offset_bottom = 152.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../../icon_group")
+metadata/_edit_use_anchors_ = true
+
+[node name="top_open" parent="down/icon17" instance=ExtResource("6_kjku4")]
+position = Vector2(8, 0)
 top_enabled = false
 
 [node name="icon_group" type="Node" parent="."]
 script = ExtResource("7_q17rc")
+
+[node name="icon" parent="." node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
+icon_group = NodePath("../icon_group")
+
+[node name="robot" parent="icon" instance=ExtResource("2_76bb7")]
+position = Vector2(32, 32)
+scale = Vector2(0.0420116, 0.0420116)
+
+[node name="icon2" parent="." node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+offset_left = 584.0
+offset_right = 656.0
+color = Color(0.643137, 0.827451, 1, 0)
+selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
+icon_group = NodePath("../icon_group")
+
+[node name="robot" parent="icon2" instance=ExtResource("2_76bb7")]
+position = Vector2(32, 32)
+scale = Vector2(0.0420116, 0.0420116)
+texture = ExtResource("9_5pfo7")
 
 [connection signal="pressed" from="left_check" to="." method="_on_left_check_pressed"]
 [connection signal="pressed" from="top_check" to="." method="_on_top_check_pressed"]

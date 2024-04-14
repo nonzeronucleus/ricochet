@@ -1,6 +1,8 @@
+ColorRect
+CollisionShape2D
+Node2D
 IconGroup
 Button
-Node2D
 Line
 Transition
 MarginContainer
@@ -11,4 +13,3 @@ HFlowContainer
 Control
 CenterContainer
 Window
-OptionButton

@@ -15,6 +15,7 @@ var bottom:LineView:set = set_bottom
 var square_size:SquareSize:set = set_square_size
 var pos:Vector2:set = set_pos
 var is_target:bool = false
+@export var normal_color:Color
 
 var debug = false
 
@@ -114,7 +115,7 @@ func set_as_target(_is_target):
 	if is_target:
 		color = Color.RED
 	else:
-		color = Color.BLUE
+		color = normal_color
 
 func _on_gui_input(event):
 	if event is InputEventMouseButton:

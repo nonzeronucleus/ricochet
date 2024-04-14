@@ -72,6 +72,7 @@ func _on_ready_state_unhandled_input(event):
 
 func _on_restart_button_pressed():
 	robot.reset_size()
+	$GameState.send_event("StartGame")	
 
 
 func _on_back_button_pressed():

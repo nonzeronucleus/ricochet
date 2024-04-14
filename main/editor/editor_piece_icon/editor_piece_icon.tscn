@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtkvahh0p5tvp"]
+
+[ext_resource type="Script" path="res://main/editor/editor_piece_icon.gd" id="1_ujfp5"]
+[ext_resource type="Texture2D" uid="uid://ckcdpxoj84gkf" path="res://main/board/robot/red-rook.png" id="2_r45fq"]
+[ext_resource type="PackedScene" uid="uid://yropy8d5rwmf" path="res://main/board/robot/robot.tscn" id="3_kfwki"]
+
+[node name="piece_icon" type="Node2D"]
+position = Vector2(384, 720)
+script = ExtResource("1_ujfp5")
+texture = ExtResource("2_r45fq")
+
+[node name="robot" parent="." instance=ExtResource("3_kfwki")]
+position = Vector2(24, 24)
+scale = Vector2(0.0308762, 0.0308762)
