@@ -1,14 +1,15 @@
 @tool
-class_name LineView
-extends Line2D
+class_name WallView
+#extends Line2D
+extends Node2D
 
 @export var is_horizontal:bool = true:set = set_horizontal
 var square_size:SquareSize = SquareSize.new(0):set = set_square_size
-var pos:Vector2 = Vector2(0,0)
-var default_gradient:Gradient
-var selected_gradient:Gradient
+var pos:Vector2 = Vector2(0,0) : set = set_pos
 
-var line:Line = null #Line.new(false)
+var width:int
+
+var line:Line = null
 var debug:
 	set(val):
 		if debug:
@@ -17,28 +18,14 @@ var debug:
 
 
 func _ready():
-	default_gradient = Gradient.new()
-	default_gradient.colors = [Color.WHITE, Color.WHITE]
-	default_gradient.offsets = [0.5, 0.5]
-	selected_gradient = Gradient.new()
-	selected_gradient.colors = [Color.RED, Color.RED]
-	selected_gradient.offsets = [0.5, 0.5]
 	width = 1
 	select(false)
+	
 
 
-
-
-#@export var is_solid:bool:
-#	set(value):
-#		is_solid = value
-#		line.is_solid = is_solid
-
-#func _init():
-#	if Engine.is_editor_hint():
-#		line = Line.new(false)
 
 func _on_line_changed(line):
+	visible = line.is_solid	
 	show_line()
 	
 func init_with_line(new_line:Line):
@@ -46,18 +33,14 @@ func init_with_line(new_line:Line):
 		line.line_changed.disconnect(_on_line_changed)
 	line = new_line
 	line.line_changed.connect(_on_line_changed)
+	_on_line_changed(line)
 	show_line()
 	
 func show_line():
-#	if debug:
-#		print (line.is_solid)
 	if line.is_solid:
 		width = 8
 	else:
 		width = 1
-
-
-
 
 var is_solid:bool:
 	get = get_is_solid,
@@ -65,17 +48,15 @@ var is_solid:bool:
 
 
 	
-func init(new_pos, new_is_horizontal, new_square_size):
-	set_pos(new_pos)
-	set_horizontal(new_is_horizontal)
-	set_square_size(new_square_size)
+#func init(new_pos, new_is_horizontal, new_square_size):
+#	set_pos(new_pos)
+#	set_horizontal(new_is_horizontal)
+#	set_square_size(new_square_size)
+	
 	#width = 1
 	
 func select(new_selected):
-	if new_selected:
-		gradient = selected_gradient
-	else:
-		gradient = default_gradient
+	pass
 		
 		
 func set_is_border(new_border):
@@ -86,7 +67,9 @@ func set_is_border(new_border):
 	
 
 func set_is_solid(new_is_solid):
+	is_solid = new_is_solid
 	line.is_solid = new_is_solid
+
 	if is_solid:
 		width = 8
 	else:
@@ -103,6 +86,11 @@ func set_pos(_pos):
 	
 func set_square_size(new_square_size):
 	square_size = new_square_size
+	square_size.size_changed.connect(on_square_size_changed)
+	on_square_size_changed(square_size.length)
+	
+
+func on_square_size_changed(length):
 	refresh_view()
 	
 
@@ -111,9 +99,18 @@ func set_horizontal(new_is_horizontal:bool):
 	refresh_view()
 	
 func refresh_view():
+	var length = square_size.length
+	var texture_size = Vector2(448,64) #texture.get_size()
+	var temp_scale = (length)/texture_size.x
+	scale = Vector2(temp_scale,temp_scale)
 	if is_horizontal:
-		points = PackedVector2Array([square_size.screen_pos(pos), square_size.screen_pos(pos + Vector2(1,0))])
+		rotation = 0
+		position.x = length/2 if pos.x == 0 else length * 1.5
+		position.y = 0 if pos.y == 0 else length
 	else:
-		points = PackedVector2Array([square_size.screen_pos(pos), square_size.screen_pos(pos + Vector2(0,1))])
+		rotation = PI/2
+		position.x = 0 if pos.x == 0 else length
+		position.y = length/2 if pos.y == 0 else length * 1.5
+	
 	pass
 

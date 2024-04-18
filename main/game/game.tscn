@@ -1,22 +1,32 @@
-[gd_scene load_steps=8 format=3 uid="uid://tqpt66wvsbue"]
+[gd_scene load_steps=9 format=3 uid="uid://tqpt66wvsbue"]
 
-[ext_resource type="Script" path="res://main/board/game.gd" id="1_5it5f"]
+[ext_resource type="Script" path="res://main/game/game.gd" id="1_5it5f"]
 [ext_resource type="Script" path="res://main/board/board.gd" id="2_jvigl"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_l05u7"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_i0bq6"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_88l8l"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_6kdgt"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="7_7753s"]
+[ext_resource type="Texture2D" uid="uid://cjxq7fh4ydgpd" path="res://main/game/background.png" id="8_4p5k4"]
 
 [node name="game" type="Node2D"]
 script = ExtResource("1_5it5f")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+show_behind_parent = true
+offset_left = -24.0
+offset_top = -16.0
+offset_right = 2413.0
+offset_bottom = 2694.0
+scale = Vector2(0.351289, 0.493079)
+texture = ExtResource("8_4p5k4")
 
 [node name="board" type="ColorRect" parent="."]
 offset_left = 45.0
 offset_top = 73.0
 offset_right = 613.0
 offset_bottom = 641.0
-color = Color(0.976471, 0.890196, 0.847059, 1)
+color = Color(0.14902, 0.478431, 0.431373, 1)
 script = ExtResource("2_jvigl")
 metadata/_edit_use_anchors_ = true
 
@@ -105,10 +115,12 @@ text = "Next Level"
 metadata/_edit_use_anchors_ = true
 
 [node name="StateChartDebugger" parent="." instance=ExtResource("7_7753s")]
+visible = false
 offset_left = 55.0
 offset_top = 771.0
 offset_right = 740.0
 offset_bottom = 1073.0
+enabled = false
 initial_node_to_watch = NodePath("../GameState")
 
 [connection signal="pressed" from="editor_button" to="." method="_on_editor_button_pressed"]

@@ -7,5 +7,4 @@ offset_right = 40.0
 offset_bottom = 40.0
 color = Color(0.133333, 0.356863, 0.494118, 1)
 script = ExtResource("1_n42db")
-is_editor_square = null
-normal_color = Color(0.133333, 0.356863, 0.494118, 1)
+normal_color = Color(0.133333, 0.356863, 0.494118, 0.72549)

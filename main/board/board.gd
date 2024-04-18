@@ -3,7 +3,7 @@ class_name Board
 extends ColorRect
 
 @onready var SquareTemplate = preload("res://main/board/square_view/square_view.tscn")
-@onready var LineTemplate = preload("res://main/board/line_view/line_view.tscn")
+@onready var WallTemplate = preload("res://main/board/wall_view/wall_view.tscn")
 
 var grid_dimension = Vector2(8,8)
 var target = SquareView
@@ -29,6 +29,7 @@ func _ready():
 	square_size = SquareSize.new(board_size.x / grid_dimension.x)
 	square_views = MultiArray.new(grid_dimension)
 	add_all_squares()
+	queue_redraw()
 #	if icon_group:
 #		icon_group.selection_changed.connect(_on_icon_selection_changed)
 
@@ -86,7 +87,7 @@ func add_all_lines():
 				square_views.at(x,y).top.init(Vector2(x,y), true, square_size) # = top_line #TODO
 				#add_child(top_line)
 				
-			var right_line = LineTemplate.instantiate()
+			var right_line = WallTemplate.instantiate()
 			right_line.init(Vector2(x+1,y), true, square_size)
 			square_views.at(x,y).right = right_line
 			if x<grid_dimension.x-1:
@@ -95,7 +96,7 @@ func add_all_lines():
 				right_line.width = 4
 			add_child(right_line)
 
-			var bottom_line = LineTemplate.instantiate()
+			var bottom_line = WallTemplate.instantiate()
 			bottom_line.init(Vector2(x,y+1), false, square_size)
 			square_views.at(x,y).bottom = bottom_line
 			if y<grid_dimension.y-1:
@@ -158,3 +159,11 @@ func is_wall_open(pos, direction) -> bool:
 			
 	return false
 	
+func _draw():
+	var size = get_size()
+	var line_color = Color.BLACK
+	var width = 4.0
+	draw_line(Vector2(0,0), Vector2(0,size.y), line_color, width)
+	draw_line(Vector2(0,0), Vector2(size.x,0), line_color, width)
+	draw_line(Vector2(0,size.y), Vector2(size.x,size.y), line_color, width)
+	draw_line(Vector2(size.x,0), Vector2(size.x,size.y), line_color, width)
