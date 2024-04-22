@@ -49,7 +49,7 @@ func create_level(dimensions:Vector2) -> Level:
 	var prev_row:Array
 	for y in dimensions.y:
 		var square_line = Array()
-		var square_row = create_empty_row(dimensions.x, y == dimensions.y-1)
+		var square_row = create_empty_row(dimensions.x, y == dimensions.y-1, y)
 		square_row.resize(dimensions.x)
 		square_array.append(square_row)
 		if prev_row:
@@ -135,7 +135,7 @@ func populate_level(level_id, edges:Array, target_pos:Vector2) -> Level:
 	for y in edges.size():		
 		var square_line = Array()
 		var edge_line = edges[y]
-		var square_row:Array = parse_edge_layout(edge_line)
+		var square_row:Array = parse_edge_layout(edge_line, y)
 		square_array.append(square_row)
 		if prev_row:
 			populate_top_edge(prev_row, square_row)
@@ -152,11 +152,12 @@ func populate_top_edge(prev_row, square_row):
 		var current_square = square_row[x]
 		current_square.top = prev_square.bottom
 
-func parse_edge_layout(edge_row) -> Array:
+func parse_edge_layout(edge_row, y) -> Array:
 	var square_row = Array()
 	var prev_square:Square	
-	for edge in edge_row:
-		var square = Square.new(edge)
+	for x in edge_row.length():
+		var edge = edge_row[x]
+		var square = Square.new(edge, Vector2(x,y))
 		square_row.append(square)
 		if prev_square:
 			square.left = prev_square.right
@@ -165,11 +166,11 @@ func parse_edge_layout(edge_row) -> Array:
 	return square_row
 	
 
-func create_empty_row(width, is_bottom) -> Array:
+func create_empty_row(width, is_bottom, y) -> Array:
 	var square_row = Array()
 	var prev_square:Square	
 	for x in width:
-		var square = Square.new(".")
+		var square = Square.new(".", Vector2(x,y))
 		
 		square.right.is_solid = false #(x == width - 1)
 		square.bottom.is_solid = false #is_bottom

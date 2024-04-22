@@ -8,6 +8,8 @@ extends Node2D
 @onready var board = $board
 @onready var level_combo = $level_combo
 @onready var confirmation_dialog = $Control/CenterContainer/confirmation_dialog
+@onready var char_robot_icon = $robot_icon_1/char_robot_icon
+@onready var npc_robot_icon = $npc_robot_icon
 
 var icon_group:IconGroup
 
@@ -22,6 +24,15 @@ var next_level:Level
 
 var selected_square:SquareView
 var selected_level_listbox_id:int
+var player_robot:Robot
+#var start_pos = Vector2():
+#	set(new_pos):
+#		start_pos = new_start_pos
+#		if not is_inside_tree():
+#			await ready		
+#		player_robot.pos = new_pos
+		
+
 
 func _ready():
 	$board.square_selected.connect(_on_square_selected)
@@ -32,7 +43,13 @@ func _ready():
 	confirmation_dialog.cancel_pressed.connect(on_confirmation_cancelled)
 	selected_level_listbox_id = 0
 	icon_group = $icon_group
+	char_robot_icon.board = board
+#	set_start_pos()
+#	npc_robot_icon.board = board
 
+#func set_start_pos(new_start_pos:Vector2):
+	
+	
 
 func set_level_mgr(new_level_mgr:LevelMgr):
 	level_mgr = new_level_mgr
@@ -86,10 +103,6 @@ func _on_square_selected(_square):
 		
 		if icon:
 			icon.apply(_square)
-	#		selected_square.left.is_solid = icon.left_enabled
-	#		selected_square.right.is_solid = icon.right_enabled
-	#		selected_square.top.is_solid = icon.top_enabled
-	#		selected_square.bottom.is_solid = icon.bottom_enabled
 	
 	left_check.button_pressed = _square.left.is_solid
 	right_check.button_pressed = _square.right.is_solid

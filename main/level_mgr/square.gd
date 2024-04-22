@@ -7,15 +7,18 @@ var top: Line
 var right:Line
 var bottom:Line
 
+var pos
+
 signal square_changed(square)
 
 
-func _init(edge_defn:String):
+func _init(edge_defn:String, new_pos:Vector2):
 	right = Line.new(edge_defn == 'J' or edge_defn == '|')
 	bottom = Line.new(edge_defn == 'J' or edge_defn =='_')
 	
 	right.line_changed.connect(_on_line_changed)
 	bottom.line_changed.connect(_on_line_changed)
+	pos = new_pos
 	
 
 func _on_line_changed(line:Line):

@@ -7,7 +7,7 @@ extends Node2D
 @onready var target_check:CheckBox = $target_check
 @onready var board:Board = $board
 @onready var robot 
-@onready var RobotTemplate = preload("res://main/board/robot/robot.tscn")
+#@onready var RobotTemplate = preload("res://main/board/robot/robot.tscn")
 
 var cmds = []
 
@@ -22,16 +22,17 @@ var selected_square:SquareView
 
 
 func _ready():
-	robot = RobotTemplate.instantiate()
-	robot.set_square_size(board.square_size)
-#	robot.on_finished_moving.connect(robot_finished_moving)
-	board.add_robot(robot)	
+	robot = board.player_robot
+#	robot = RobotTemplate.instantiate()
+#	robot.set_square_size(board.square_size)
+#	board.add_player_robot(robot)
+	
 	reset()
 	
 func reset():
-	robot.set_instant_pos(Vector2())
 	robot.reset_size()
-	robot.position = Vector2()
+	robot.set_init_pos(Vector2(1,1))
+#	robot.position = Vector2()
 	cmds = []
 	
 func set_level_mgr(new_level_mgr:LevelMgr) -> void:
@@ -45,6 +46,7 @@ func set_navigator(new_navigator:StateChart) -> void:
 
 func _on_level_changed(level):
 	board.set_level(level)	
+	reset()
 
 
 
@@ -72,6 +74,7 @@ func _on_ready_state_unhandled_input(event):
 
 func _on_restart_button_pressed():
 	robot.reset_size()
+	reset()
 	$GameState.send_event("StartGame")	
 
 

@@ -35,7 +35,7 @@ signal icon_selected(icon)
 	get:
 		return bottom_enabled
 
-var square:Square = Square.new('')
+var square:Square = Square.new('', Vector2(0,0))
 
 func _init():
 	square.left = Line.new(left_enabled)

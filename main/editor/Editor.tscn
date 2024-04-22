@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bsw2hh0316i2e"]
+[gd_scene load_steps=10 format=3 uid="uid://bsw2hh0316i2e"]
 
 [ext_resource type="Script" path="res://main/board/board.gd" id="1_30p0m"]
 [ext_resource type="Script" path="res://main/editor/Editor.gd" id="1_ihjyf"]
 [ext_resource type="PackedScene" uid="uid://yropy8d5rwmf" path="res://main/board/robot/robot.tscn" id="2_76bb7"]
 [ext_resource type="PackedScene" uid="uid://5uiopnnkk16l" path="res://main/objects/confirmation_dialog/confirmation_dialog.tscn" id="3_8v2ai"]
 [ext_resource type="PackedScene" uid="uid://ckppsli3a13o1" path="res://main/editor/editor_edge_icon/editor_edge_icon.tscn" id="6_kjku4"]
+[ext_resource type="Script" path="res://main/editor/editor_piece_icon/editor_piece_icon.gd" id="7_dc0hp"]
 [ext_resource type="Script" path="res://main/editor/icon/icon_group.gd" id="7_q17rc"]
 [ext_resource type="PackedScene" uid="uid://dgo7eqrbcffdm" path="res://main/editor/icon/icon.tscn" id="8_1ywb2"]
 [ext_resource type="Texture2D" uid="uid://csuocyxp4eapi" path="res://main/board/robot/blue-rook.png" id="9_5pfo7"]
@@ -345,23 +346,27 @@ top_enabled = false
 [node name="icon_group" type="Node" parent="."]
 script = ExtResource("7_q17rc")
 
-[node name="icon" parent="." node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+[node name="robot_icon_1" parent="." node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
 color = Color(0.643137, 0.827451, 1, 0)
 selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../icon_group")
 
-[node name="robot" parent="icon" instance=ExtResource("2_76bb7")]
+[node name="char_robot" parent="robot_icon_1" instance=ExtResource("2_76bb7")]
 position = Vector2(32, 32)
 scale = Vector2(0.0420116, 0.0420116)
 
-[node name="icon2" parent="." node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+[node name="char_robot_icon" type="Node" parent="robot_icon_1"]
+script = ExtResource("7_dc0hp")
+
+[node name="npc_robot_icon" parent="." node_paths=PackedStringArray("icon_group") instance=ExtResource("8_1ywb2")]
+visible = false
 offset_left = 584.0
 offset_right = 656.0
 color = Color(0.643137, 0.827451, 1, 0)
 selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../icon_group")
 
-[node name="robot" parent="icon2" instance=ExtResource("2_76bb7")]
+[node name="npc_robot" parent="npc_robot_icon" instance=ExtResource("2_76bb7")]
 position = Vector2(32, 32)
 scale = Vector2(0.0420116, 0.0420116)
 texture = ExtResource("9_5pfo7")

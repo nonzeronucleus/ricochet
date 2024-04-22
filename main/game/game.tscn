@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://tqpt66wvsbue"]
+[gd_scene load_steps=13 format=3 uid="uid://tqpt66wvsbue"]
 
 [ext_resource type="Script" path="res://main/game/game.gd" id="1_5it5f"]
 [ext_resource type="Script" path="res://main/board/board.gd" id="2_jvigl"]
@@ -8,6 +8,10 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_6kdgt"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="7_7753s"]
 [ext_resource type="Texture2D" uid="uid://cjxq7fh4ydgpd" path="res://main/game/background.png" id="8_4p5k4"]
+[ext_resource type="PackedScene" uid="uid://yropy8d5rwmf" path="res://main/board/robot/robot.tscn" id="9_gof81"]
+[ext_resource type="Texture2D" uid="uid://csuocyxp4eapi" path="res://main/board/robot/blue-rook.png" id="10_3g4yh"]
+[ext_resource type="Script" path="res://main/game/robot_textures.gd" id="11_h3mh6"]
+[ext_resource type="Texture2D" uid="uid://ckcdpxoj84gkf" path="res://main/board/robot/red-rook.png" id="12_robaa"]
 
 [node name="game" type="Node2D"]
 script = ExtResource("1_5it5f")
@@ -16,7 +20,7 @@ script = ExtResource("1_5it5f")
 show_behind_parent = true
 offset_left = -24.0
 offset_top = -16.0
-offset_right = 2413.0
+offset_right = 2003.0
 offset_bottom = 2694.0
 scale = Vector2(0.351289, 0.493079)
 texture = ExtResource("8_4p5k4")
@@ -122,6 +126,16 @@ offset_right = 740.0
 offset_bottom = 1073.0
 enabled = false
 initial_node_to_watch = NodePath("../GameState")
+
+[node name="robot_template" parent="." instance=ExtResource("9_gof81")]
+position = Vector2(-112, 48)
+scale = Vector2(0.0524666, 0.0551649)
+npc_textures = Array[Texture2D]([ExtResource("10_3g4yh")])
+
+[node name="robot_textures" type="Node" parent="."]
+script = ExtResource("11_h3mh6")
+char_texture = ExtResource("12_robaa")
+npc_textures = Array[Texture2D]([ExtResource("10_3g4yh")])
 
 [connection signal="pressed" from="editor_button" to="." method="_on_editor_button_pressed"]
 [connection signal="pressed" from="restart_button" to="." method="_on_restart_button_pressed"]

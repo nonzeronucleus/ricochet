@@ -25,3 +25,9 @@ res://main/editor/editor_edge_icon/editor_edge_icon.tscn
 res://main/editor/icon/icon.gd
 res://main/board/wall_view/wall_view.gd
 res://main/board/wall_view/wall_view.tscn
+res://main/board/robot/robot_template.gd
+res://main/game/game.gd
+res://main/game/robot_textures.gd
+res://main/editor/editor_piece_icon/editor_piece_icon.gd
+res://main/level_mgr/square.gd
+res://main/level_mgr/level_mgr.gd

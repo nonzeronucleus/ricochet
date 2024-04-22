@@ -4,6 +4,7 @@ extends ColorRect
 
 @onready var SquareTemplate = preload("res://main/board/square_view/square_view.tscn")
 @onready var WallTemplate = preload("res://main/board/wall_view/wall_view.tscn")
+@onready var RobotTemplate = preload("res://main/board/robot/robot.tscn")
 
 var grid_dimension = Vector2(8,8)
 var target = SquareView
@@ -13,6 +14,8 @@ var square_views:MultiArray
 var squares:Array
 var level:Level:
 	set = set_level
+
+var player_robot:Robot
 
 var level_mgr
 
@@ -28,14 +31,13 @@ func _ready():
 	
 	square_size = SquareSize.new(board_size.x / grid_dimension.x)
 	square_views = MultiArray.new(grid_dimension)
+	player_robot = RobotTemplate.instantiate()
+	player_robot.set_square_size(square_size)
+	add_child(player_robot)
+	#board.add_player_robot(robot)
+	
 	add_all_squares()
 	queue_redraw()
-#	if icon_group:
-#		icon_group.selection_changed.connect(_on_icon_selection_changed)
-
-
-#func _on_icon_selection_changed(selection):
-	
 
 
 func set_level(new_level):
@@ -44,14 +46,14 @@ func set_level(new_level):
 	set_target_pos(level.target_pos)
 
 
-func init_squares(init_squares:Array):	
-	for y in init_squares.size():	
-		var row = init_squares[y]
+func init_squares(new_squares:Array):	
+	for y in new_squares.size():	
+		var row = new_squares[y]
 		for x in row.size():
 			var square_view = square_views.at(x,y)
 			if square_view:
 				square_view.init(row[x])
-	squares = init_squares
+	squares = new_squares
 
 
 	
@@ -75,17 +77,10 @@ func add_all_lines():
 	for x in grid_dimension.x:
 		for y in grid_dimension.y:
 			if x == 0:
-				#var left_line = LineTemplate.instantiate()
-				#left_line.init(Vector2(x,y), true, square_size)
 				square_views.at(x,y).init(Direction.Left, Vector2(x,y), true, square_size)
-				#square_views.at(x,y).left.init(Vector2(x,y), true, square_size)# = left_line
-				#add_child(left_line)
 				
 			if y == 0:
-				#var top_line = LineTemplate.instantiate()
-				#top_line.init(Vector2(x,y), false, square_size)
 				square_views.at(x,y).top.init(Vector2(x,y), true, square_size) # = top_line #TODO
-				#add_child(top_line)
 				
 			var right_line = WallTemplate.instantiate()
 			right_line.init(Vector2(x+1,y), true, square_size)
@@ -117,7 +112,7 @@ func _on_square_selected(selected_square):
 
 
 func set_target_pos(target_pos:Vector2):
-	set_target(square_views.at(target_pos.x, target_pos.y))
+	set_target(square_views.at(int(target_pos.x), int(target_pos.y)))
 
 		
 func set_target(new_target):
@@ -139,10 +134,11 @@ func mark_square_target(new_target_square):
 
 				
 	
-func add_robot(robot):
+func add_player_robot(new_robot):
+	player_robot = new_robot
 #	robot.on_finished_moving.connect(_on_robot_finished_moving)
-	add_child(robot)
-	robot.set_init_pos(Vector2())
+	add_child(player_robot)
+#	robot.set_init_pos(Vector2())
 	
 	
 func is_wall_open(pos, direction) -> bool:
@@ -160,7 +156,7 @@ func is_wall_open(pos, direction) -> bool:
 	return false
 	
 func _draw():
-	var size = get_size()
+#	var size = get_size() #TDOD
 	var line_color = Color.BLACK
 	var width = 4.0
 	draw_line(Vector2(0,0), Vector2(0,size.y), line_color, width)
