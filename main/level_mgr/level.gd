@@ -12,6 +12,8 @@ var start_pos: Vector2 :
 var dirty:bool
 
 
+
+
 func _init(new_level_id:String,new_squares:Array, new_target_pos:Vector2, new_start_pos:Vector2):
 	level_id = new_level_id
 	squares = new_squares

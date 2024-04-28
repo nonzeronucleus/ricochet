@@ -6,3 +6,4 @@ res://main/board/board.gd
 res://main/game/game.gd
 res://main/board_container/board_container.gd
 res://main/level_mgr/level.gd
+res://main/level_select/level_select_screen.gd

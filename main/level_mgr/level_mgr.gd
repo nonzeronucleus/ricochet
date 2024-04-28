@@ -1,8 +1,8 @@
 class_name LevelMgr
 extends Node
 
-var current_level: Level : 
-	set = set_current_level
+#var current_level: Level : 
+#	set = set_current_level
 
 var level_dirname:String = "user://levels"
 var level_prefix = "Level-"
@@ -41,10 +41,8 @@ func _init():
 #			max_level = max(max_level, id) 
 #			level_names.append(level_name.trim_suffix(level_suffix))
 	
-	print(level_names)
-	
 	level_added.emit()
-	current_level = load_level(create_level_name(1))
+	#current_level = load_level(create_level_name(1))
 
 func create_level(dimensions:Vector2) -> Level:
 	var square_array = Array()
@@ -89,8 +87,8 @@ func get_level_filename(level_id:String) -> String:
 	return level_dirname+"//"+level_id+level_suffix
 
 
-func select_level(level_id):
-	current_level = load_level(level_id)
+#func select_level(level_id):
+#	current_level = load_level(level_id)
 	
 
 #func load_next_level():
@@ -119,7 +117,9 @@ func load_level(level_id:String) -> Level:
 		var edges = default_edge_rows
 		var target_pos = Vector2(edges[0].length()-1,edges.size()-1)
 		level = populate_level(level_id, edges, target_pos, Vector2(0,0))
-	set_current_level(level)
+#	set_current_level(level)
+	level_changed.emit(level)
+		
 	return level 
 
 
@@ -254,13 +254,15 @@ func save_v3(level_id: String, level_text:Array, target_pos:Vector2, start_pos:V
 	file.close()
 	
 
-func set_current_level(new_level:Level):
-	current_level = new_level
-	level_changed.emit(current_level)
+#func set_current_level(new_level:Level):
+#	current_level = new_level
+#	level_changed.emit(current_level)
 
 func new_level():
 	var new_level = create_level(Vector2(8,8))
 	save(new_level.level_id, new_level.squares, new_level.target_pos, new_level.start_pos)
+
+	level_changed.emit(new_level)
 	
 #	save(new_level)
-	set_current_level(new_level)
+#	set_current_level(new_level)

@@ -135,7 +135,7 @@ func load_all():
 
 func _on_save_button_pressed():
 #	var level = board.level
-	level_mgr.save(level_id, board.squares, board.target.pos, board.player_robot.pos)
+	level_mgr.save(level.level_id, board.squares, board.target.pos, board.player_robot.pos)
 #func save(level_id,squares,target_pos)
 	
 	

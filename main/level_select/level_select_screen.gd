@@ -60,5 +60,6 @@ func show_levels():
 			btn_pos.y += 1
 
 func on_button_pressed(text):
-	level_mgr.select_level(text)
+#	level_mgr.select_level(text)
+	level_mgr.load_level(text)
 	navigator.send_event("SelectLevel")
