@@ -34,13 +34,15 @@ func _init():
 		dir = DirAccess.open("levels")
 		dir.make_dir("levels")
 		dir = DirAccess.open(level_dirname)
-	for level_name in dir.get_files():
-		if level_name.left(level_prefix.length())==level_prefix:
-			var id_text = level_name.trim_prefix(level_prefix).trim_suffix(level_suffix)
-			var id = int(id_text)
-			max_level = max(max_level, id) 
-			level_names.append(level_name.trim_suffix(level_suffix))
-			
+#	for level_name in dir.get_files():
+#		if level_name.left(level_prefix.length())==level_prefix && level_name.right(level_suffix.length())==level_suffix:
+#			var id_text = level_name.trim_prefix(level_prefix).trim_suffix(level_suffix)
+#			var id = int(id_text)
+#			max_level = max(max_level, id) 
+#			level_names.append(level_name.trim_suffix(level_suffix))
+	
+	print(level_names)
+	
 	level_added.emit()
 	current_level = load_level(create_level_name(1))
 
@@ -60,7 +62,7 @@ func create_level(dimensions:Vector2) -> Level:
 	
 	max_level += 1
 
-	return Level.new(create_level_name(max_level), square_array, dimensions-Vector2(1,1))
+	return Level.new(create_level_name(max_level), square_array, dimensions-Vector2(1,1), Vector2(0,0))
 	
 	
 func create_level_name(id)->String:
@@ -75,7 +77,7 @@ func list_levels():
 		dir = DirAccess.open(level_dirname)
 		
 	for level_name in dir.get_files():
-		if level_name.left(level_prefix.length())==level_prefix:
+		if level_name.left(level_prefix.length())==level_prefix && level_name.right(level_suffix.length())==level_suffix:			
 			var id_text = level_name.trim_prefix(level_prefix).trim_suffix(level_suffix)
 			var id = int(id_text)
 			max_level = max(max_level, id) 
@@ -110,11 +112,14 @@ func load_level(level_id:String) -> Level:
 			match version:
 				2:
 					level = load_v2(file, level_id)
+				3:
+					level = load_v3(file, level_id)
 	if !level:
 		# Couldn't load. Get a default
 		var edges = default_edge_rows
 		var target_pos = Vector2(edges[0].length()-1,edges.size()-1)
-		level = populate_level(level_id, edges, target_pos)
+		level = populate_level(level_id, edges, target_pos, Vector2(0,0))
+	set_current_level(level)
 	return level 
 
 
@@ -126,10 +131,25 @@ func load_v2(file:FileAccess, level_id:String) -> Level:
 	if target_pos == null  or typeof(edges) != typeof(Vector2()):
 		target_pos = Vector2(edges[0].length()-1,edges.size()-1)
 	file.close()
-	return populate_level(level_id, edges, target_pos)
+	return populate_level(level_id, edges, target_pos, Vector2(0,0))
+	
+	
+func load_v3(file:FileAccess, level_id:String) -> Level:
+	var edges = file.get_var()
+	if edges == null or typeof(edges) != typeof(Array()):
+		return null
+	var target_pos = file.get_var()
+	if target_pos == null  or typeof(target_pos) != typeof(Vector2()):
+		target_pos = Vector2(edges[0].length()-1,edges.size()-1)
+	var start_pos = file.get_var()
+	if start_pos == null  or typeof(start_pos) != typeof(Vector2()):
+		start_pos = Vector2(0,0)
+	file.close()
+	return populate_level(level_id, edges, target_pos,start_pos)
 
 
-func populate_level(level_id, edges:Array, target_pos:Vector2) -> Level:
+
+func populate_level(level_id, edges:Array, target_pos:Vector2, start_pos) -> Level:
 	var square_array = Array()
 	var prev_row:Array
 	for y in edges.size():		
@@ -143,7 +163,7 @@ func populate_level(level_id, edges:Array, target_pos:Vector2) -> Level:
 		
 	populate_top_edge(prev_row, square_array[0])
 
-	return Level.new(level_id, square_array, target_pos)	
+	return Level.new(level_id, square_array, target_pos, start_pos)	
 
 
 func populate_top_edge(prev_row, square_row):
@@ -182,9 +202,11 @@ func create_empty_row(width, is_bottom, y) -> Array:
 	return square_row
 
 
-func save(level:Level):
+#func save(level:Level):
+func save(level_id,squares,target_pos, start_pos):
 	var level_text = []
-	for square_row in level.squares:
+#	for square_row in level.squares:
+	for square_row in squares:
 		var text = ""
 		for square in square_row:
 			if square.right.is_solid == true:
@@ -197,15 +219,40 @@ func save(level:Level):
 			else:
 				text += "."
 		level_text.append(text)
-	save_v2(level.level_id, level_text, level.target_pos)
+	#save_v2(level_id, level_text, target_pos) #TODO
+	save_v3(level_id, level_text, target_pos, start_pos) #TODO
 
 
+func backup_version(filename:String):
+	var dir = DirAccess.open(level_dirname)
+	
+	if dir.file_exists(filename):
+		var backup_name = filename + "." + Time.get_datetime_string_from_system()
+		var err = dir.copy(filename, backup_name)
+		print(err)
+		
+	
 func save_v2(level_id: String, level_text:Array, target_pos:Vector2):
-	var file = FileAccess.open(get_level_filename(level_id), FileAccess.WRITE)
+	var filename = get_level_filename(level_id)
+	
+	backup_version(filename)
+	
+	var file = FileAccess.open(filename, FileAccess.WRITE)
 	file.store_var(version_prefix + "2")
 	file.store_var(level_text)
 	file.store_var(target_pos)
 	file.close()
+	
+func save_v3(level_id: String, level_text:Array, target_pos:Vector2, start_pos:Vector2):
+	var filename = get_level_filename(level_id)
+	
+	var file = FileAccess.open(get_level_filename(level_id), FileAccess.WRITE)
+	file.store_var(version_prefix + "3")
+	file.store_var(level_text)
+	file.store_var(target_pos)
+	file.store_var(start_pos)
+	file.close()
+	
 
 func set_current_level(new_level:Level):
 	current_level = new_level
@@ -213,5 +260,7 @@ func set_current_level(new_level:Level):
 
 func new_level():
 	var new_level = create_level(Vector2(8,8))
-	save(new_level)
+	save(new_level.level_id, new_level.squares, new_level.target_pos, new_level.start_pos)
+	
+#	save(new_level)
 	set_current_level(new_level)

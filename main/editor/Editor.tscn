@@ -352,6 +352,7 @@ selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../icon_group")
 
 [node name="char_robot" parent="robot_icon_1" instance=ExtResource("2_76bb7")]
+z_index = 2
 position = Vector2(32, 32)
 scale = Vector2(0.0420116, 0.0420116)
 
@@ -367,6 +368,7 @@ selected_color = Color(0.772549, 0.0862745, 0.317647, 1)
 icon_group = NodePath("../icon_group")
 
 [node name="npc_robot" parent="npc_robot_icon" instance=ExtResource("2_76bb7")]
+z_index = 2
 position = Vector2(32, 32)
 scale = Vector2(0.0420116, 0.0420116)
 texture = ExtResource("9_5pfo7")

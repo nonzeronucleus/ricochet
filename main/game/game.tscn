@@ -128,6 +128,7 @@ enabled = false
 initial_node_to_watch = NodePath("../GameState")
 
 [node name="robot_template" parent="." instance=ExtResource("9_gof81")]
+z_index = 2
 position = Vector2(-112, 48)
 scale = Vector2(0.0524666, 0.0551649)
 npc_textures = Array[Texture2D]([ExtResource("10_3g4yh")])

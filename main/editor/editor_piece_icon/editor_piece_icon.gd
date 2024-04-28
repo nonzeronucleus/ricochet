@@ -11,13 +11,7 @@ var board
 		if not is_inside_tree():
 			await ready
 		$robot.texture = texture
-		print($robot.texture)
 		
 func apply(square):
-	var robot = RobotTemplate.instantiate()
-	robot.set_square_size(board.square_size)
-	board.add_robot(robot) #TODO
-	robot.set_instant_pos(square.pos)
-	
-	
-#	square.left.is_solid = left_enabled
+	var robot = board.player_robot
+	robot.set_init_pos(square.pos)

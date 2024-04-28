@@ -1,11 +1,10 @@
-extends Node2D
+extends BoardContainer
 
 @onready var left_check:CheckBox = $left_check
 @onready var right_check:CheckBox = $right_check
 @onready var top_check:CheckBox = $top_check
 @onready var bottom_check:CheckBox = $bottom_check
 @onready var target_check:CheckBox = $target_check
-@onready var board = $board
 @onready var level_combo = $level_combo
 @onready var confirmation_dialog = $Control/CenterContainer/confirmation_dialog
 @onready var char_robot_icon = $robot_icon_1/char_robot_icon
@@ -13,25 +12,8 @@ extends Node2D
 
 var icon_group:IconGroup
 
-#var current_level:Level
-
-var level_mgr:LevelMgr:
-	set = set_level_mgr
-var navigator:StateChart:
-	set = set_navigator
-	
-var next_level:Level
-
 var selected_square:SquareView
 var selected_level_listbox_id:int
-var player_robot:Robot
-#var start_pos = Vector2():
-#	set(new_pos):
-#		start_pos = new_start_pos
-#		if not is_inside_tree():
-#			await ready		
-#		player_robot.pos = new_pos
-		
 
 
 func _ready():
@@ -52,19 +34,20 @@ func _ready():
 	
 
 func set_level_mgr(new_level_mgr:LevelMgr):
-	level_mgr = new_level_mgr
-	board.level = level_mgr.current_level
+	super.set_level_mgr(new_level_mgr)
+#	level_mgr = new_level_mgr
+#	board.set_level(level_mgr.current_level)
 	for level_name in level_mgr.level_names:
 		level_combo.add_item(level_name)
-	level_mgr.level_changed.connect(_on_level_changed)
+#	level_mgr.level_changed.connect(_on_level_changed)
 
 
 func set_navigator(new_navigator:StateChart) -> void:
 	navigator = new_navigator
 
 
-func _on_level_changed(level):
-	board.set_level(level)	
+#func _on_level_changed(level):
+#	board.set_level(level)	
 
 
 func _on_board_setup_complete():
@@ -79,7 +62,9 @@ func switch_to_level_idx(idx):
 
 
 func on_confirm_yes_pressed(selected_idx):
-	level_mgr.save(board.level)
+	var level = board.level
+	level_mgr.save(level.level_id, level.squares, level.target_pos, board.player_robot.pos)
+#	level_mgr.save(board.level)
 	switch_to_level_idx(selected_idx)
 
 
@@ -90,7 +75,7 @@ func on_confirm_no_pressed(selected_idx):
 
 	
 func on_confirmation_cancelled(selected_idx):
-	next_level = board.level
+	#next_level = board.level
 	level_combo.select(selected_level_listbox_id)
 
 	
@@ -149,7 +134,12 @@ func load_all():
 
 
 func _on_save_button_pressed():
-	level_mgr.save(board.level)
+#	var level = board.level
+	level_mgr.save(level_id, board.squares, board.target.pos, board.player_robot.pos)
+#func save(level_id,squares,target_pos)
+	
+	
+#	level_mgr.save(board.level) #TODO
 
 
 func _on_load_button_pressed():

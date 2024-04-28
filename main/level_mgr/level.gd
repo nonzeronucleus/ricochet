@@ -5,16 +5,21 @@ extends Node
 var level_id:String
 var squares:Array
 var target_pos:Vector2 : set = set_target_pos
+var start_pos: Vector2 :
+	set(new_pos):
+		start_pos = new_pos
+		dirty = true
 var dirty:bool
 
 
-func _init(new_level_id:String,new_squares:Array, new_target_pos:Vector2):
+func _init(new_level_id:String,new_squares:Array, new_target_pos:Vector2, new_start_pos:Vector2):
 	level_id = new_level_id
 	squares = new_squares
 	for square_row:Array in squares:
 		for square:Square in square_row:
 			square.square_changed.connect(_on_square_chaged)
 	target_pos = new_target_pos
+	start_pos = new_start_pos
 	dirty = false
 	
 	

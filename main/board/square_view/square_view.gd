@@ -137,7 +137,6 @@ func set_as_target(_is_target):
 func _on_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.pressed:
-			print(event)
 			square_selected.emit(self)
 
 

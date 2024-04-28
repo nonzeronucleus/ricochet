@@ -12,8 +12,8 @@ var target = SquareView
 var square_size
 var square_views:MultiArray
 var squares:Array
-var level:Level:
-	set = set_level
+#var level:Level:
+#	set = set_level
 
 var player_robot:Robot
 
@@ -23,7 +23,7 @@ signal square_selected(square)
 signal setup_complete()
 
 func _init():
-	pass
+	visibility_changed.connect(_on_visibility_changed)
 
 
 func _ready():
@@ -34,6 +34,7 @@ func _ready():
 	player_robot = RobotTemplate.instantiate()
 	player_robot.set_square_size(square_size)
 	add_child(player_robot)
+	player_robot.set_screen_position()	
 	#board.add_player_robot(robot)
 	
 	add_all_squares()
@@ -41,9 +42,11 @@ func _ready():
 
 
 func set_level(new_level):
-	level = new_level
-	init_squares(level.squares)
-	set_target_pos(level.target_pos)
+#	level = new_level
+	init_squares(new_level.squares)
+	set_target_pos(new_level.target_pos)
+	player_robot.set_init_pos(new_level.start_pos)
+	
 
 
 func init_squares(new_squares:Array):	
@@ -68,7 +71,7 @@ func add_all_squares():
 			square_views.set_at(x,y,square_view)
 			mark_square_target(square_view)
 			square_view.square_selected.connect(_on_square_selected)
-			add_child(square_view) #TODO
+			add_child(square_view) 
 	set_target(square_views.at(0,0))
 	
 	
@@ -80,7 +83,7 @@ func add_all_lines():
 				square_views.at(x,y).init(Direction.Left, Vector2(x,y), true, square_size)
 				
 			if y == 0:
-				square_views.at(x,y).top.init(Vector2(x,y), true, square_size) # = top_line #TODO
+				square_views.at(x,y).top.init(Vector2(x,y), true, square_size) 
 				
 			var right_line = WallTemplate.instantiate()
 			right_line.init(Vector2(x+1,y), true, square_size)
@@ -99,7 +102,6 @@ func add_all_lines():
 #				square_views.at(x,y+1).top = bottom_line TODO
 			else:
 				bottom_line.width = 4
-			#add_child(bottom_line) TODO
 
 
 func _on_square_selected(selected_square):
@@ -163,3 +165,10 @@ func _draw():
 	draw_line(Vector2(0,0), Vector2(size.x,0), line_color, width)
 	draw_line(Vector2(0,size.y), Vector2(size.x,size.y), line_color, width)
 	draw_line(Vector2(size.x,0), Vector2(size.x,size.y), line_color, width)
+
+
+
+
+func _on_visibility_changed():
+	pass
+#	player_robot.set_screen_position()

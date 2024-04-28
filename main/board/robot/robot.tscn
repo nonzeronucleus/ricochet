@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://main/board/robot/robot.gd" id="2_7xaff"]
 
 [node name="robot" type="Sprite2D"]
+z_index = 2
 position = Vector2(81, 110)
 scale = Vector2(0.449219, 0.449219)
 texture = ExtResource("1_esdp2")

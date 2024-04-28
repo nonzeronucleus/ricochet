@@ -42,18 +42,17 @@ func set_square_size(_square_size):
 
 func set_init_pos(new_pos:Vector2):
 	pos = new_pos
-	_set_screen_position()
+	set_screen_position()
 	
 	
-func _set_screen_position():
+func set_screen_position():
 	position = square_size.screen_pos_centred(pos)
 
 
 func _set_instant_pos(new_pos:Vector2):
 	reset_size()
 	pos = new_pos
-	_set_screen_position()
-	print("Set instant pos"+str(position))
+	set_screen_position()
 	if moves.size()>0:
 		set_next_move()	
 	
@@ -68,7 +67,7 @@ func set_pos(new_pos:Vector2):
 		tween.set_ease(Tween.EASE_OUT)
 		tween.tween_property(self, "position", square_size.screen_pos_centred(pos), 0.1 * dif.length() )	
 		await(tween.finished)
-		set_next_move()		
+		set_next_move()
 
 
 func set_moves(new_moves:Array):
@@ -101,6 +100,6 @@ func shrink():
 func reset_size():
 	rotation = 0
 	scale = init_scale
-	_set_screen_position()
+	set_screen_position()
 	#set_init_pos(Vector2())
 		

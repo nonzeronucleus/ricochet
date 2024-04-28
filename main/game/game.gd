@@ -1,52 +1,32 @@
-extends Node2D
+extends BoardContainer
 
 @onready var left_check:CheckBox = $left_check
 @onready var right_check:CheckBox = $right_check
 @onready var top_check:CheckBox = $top_check
 @onready var bottom_check:CheckBox = $bottom_check
 @onready var target_check:CheckBox = $target_check
-@onready var board:Board = $board
-@onready var robot 
-#@onready var RobotTemplate = preload("res://main/board/robot/robot.tscn")
 
 var cmds = []
-
-var level_mgr:LevelMgr:
-	set = set_level_mgr
-
-var navigator:StateChart:
-	set = set_navigator
 
 
 var selected_square:SquareView
 
-
-func _ready():
-	robot = board.player_robot
-#	robot = RobotTemplate.instantiate()
-#	robot.set_square_size(board.square_size)
-#	board.add_player_robot(robot)
 	
-	reset()
-	
-func reset():
-	robot.reset_size()
-	robot.set_init_pos(Vector2(1,1))
-#	robot.position = Vector2()
+func _reset():
+	super._reset()
 	cmds = []
 	
-func set_level_mgr(new_level_mgr:LevelMgr) -> void:
-	level_mgr = new_level_mgr
-	board.level = level_mgr.current_level
-	level_mgr.level_changed.connect(_on_level_changed)
-
+#func set_level_mgr(new_level_mgr:LevelMgr) -> void:
+#	level_mgr = new_level_mgr
+#	board.set_level(level_mgr.current_level)
+#	level_mgr.level_changed.connect(_on_level_changed)
 
 func set_navigator(new_navigator:StateChart) -> void:
 	navigator = new_navigator
 
-func _on_level_changed(level):
-	board.set_level(level)	
-	reset()
+#func _on_level_changed(level):
+#	board.set_level(level)	
+#	_reset()
 
 
 
@@ -57,7 +37,7 @@ func _on_editor_button_pressed():
 
 
 func move(direction):
-	cmds.append(MoveRobotCmd.new($GameState,board, robot, direction))
+	cmds.append(MoveRobotCmd.new($GameState,board, board.player_robot, direction))
 
 func _on_ready_state_unhandled_input(event):
 	var direction = null
@@ -73,8 +53,8 @@ func _on_ready_state_unhandled_input(event):
 
 
 func _on_restart_button_pressed():
-	robot.reset_size()
-	reset()
+	board.player_robot.reset_size()
+	_reset()
 	$GameState.send_event("StartGame")	
 
 
@@ -100,7 +80,7 @@ func _on_game_over_state_entered():
 
 
 func _on_next_level_button_pressed():
-	cmds.append(NextLevelCmd.new(level_mgr, robot))
+	cmds.append(NextLevelCmd.new(level_mgr, board.player_robot))
 	$GameState.send_event("StartGame")
 
 func _on_game_over_state_processing(delta):
