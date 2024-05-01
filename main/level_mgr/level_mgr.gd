@@ -1,9 +1,6 @@
 class_name LevelMgr
 extends Node
 
-#var current_level: Level : 
-#	set = set_current_level
-
 var level_dirname:String = "user://levels"
 var level_prefix = "Level-"
 var level_suffix = ".eiffel65"
@@ -34,15 +31,8 @@ func _init():
 		dir = DirAccess.open("levels")
 		dir.make_dir("levels")
 		dir = DirAccess.open(level_dirname)
-#	for level_name in dir.get_files():
-#		if level_name.left(level_prefix.length())==level_prefix && level_name.right(level_suffix.length())==level_suffix:
-#			var id_text = level_name.trim_prefix(level_prefix).trim_suffix(level_suffix)
-#			var id = int(id_text)
-#			max_level = max(max_level, id) 
-#			level_names.append(level_name.trim_suffix(level_suffix))
 	
 	level_added.emit()
-	#current_level = load_level(create_level_name(1))
 
 func create_level(dimensions:Vector2) -> Level:
 	var square_array = Array()
@@ -86,15 +76,6 @@ func list_levels():
 func get_level_filename(level_id:String) -> String:
 	return level_dirname+"//"+level_id+level_suffix
 
-
-#func select_level(level_id):
-#	current_level = load_level(level_id)
-	
-
-#func load_next_level():
-#	var level_idx = level_names.find(current_level)
-	
-	
 
 func load_level_by_idx(idx:int) -> Level:
 	return load_level(level_names[idx])
@@ -254,9 +235,6 @@ func save_v3(level_id: String, level_text:Array, target_pos:Vector2, start_pos:V
 	file.close()
 	
 
-#func set_current_level(new_level:Level):
-#	current_level = new_level
-#	level_changed.emit(current_level)
 
 func new_level():
 	var new_level = create_level(Vector2(8,8))
@@ -264,5 +242,3 @@ func new_level():
 
 	level_changed.emit(new_level)
 	
-#	save(new_level)
-#	set_current_level(new_level)

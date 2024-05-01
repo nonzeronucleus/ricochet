@@ -1,13 +1,16 @@
 @tool
 class_name Robot
-extends Sprite2D
+extends AnimatedSprite2D
 
 var square_size:SquareSize:set = set_square_size
 var pos:Vector2
 var moves:Array
 var init_scale:Vector2
 
-@export var is_player:bool
+@export var is_player:bool:
+	set(val):
+		is_player = val
+		_set_animation()
 
 signal finished_moving(robot)
 signal finished_shrinking(robot)
@@ -20,24 +23,27 @@ var template:RobotTemplate
 func  _ready():
 	init_scale = scale
 	z_index = 2
+	_set_animation()
 	
-#	if is_player:
-#		texture = char_texture
-#	else:
-#		if npc_textures.size()>0:
-#			texture = npc_textures[0]
-#	robot_template = RobotTemplate.inst
 	
+func _set_animation():
+	if is_player:
+		animation = "player"
+	else:
+		animation = "npc"
 
 func set_square_size(_square_size):
 	square_size = _square_size
-	var texture_size = texture.get_size()
+	var texture_size = _get_texture_size()
 	var target_size = Vector2(square_size.length, square_size.length)
 	init_scale = target_size/texture_size
 	
 	scale = init_scale
 	
+func _get_texture_size() -> Vector2:
+	var frame = sprite_frames.get_frame_texture("player", 0)
 	
+	return frame.get_size()
 
 
 func set_init_pos(new_pos:Vector2):
@@ -101,5 +107,3 @@ func reset_size():
 	rotation = 0
 	scale = init_scale
 	set_screen_position()
-	#set_init_pos(Vector2())
-		

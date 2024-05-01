@@ -7,3 +7,11 @@ res://main/game/game.gd
 res://main/board_container/board_container.gd
 res://main/level_mgr/level.gd
 res://main/level_select/level_select_screen.gd
+res://main/board/square_view/square_view.gd
+res://main/editor/Editor.tscn
+res://main/themes/fonts/BigFont.tres
+res://main/themes/options_theme.tres
+res://main/board/robot/robot_sprite_frames.tres
+res://main/editor/editor_piece_icon/editor_piece_icon.gd
+res://main/editor/icon/icon.gd
+res://main/editor/icon/icon.tscn

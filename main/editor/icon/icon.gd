@@ -14,9 +14,8 @@ func _ready():
 	for child in get_children():
 		if child.has_signal("icon_selected"):
 			child.icon_selected.connect(on_icon_selected)
-#		for item in child.get_children():
-#			if item.has_signal("icon_selected"):
-#				item.icon_selected.connect(on_icon_selected)
+			
+			
 
 
 func on_selection_changed(new_selection:Node):
@@ -40,7 +39,9 @@ func select():
 		icon_group.selected = self
 		
 		
-func apply(square):
+func apply(board, square):
 	for child in get_children():
 		if child.has_method("apply"):
-			child.apply(square)
+			child.apply(board, square)
+
+

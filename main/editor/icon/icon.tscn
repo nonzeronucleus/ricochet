@@ -2,13 +2,12 @@
 
 [ext_resource type="Script" path="res://main/editor/icon/icon.gd" id="1_y33p3"]
 
-[node name="icon" type="ColorRect" node_paths=PackedStringArray("icon_group")]
+[node name="icon" type="ColorRect"]
 offset_left = 472.0
 offset_top = 808.0
 offset_right = 544.0
 offset_bottom = 880.0
 script = ExtResource("1_y33p3")
 selected_color = Color(0.627451, 0.333333, 0.564706, 1)
-icon_group = NodePath("")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

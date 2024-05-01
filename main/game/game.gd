@@ -16,24 +16,12 @@ func _reset():
 	super._reset()
 	cmds = []
 	
-#func set_level_mgr(new_level_mgr:LevelMgr) -> void:
-#	level_mgr = new_level_mgr
-#	board.set_level(level_mgr.current_level)
-#	level_mgr.level_changed.connect(_on_level_changed)
-
 func set_navigator(new_navigator:StateChart) -> void:
 	navigator = new_navigator
-
-#func _on_level_changed(level):
-#	board.set_level(level)	
-#	_reset()
-
 
 
 func _on_editor_button_pressed():
 	navigator.send_event("GoToEditor")		
-	#go_to_editor.emit()
-	
 
 
 func move(direction):

@@ -10,6 +10,7 @@ var start_pos: Vector2 :
 		start_pos = new_pos
 		dirty = true
 var dirty:bool
+var npc_pos:Array = []
 
 
 

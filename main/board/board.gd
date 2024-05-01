@@ -12,8 +12,6 @@ var target = SquareView
 var square_size
 var square_views:MultiArray
 var squares:Array
-#var level:Level:
-#	set = set_level
 
 var player_robot:Robot
 
@@ -33,16 +31,15 @@ func _ready():
 	square_views = MultiArray.new(grid_dimension)
 	player_robot = RobotTemplate.instantiate()
 	player_robot.set_square_size(square_size)
+	player_robot.is_player = true
 	add_child(player_robot)
 	player_robot.set_screen_position()	
-	#board.add_player_robot(robot)
 	
 	add_all_squares()
 	queue_redraw()
 
 
 func set_level(new_level):
-#	level = new_level
 	init_squares(new_level.squares)
 	set_target_pos(new_level.target_pos)
 	player_robot.set_init_pos(new_level.start_pos)
@@ -138,9 +135,7 @@ func mark_square_target(new_target_square):
 	
 func add_player_robot(new_robot):
 	player_robot = new_robot
-#	robot.on_finished_moving.connect(_on_robot_finished_moving)
 	add_child(player_robot)
-#	robot.set_init_pos(Vector2())
 	
 	
 func is_wall_open(pos, direction) -> bool:
@@ -158,7 +153,6 @@ func is_wall_open(pos, direction) -> bool:
 	return false
 	
 func _draw():
-#	var size = get_size() #TDOD
 	var line_color = Color.BLACK
 	var width = 4.0
 	draw_line(Vector2(0,0), Vector2(0,size.y), line_color, width)

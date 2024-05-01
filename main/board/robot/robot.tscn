@@ -1,12 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://yropy8d5rwmf"]
 
-[ext_resource type="Texture2D" uid="uid://ckcdpxoj84gkf" path="res://main/board/robot/red-rook.png" id="1_esdp2"]
+[ext_resource type="SpriteFrames" uid="uid://dx5qg55b0hqgf" path="res://main/board/robot/robot_sprite_frames.tres" id="1_f6jdm"]
 [ext_resource type="Script" path="res://main/board/robot/robot.gd" id="2_7xaff"]
 
-[node name="robot" type="Sprite2D"]
+[node name="robot" type="AnimatedSprite2D"]
 z_index = 2
 position = Vector2(81, 110)
 scale = Vector2(0.449219, 0.449219)
-texture = ExtResource("1_esdp2")
+sprite_frames = ExtResource("1_f6jdm")
+animation = &"npc"
 script = ExtResource("2_7xaff")
-char_texture = ExtResource("1_esdp2")

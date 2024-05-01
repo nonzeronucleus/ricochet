@@ -8,7 +8,7 @@ extends BoardContainer
 @onready var level_combo = $level_combo
 @onready var confirmation_dialog = $Control/CenterContainer/confirmation_dialog
 @onready var char_robot_icon = $robot_icon_1/char_robot_icon
-@onready var npc_robot_icon = $npc_robot_icon
+@onready var npc_robot_icon = $robot_icon_2/npc_robot_icon
 
 var icon_group:IconGroup
 
@@ -25,29 +25,18 @@ func _ready():
 	confirmation_dialog.cancel_pressed.connect(on_confirmation_cancelled)
 	selected_level_listbox_id = 0
 	icon_group = $icon_group
-	char_robot_icon.board = board
-#	set_start_pos()
+	
+#	char_robot_icon.board = board
 #	npc_robot_icon.board = board
-
-#func set_start_pos(new_start_pos:Vector2):
-	
-	
 
 func set_level_mgr(new_level_mgr:LevelMgr):
 	super.set_level_mgr(new_level_mgr)
-#	level_mgr = new_level_mgr
-#	board.set_level(level_mgr.current_level)
 	for level_name in level_mgr.level_names:
 		level_combo.add_item(level_name)
-#	level_mgr.level_changed.connect(_on_level_changed)
 
 
 func set_navigator(new_navigator:StateChart) -> void:
 	navigator = new_navigator
-
-
-#func _on_level_changed(level):
-#	board.set_level(level)	
 
 
 func _on_board_setup_complete():
@@ -75,7 +64,6 @@ func on_confirm_no_pressed(selected_idx):
 
 	
 func on_confirmation_cancelled(selected_idx):
-	#next_level = board.level
 	level_combo.select(selected_level_listbox_id)
 
 	
@@ -85,9 +73,8 @@ func _on_square_selected(_square):
 	if icon_group:
 		var icon = icon_group.selected
 		
-		
 		if icon:
-			icon.apply(_square)
+			icon.apply(board, _square)
 	
 	left_check.button_pressed = _square.left.is_solid
 	right_check.button_pressed = _square.right.is_solid
@@ -134,12 +121,7 @@ func load_all():
 
 
 func _on_save_button_pressed():
-#	var level = board.level
 	level_mgr.save(level.level_id, board.squares, board.target.pos, board.player_robot.pos)
-#func save(level_id,squares,target_pos)
-	
-	
-#	level_mgr.save(board.level) #TODO
 
 
 func _on_load_button_pressed():
@@ -161,12 +143,7 @@ func _on_level_combo_item_selected(index):
 	else:
 		switch_to_level_idx(index)
 
-#	selected_level_listbox_id = level_combo.get_selected_id()
-	
-	
-#	var level_name = level_combo.get_item_text(index)
-#	level_mgr.select_level(level_name)
-
-
 func _on_back_button_pressed():
 	navigator.send_event("Back")
+
+

@@ -3,7 +3,8 @@ class_name EditorPieceIcon
 extends EditorIcon
 
 @onready var RobotTemplate = preload("res://main/board/robot/robot.tscn")
-var board
+@onready var robot = $robot
+
 
 @export var texture:Texture2D:
 	set(val):
@@ -12,6 +13,7 @@ var board
 			await ready
 		$robot.texture = texture
 		
-func apply(square):
-	var robot = board.player_robot
-	robot.set_init_pos(square.pos)
+func apply(board, square):
+	if robot.is_player:
+		var board_robot = board.player_robot
+		board_robot.set_init_pos(square.pos)

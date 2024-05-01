@@ -140,8 +140,6 @@ func _on_gui_input(event):
 			square_selected.emit(self)
 
 
-
-
 func set_selected(_selected):
 	left.select(_selected)
 	right.select(_selected)
