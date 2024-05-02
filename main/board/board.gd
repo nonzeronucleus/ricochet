@@ -14,14 +14,12 @@ var square_views:MultiArray
 var squares:Array
 
 var player_robot:Robot
+var npc_robots:Array = []
 
 var level_mgr
 
 signal square_selected(square)
 signal setup_complete()
-
-func _init():
-	visibility_changed.connect(_on_visibility_changed)
 
 
 func _ready():
@@ -161,8 +159,29 @@ func _draw():
 	draw_line(Vector2(size.x,0), Vector2(size.x,size.y), line_color, width)
 
 
+func toggle_npc_robot(pos:Vector2):
+	if (pos == player_robot.pos):
+		return
+	for npc in npc_robots:
+		if (pos == npc.pos):
+			#if there's already an npc there, reomove it
+			_remove_npc_robot(npc)
+			return
+	#If no robot found at square, add it
+	_add_npc_robot(pos)
+	
+func _remove_npc_robot(npc:Robot):
+	npc_robots.erase(npc)
+	remove_child(npc)
 
-
-func _on_visibility_changed():
-	pass
-#	player_robot.set_screen_position()
+func _add_npc_robot(pos:Vector2):
+	var npc = RobotTemplate.instantiate()
+	npc.set_square_size(square_size)
+	npc.is_player = false
+	npc.set_init_pos(pos)
+	npc_robots.append(npc)
+	add_child(npc)
+	npc.set_screen_position()
+			
+		
+#	print(squares[pos.x][pos.y])

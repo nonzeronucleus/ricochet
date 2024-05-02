@@ -17,3 +17,6 @@ func apply(board, square):
 	if robot.is_player:
 		var board_robot = board.player_robot
 		board_robot.set_init_pos(square.pos)
+	else:
+#		print(square.pos)
+		board.toggle_npc_robot(square.pos)
