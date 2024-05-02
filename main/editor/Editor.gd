@@ -52,7 +52,7 @@ func switch_to_level_idx(idx):
 
 func on_confirm_yes_pressed(selected_idx):
 	var level = board.level
-	level_mgr.save(level.level_id, level.squares, level.target_pos, board.player_robot.pos)
+	level_mgr.save(level.level_id, level.squares, level.target_pos, board.player_robot, board.npc_robots)
 #	level_mgr.save(board.level)
 	switch_to_level_idx(selected_idx)
 
@@ -121,7 +121,7 @@ func load_all():
 
 
 func _on_save_button_pressed():
-	level_mgr.save(level.level_id, board.squares, board.target.pos, board.player_robot.pos)
+	level_mgr.save(level.level_id, board.squares, board.target.pos, board.player_robot, board.npc_robots)
 
 
 func _on_load_button_pressed():

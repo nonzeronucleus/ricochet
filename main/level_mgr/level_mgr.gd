@@ -184,7 +184,7 @@ func create_empty_row(width, is_bottom, y) -> Array:
 
 
 #func save(level:Level):
-func save(level_id,squares,target_pos, start_pos):
+func save(level_id,squares:Array,target_pos:Vector2, player_robot:Robot, npc_robots:Array):
 	var level_text = []
 #	for square_row in level.squares:
 	for square_row in squares:
@@ -200,8 +200,13 @@ func save(level_id,squares,target_pos, start_pos):
 			else:
 				text += "."
 		level_text.append(text)
-	#save_v2(level_id, level_text, target_pos) #TODO
-	save_v3(level_id, level_text, target_pos, start_pos) #TODO
+	#save_v3(level_id, level_text, target_pos, start_pos) #TODO
+	
+	var npc_pos_array = []
+	for npc in npc_robots:
+		npc_pos_array.append(npc.pos)
+	
+	save_v4(level_id, level_text, target_pos, player_robot.pos, npc_pos_array) #TODO
 
 
 func backup_version(filename:String):
@@ -235,10 +240,23 @@ func save_v3(level_id: String, level_text:Array, target_pos:Vector2, start_pos:V
 	file.close()
 	
 
+func save_v4(level_id: String, level_text:Array, target_pos:Vector2, start_pos:Vector2, npc_pos_array:Array):
+	for pos in npc_pos_array:
+		print(pos)
+#	var filename = get_level_filename(level_id)
+	
+#	var file = FileAccess.open(get_level_filename(level_id), FileAccess.WRITE)
+#	file.store_var(version_prefix + "4")
+#	file.store_var(level_text)
+#	file.store_var(target_pos)
+#	file.store_var(start_pos)
+#	file.close()
+
+
 
 func new_level():
 	var new_level = create_level(Vector2(8,8))
-	save(new_level.level_id, new_level.squares, new_level.target_pos, new_level.start_pos)
+#	save(new_level.level_id, new_level.squares, new_level.target_pos, new_level.start_pos, [])
 
 	level_changed.emit(new_level)
 	
