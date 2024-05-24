@@ -12,12 +12,12 @@ extends MarginContainer
 		if not is_inside_tree():
 			await ready
 		label.text = text
-		
+var level_idx : int
 
 var original_size := scale
 var grow_size := Vector2(1.1, 1.1)
 
-signal button_pressed(text)
+signal button_pressed(level_idx)
 
 func get_actual_size():
 	var size = $TextureButton.texture_normal.get_size()
@@ -62,4 +62,4 @@ func _on_texture_button_toggled(toggled_on):
 
 
 func _on_texture_button_pressed():
-	button_pressed.emit(text)
+	button_pressed.emit(level_idx)

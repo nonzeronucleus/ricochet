@@ -11,10 +11,16 @@ var pos
 
 signal square_changed(square)
 
+#enum Walls {NODE=1, BOTTOM=2, RIGHT=3, BOTH=4}
 
-func _init(edge_defn:String, new_pos:Vector2):
-	right = Line.new(edge_defn == 'J' or edge_defn == '|')
-	bottom = Line.new(edge_defn == 'J' or edge_defn =='_')
+
+func _init(edge_defn:String, new_pos:Vector2, json=false):
+	if json:
+		right = Line.new(edge_defn == '6' or edge_defn == '5')
+		bottom = Line.new(edge_defn == '6' or edge_defn =='2')
+	else:
+		right = Line.new(edge_defn == 'J' or edge_defn == '|')
+		bottom = Line.new(edge_defn == 'J' or edge_defn =='_')
 	
 	right.line_changed.connect(_on_line_changed)
 	bottom.line_changed.connect(_on_line_changed)

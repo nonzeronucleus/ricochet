@@ -1,7 +1,9 @@
-[gd_resource type="SpriteFrames" load_steps=3 format=3 uid="uid://dx5qg55b0hqgf"]
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://dx5qg55b0hqgf"]
 
 [ext_resource type="Texture2D" uid="uid://ckcdpxoj84gkf" path="res://main/board/robot/red-rook.png" id="1_b8n1t"]
 [ext_resource type="Texture2D" uid="uid://csuocyxp4eapi" path="res://main/board/robot/blue-rook.png" id="1_kttsj"]
+[ext_resource type="Texture2D" uid="uid://dswapfsb7oxsl" path="res://main/board/robot/blue-rook-selected.png" id="2_qvmut"]
+[ext_resource type="Texture2D" uid="uid://bcqfiyrhlmpys" path="res://main/board/robot/red-rook-selected.png" id="4_veyif"]
 
 [resource]
 animations = [{
@@ -15,9 +17,25 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("2_qvmut")
+}],
+"loop": true,
+"name": &"npc-selected",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("1_b8n1t")
 }],
 "loop": true,
 "name": &"player",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_veyif")
+}],
+"loop": true,
+"name": &"player-selected",
 "speed": 5.0
 }]

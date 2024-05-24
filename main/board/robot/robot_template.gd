@@ -1,15 +1,15 @@
-@tool
-class_name  RobotTemplate
+#@tool
+#class_name  RobotTemplate
 
-extends Node
+#extends Node
 
-@export var player_texture:Texture2D
-@export var npctexture:Texture2D
+#@export var player_texture:Texture2D
+#@export var npctexture:Texture2D
 
-static var inst:RobotTemplate:
-	set(val):
-		inst = val
-	get:
-		if !inst:
-			inst = RobotTemplate.new()
-		return inst
+#static var inst:RobotTemplate:
+#	set(val):
+#		inst = val
+#		if !inst:
+##	get:
+#			inst = RobotTemplate.new()
+#		return inst

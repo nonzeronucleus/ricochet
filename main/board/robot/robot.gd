@@ -12,33 +12,58 @@ var init_scale:Vector2
 		is_player = val
 		_set_animation()
 
+@export var is_selected:bool:
+	set(val):
+		is_selected = val
+		_set_animation()
+
+
 signal finished_moving(robot)
 signal finished_shrinking(robot)
 @export var char_texture:Texture2D
 @export var npc_textures : Array[Texture2D]
 
-var template:RobotTemplate
+#var template:RobotTemplate
 
 
 func  _ready():
-	init_scale = scale
 	z_index = 2
 	_set_animation()
 	
 	
 func _set_animation():
+	var animation_name = ""
 	if is_player:
-		animation = "player"
+		animation_name = "player"
 	else:
-		animation = "npc"
+		animation_name = "npc"
+	if is_selected:
+		animation_name += "-selected"
+		
+	animation = animation_name
 
 func set_square_size(_square_size):
 	square_size = _square_size
+#	var texture_size = _get_texture_size()
+#	var target_size = Vector2(square_size.length, square_size.length)
+#	init_scale = target_size/texture_size
+		
+	square_size.size_changed.connect(_on_square_size_changed)
+	_on_square_size_changed()
+	
+
+func _on_square_size_changed():
 	var texture_size = _get_texture_size()
-	var target_size = Vector2(square_size.length, square_size.length)
-	init_scale = target_size/texture_size
+	#var target_size = Vector2(square_size.length, square_size.length)
+	init_scale = square_size.calc_scale(texture_size)
+	
+	#target_size/texture_size
+
+	#scale = 
 	
 	scale = init_scale
+	set_screen_position()
+	
 	
 func _get_texture_size() -> Vector2:
 	var frame = sprite_frames.get_frame_texture("player", 0)
@@ -52,8 +77,12 @@ func set_init_pos(new_pos:Vector2):
 	
 	
 func set_screen_position():
+	if !square_size:
+		return
+#	scale = Vector2(0.15,0.15)
 	position = square_size.screen_pos_centred(pos)
 
+#	print(str(pos)+":"+str(position)+","+str(scale))
 
 func _set_instant_pos(new_pos:Vector2):
 	reset_size()

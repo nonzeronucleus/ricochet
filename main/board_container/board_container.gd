@@ -8,8 +8,8 @@ var level:Level
 var level_mgr:LevelMgr:
 	set = set_level_mgr
 
-var navigator:StateChart:
-	set = set_navigator
+#var navigator:StateChart:
+#	set = set_navigator
 
 
 func _ready():
@@ -17,15 +17,15 @@ func _ready():
 	
 func _reset():
 	if level:
-		board.player_robot.set_init_pos(level.start_pos)
+		board.get_player_robot().set_init_pos(level.start_pos)
 	
 func set_level_mgr(new_level_mgr:LevelMgr) -> void:
 	level_mgr = new_level_mgr
 	level_mgr.level_changed.connect(_on_level_changed)
 
 
-func set_navigator(new_navigator:StateChart) -> void:
-	navigator = new_navigator
+#func set_navigator(new_navigator:StateChart) -> void:
+#	navigator = new_navigator
 
 func _on_level_changed(new_level):
 	level = new_level

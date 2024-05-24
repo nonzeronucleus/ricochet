@@ -22,21 +22,23 @@ var debug = false
 
 signal square_selected(square)
 
-func _ready():
+func _ready(): 
 	top = create_line(true)
 	left = create_line(false)
 	right = create_line(false)
 	bottom = create_line(true)
-	for _i in range(3):
-		var border = Line2D.new()
-		border_lines.append(border)
-		add_child(border)
+#	for _i in range(3):
+#		var border = Line2D.new()
+#		border_lines.append(border)
+#		add_child(border)
 	
 	if !is_editor_square:
 		gui_input.connect(_on_gui_input)
+		
+#	scale = Vector2(0.05,0.05)
 	
-	if !square_size:
-		square_size = SquareSize.new(size.x)
+#	if !square_size:
+#		square_size = SquareSize.new(size.x)
 	
 	if top:
 		top.set_pos(Vector2(0,0))
@@ -77,9 +79,11 @@ func init(init_square:Square):
 		bottom.init_with_line(square.bottom)
 
 
-func set_square_size(_square_size):
+func set_square_size(_square_size:SquareSize):
 	queue_redraw()
 	square_size = _square_size
+	if !square_size:
+		return
 	if not is_inside_tree():
 		await ready
 	
@@ -92,20 +96,28 @@ func set_square_size(_square_size):
 	if bottom:
 		bottom.set_square_size(_square_size)
 	square_size.size_changed.connect(_on_size_changed)
-	_on_size_changed(square_size.length)
+	_on_size_changed()
 
 
 
-
-func _on_size_changed(new_length):
-	set_size(Vector2(new_length, new_length))
+func _on_size_changed():
 	if not is_inside_tree():
 		await ready
+	square_size.set_node_size(self)
+	
+	#square_size.calc_scale(get_size())
+#	size = Vector2(1,1)
+	#set_size(Vector2(41,41))
+	set_screen_pos()
 	queue_redraw()
 
 func set_pos(_pos:Vector2):
 	pos = _pos
-	set_position(square_size.screen_pos(pos))
+	set_screen_pos()
+	
+func set_screen_pos():
+	if square_size:
+		set_position(square_size.screen_pos(pos))
 
 
 func set_left(_left):
@@ -138,6 +150,27 @@ func _on_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.pressed:
 			square_selected.emit(self)
+			
+			debug_click()
+				
+func debug_click():
+	return
+	color = Color.BEIGE
+#	print(scale)
+#	print(get_size())
+#	if top:
+#		print(top.scale)
+#		print(top.get_size())
+#	if left:
+#		print(left.scale)
+#		print(left.get_size())
+#	if right:
+#		print(right.scale)
+#		print(right.get_size())
+#	if bottom:
+#		print(bottom.scale)
+##		print(bottom.get_size())
+
 
 
 func set_selected(_selected):
@@ -150,8 +183,9 @@ func set_selected(_selected):
 
 func _draw():
 	var size = get_size()
-	draw_line(Vector2(0,0), Vector2(0,size.y), Color.BLACK)
-	draw_line(Vector2(0,0), Vector2(size.x,0), Color.BLACK)
-	draw_line(Vector2(0,size.y), Vector2(size.x,size.y), Color.BLACK)
-	draw_line(Vector2(size.x,0), Vector2(size.x,size.y), Color.BLACK)
+	var color = Color.DIM_GRAY
+	draw_line(Vector2(0,0), Vector2(0,size.y), color)
+	draw_line(Vector2(0,0), Vector2(size.x,0), color)
+	draw_line(Vector2(0,size.y), Vector2(size.x,size.y), color)
+	draw_line(Vector2(size.x,0), Vector2(size.x,size.y), color)
 

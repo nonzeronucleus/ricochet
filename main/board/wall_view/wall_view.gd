@@ -4,7 +4,7 @@ class_name WallView
 extends Node2D
 
 @export var is_horizontal:bool = true:set = set_horizontal
-var square_size:SquareSize = SquareSize.new(0):set = set_square_size
+var square_size:SquareSize :set = set_square_size
 var pos:Vector2 = Vector2(0,0) : set = set_pos
 
 var width:int
@@ -21,7 +21,6 @@ func _ready():
 	width = 1
 	select(false)
 	
-
 
 
 func _on_line_changed(line):
@@ -86,11 +85,17 @@ func set_pos(_pos):
 	
 func set_square_size(new_square_size):
 	square_size = new_square_size
+	if !square_size:
+		return
 	square_size.size_changed.connect(on_square_size_changed)
-	on_square_size_changed(square_size.length)
+	refresh_view()
+	on_square_size_changed()
 	
 
-func on_square_size_changed(length):
+func on_square_size_changed():
+#	if square_size._length<500:
+#		print(square_size._length)
+	
 	refresh_view()
 	
 
@@ -98,11 +103,35 @@ func set_horizontal(new_is_horizontal:bool):
 	is_horizontal = new_is_horizontal
 	refresh_view()
 	
+	
 func refresh_view():
-	var length = square_size.length
+	if !square_size:
+		return
+	
+	var length = square_size._length
 	var texture_size = Vector2(448,64) #texture.get_size()
 	var temp_scale = (length)/texture_size.x
 	scale = Vector2(temp_scale,temp_scale)
+	
+	if is_horizontal:
+		rotation = 0
+		position.x = length/2 if pos.x == 0 else length * 1.5
+		position.y = 0 if pos.y == 0 else length
+	else:
+		rotation = PI/2
+		position.x = 0 if pos.x == 0 else length
+		position.y = length/2 if pos.y == 0 else length * 1.5
+
+
+func refresh_view2():
+	if !square_size:
+		return
+	var length = square_size._length # TODO - figure out how to replace this
+	var texture_size = Vector2(448,64) #texture.get_size()
+#	var temp_scale = (length)/texture_size.x
+	
+	#scale = Vector2(temp_scale,temp_scale)
+	scale = square_size.calc_scale(texture_size)
 	if is_horizontal:
 		rotation = 0
 		position.x = length/2 if pos.x == 0 else length * 1.5

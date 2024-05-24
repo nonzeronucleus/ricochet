@@ -6,41 +6,65 @@ extends ColorRect
 @onready var WallTemplate = preload("res://main/board/wall_view/wall_view.tscn")
 @onready var RobotTemplate = preload("res://main/board/robot/robot.tscn")
 
-var grid_dimension = Vector2(8,8)
+var grid_dimension = Vector2(1,1)
 var target = SquareView
 
 var square_size
 var square_views:MultiArray
 var squares:Array
 
-var player_robot:Robot
-var npc_robots:Array = []
+var all_robots:Array = []
 
-var level_mgr
+func get_selected_robot() -> Robot:
+	return all_robots.filter(func(robot): return robot.is_selected)[0]
+
+
+func get_player_robot() -> Robot:
+	return all_robots.filter(func(robot): return robot.is_player)[0]
+
+
+func get_npc_robots() -> Array:
+	return all_robots.filter(func(robot): return !robot.is_player)
+
+
 
 signal square_selected(square)
 signal setup_complete()
 
 
 func _ready():
+	var player_robot = RobotTemplate.instantiate()
+	player_robot.is_player = true
+	player_robot.set_screen_position()	
+	square_size = SquareSize.new(calc_square_size())
+	player_robot.set_square_size(square_size)	
+	square_size.size_changed.connect(_on_square_size_changed)
+	player_robot.is_selected = true
+	all_robots.append(player_robot)
+	
+func _on_square_size_changed(_length):
+	pass
+
+func calc_square_size():
 	var board_size = get_size()
 	
-	square_size = SquareSize.new(board_size.x / grid_dimension.x)
-	square_views = MultiArray.new(grid_dimension)
-	player_robot = RobotTemplate.instantiate()
-	player_robot.set_square_size(square_size)
-	player_robot.is_player = true
-	add_child(player_robot)
-	player_robot.set_screen_position()	
-	
-	add_all_squares()
+	return (board_size.x / grid_dimension.x)
+
+func resize_squares():
+	square_size.set_length(calc_square_size())
 	queue_redraw()
 
 
-func set_level(new_level):
+func set_level(new_level:Level):
+	remove_all_squares()
+	grid_dimension = new_level.get_size()
+	square_views = MultiArray.new(new_level.get_size())
+	add_all_squares()
 	init_squares(new_level.squares)
 	set_target_pos(new_level.target_pos)
-	player_robot.set_init_pos(new_level.start_pos)
+	get_player_robot().set_init_pos(new_level.start_pos)
+	add_npcs(new_level.npcs_pos)
+	resize_squares()
 	
 
 
@@ -52,15 +76,36 @@ func init_squares(new_squares:Array):
 			if square_view:
 				square_view.init(row[x])
 	squares = new_squares
+	
+func add_npcs(npcs_pos:Array):
+	for pos in npcs_pos:
+		var npc:Robot = RobotTemplate.instantiate()
+		npc.pos = pos
+		npc.square_size = square_size
+		add_child(npc)
+		all_robots.append(npc)
+		npc.set_screen_position()
 
+
+func remove_all_squares():
+	if !square_views:
+		return
+	for x in range(square_views.dimensions.x):
+		for y in range(square_views.dimensions.y):
+			square_views.at(x,y).queue_free()
+			square_views.set_at(x,y,null)
+	
+	for robot:Robot in all_robots:
+		if !robot.is_player:
+			all_robots.erase(robot)
+			remove_child(robot)
+			robot.queue_free()
 
 	
 func add_all_squares():
-	#Add all squares
 	for x in grid_dimension.x:
 		for y in grid_dimension.y:
 			var square_view = SquareTemplate.instantiate()
-#			square_view.init()
 			square_view.square_size = square_size
 			square_view.pos = Vector2(x,y)
 			square_views.set_at(x,y,square_view)
@@ -68,44 +113,21 @@ func add_all_squares():
 			square_view.square_selected.connect(_on_square_selected)
 			add_child(square_view) 
 	set_target(square_views.at(0,0))
+	add_child(get_player_robot())
 	
+
+
+func _on_square_selected(selected_square:SquareView):
+	for robot in all_robots:
+		if robot.pos == selected_square.pos:
+			select_robot(selected_square.pos)
+	return
 	
-func add_all_lines():
-	#Add all lines
-	for x in grid_dimension.x:
-		for y in grid_dimension.y:
-			if x == 0:
-				square_views.at(x,y).init(Direction.Left, Vector2(x,y), true, square_size)
-				
-			if y == 0:
-				square_views.at(x,y).top.init(Vector2(x,y), true, square_size) 
-				
-			var right_line = WallTemplate.instantiate()
-			right_line.init(Vector2(x+1,y), true, square_size)
-			square_views.at(x,y).right = right_line
-			if x<grid_dimension.x-1:
-				square_views.at(x+1,y).left = right_line
-			else:
-				right_line.width = 4
-			add_child(right_line)
 
-			var bottom_line = WallTemplate.instantiate()
-			bottom_line.init(Vector2(x,y+1), false, square_size)
-			square_views.at(x,y).bottom = bottom_line
-			if y<grid_dimension.y-1:
-				pass
-#				square_views.at(x,y+1).top = bottom_line TODO
-			else:
-				bottom_line.width = 4
-
-
-func _on_square_selected(selected_square):
-	for x in grid_dimension.x:
-		for y in grid_dimension.y:
-			square_views.at(x,y).set_selected(false)
-		
-	selected_square.set_selected(true)
-	square_selected.emit(selected_square)
+func select_robot(pos:Vector2):
+	for robot in all_robots:
+		robot.is_selected = (robot.pos == pos)
+	return
 
 
 func set_target_pos(target_pos:Vector2):
@@ -130,14 +152,22 @@ func mark_square_target(new_target_square):
 		new_target_square.set_as_target(false)
 
 				
+		
+func is_square_open(current_robot, pos) -> bool:
 	
-func add_player_robot(new_robot):
-	player_robot = new_robot
-	add_child(player_robot)
+	for robot in all_robots:
+		if robot.pos == pos && robot!=current_robot:
+			return false
+	return true
+
 	
-	
-func is_wall_open(pos, direction) -> bool:
+func is_wall_open(current_robot, pos, direction) -> bool:
 	var square = square_views.at(pos.x, pos.y)
+	var next_pos = pos + direction
+	
+	if !is_square_open(current_robot, next_pos):
+		return false
+	
 	match(direction):
 		Direction.Up:
 			return !square.top.is_solid
@@ -147,7 +177,7 @@ func is_wall_open(pos, direction) -> bool:
 			return !square.left.is_solid
 		Direction.Right:
 			return !square.right.is_solid
-			
+	
 	return false
 	
 func _draw():
@@ -159,29 +189,11 @@ func _draw():
 	draw_line(Vector2(size.x,0), Vector2(size.x,size.y), line_color, width)
 
 
-func toggle_npc_robot(pos:Vector2):
-	if (pos == player_robot.pos):
-		return
-	for npc in npc_robots:
-		if (pos == npc.pos):
-			#if there's already an npc there, reomove it
-			_remove_npc_robot(npc)
-			return
-	#If no robot found at square, add it
-	_add_npc_robot(pos)
-	
-func _remove_npc_robot(npc:Robot):
-	npc_robots.erase(npc)
-	remove_child(npc)
-
 func _add_npc_robot(pos:Vector2):
 	var npc = RobotTemplate.instantiate()
 	npc.set_square_size(square_size)
 	npc.is_player = false
 	npc.set_init_pos(pos)
-	npc_robots.append(npc)
+	all_robots.append(npc)
 	add_child(npc)
 	npc.set_screen_position()
-			
-		
-#	print(squares[pos.x][pos.y])

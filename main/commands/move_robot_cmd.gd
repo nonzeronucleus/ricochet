@@ -13,7 +13,8 @@ func _init(new_game_state:StateChart, new_board:Board, new_robot:Robot, new_dire
 	direction = new_direction
 	
 func execute():
-	game_state.send_event("StartMoving")
+	if game_state:
+		game_state.send_event("StartMoving")
 	robot.finished_moving.connect(on_robot_finished_moving)	
 	var moves = get_moves(board, robot.pos, direction)
 	robot.set_moves(moves)
@@ -24,7 +25,7 @@ func get_moves(board, init_pos, direction) -> Array:
 	var end_pos = init_pos
 	var looped_round = false
 	
-	while(board.is_wall_open(end_pos,direction) && !looped_round):
+	while(board.is_wall_open(robot, end_pos,direction) && !looped_round):
 		end_pos += direction
 		
 		#check for whether needs to loop round
@@ -54,12 +55,14 @@ func get_moves(board, init_pos, direction) -> Array:
 	return moves
 
 func on_robot_finished_moving(robot):
-	if robot.pos == board.target.pos:
+	if robot.is_player && robot.pos == board.target.pos:
 		robot.finished_shrinking.connect(on_robot_finished_shrinking)	
 		robot.shrink()
 	else:
-		game_state.send_event("StopMoving")
+		if game_state:
+			game_state.send_event("StopMoving")
 
 func on_robot_finished_shrinking(robot):
-	game_state.send_event("StopMoving")
-	game_state.send_event("EndGame")
+	if game_state:
+		game_state.send_event("StopMoving")
+		game_state.send_event("EndGame")

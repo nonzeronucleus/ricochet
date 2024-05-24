@@ -1,12 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dplhc2omtxcv5"]
+[gd_scene load_steps=4 format=3 uid="uid://dplhc2omtxcv5"]
 
 [ext_resource type="Script" path="res://main/SceneLoader.gd" id="1_tm3ty"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_27po4"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_jr0s5"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_g4ltl"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="5_soj53"]
 [ext_resource type="PackedScene" uid="uid://tqpt66wvsbue" path="res://main/game/game.tscn" id="6_be85a"]
-[ext_resource type="PackedScene" uid="uid://bsw2hh0316i2e" path="res://main/editor/Editor.tscn" id="7_ivwpe"]
 [ext_resource type="PackedScene" uid="uid://fgjiug7y3hmg" path="res://main/level_select/level_select.tscn" id="8_iyllb"]
 
 [node name="SceneLoader" type="Control"]
@@ -14,74 +9,14 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 14.0
+offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_tm3ty")
 
-[node name="Navigation" type="Node" parent="."]
-editor_description = "Navigation "
-script = ExtResource("2_27po4")
-
-[node name="CompoundState" type="Node" parent="Navigation"]
-editor_description = "Navigation state"
-script = ExtResource("3_jr0s5")
-initial_state = NodePath("LevelSelectScreen")
-
-[node name="LevelSelectScreen" type="Node" parent="Navigation/CompoundState"]
-script = ExtResource("4_g4ltl")
-
-[node name="SelectLevel" type="Node" parent="Navigation/CompoundState/LevelSelectScreen"]
-script = ExtResource("5_soj53")
-to = NodePath("../../BoardScreens")
-event = &"SelectLevel"
-
-[node name="BoardScreens" type="Node" parent="Navigation/CompoundState"]
-script = ExtResource("3_jr0s5")
-initial_state = NodePath("GameScreen")
-
-[node name="GameScreen" type="Node" parent="Navigation/CompoundState/BoardScreens"]
-editor_description = "Game screen"
-script = ExtResource("4_g4ltl")
-
-[node name="GoToEditor" type="Node" parent="Navigation/CompoundState/BoardScreens/GameScreen"]
-editor_description = "Go to Editor"
-script = ExtResource("5_soj53")
-to = NodePath("../../EditorScreen")
-event = &"GoToEditor"
-
-[node name="Back" type="Node" parent="Navigation/CompoundState/BoardScreens/GameScreen"]
-script = ExtResource("5_soj53")
-to = NodePath("../../../LevelSelectScreen")
-event = &"Back"
-
-[node name="EditorScreen" type="Node" parent="Navigation/CompoundState/BoardScreens"]
-editor_description = "Editor screen"
-script = ExtResource("4_g4ltl")
-
-[node name="Back" type="Node" parent="Navigation/CompoundState/BoardScreens/EditorScreen"]
-script = ExtResource("5_soj53")
-to = NodePath("../../../LevelSelectScreen")
-event = &"Back"
-
-[node name="GoToGame" type="Node" parent="Navigation/CompoundState/BoardScreens/EditorScreen"]
-editor_description = "Go to game screen	"
-script = ExtResource("5_soj53")
-to = NodePath("../../GameScreen")
-event = &"GoToGame"
-
 [node name="game" parent="." instance=ExtResource("6_be85a")]
 visible = false
 
-[node name="editor" parent="." instance=ExtResource("7_ivwpe")]
-visible = false
-
 [node name="level_select" parent="." instance=ExtResource("8_iyllb")]
-visible = false
 layout_mode = 1
-
-[connection signal="state_entered" from="Navigation/CompoundState/LevelSelectScreen" to="." method="_on_level_select_screen_state_entered"]
-[connection signal="state_exited" from="Navigation/CompoundState/LevelSelectScreen" to="." method="_on_level_select_screen_state_exited"]
-[connection signal="state_entered" from="Navigation/CompoundState/BoardScreens/GameScreen" to="." method="_on_game_screen_state_entered"]
-[connection signal="state_exited" from="Navigation/CompoundState/BoardScreens/GameScreen" to="." method="_on_game_screen_state_exited"]
-[connection signal="state_entered" from="Navigation/CompoundState/BoardScreens/EditorScreen" to="." method="_on_editor_screen_state_entered"]
-[connection signal="state_exited" from="Navigation/CompoundState/BoardScreens/EditorScreen" to="." method="_on_editor_screen_state_exited"]
