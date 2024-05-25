@@ -43,7 +43,10 @@ func _reset():
 func move(direction):
 	cmds.append(MoveRobotCmd.new(game_state,board, board.get_selected_robot(), direction))
 
-func _unhandled_input(event):
+#func _unhandled_input(event):
+#	_on_ready_state_unhandled_input(event)
+
+func _on_active_state_unhandled_input(event):
 	_on_ready_state_unhandled_input(event)
 
 func _on_ready_state_unhandled_input(event):
@@ -70,10 +73,10 @@ func _on_back_button_pressed():
 #	navigator.send_event("Back")	
 
 
-func _process(delta):
-	_on_ready_state_processing(delta)
+#func _process(delta):
+#	_on_ready_state_processing(delta)
 
-func _on_ready_state_processing(delta):
+func _on_active_state_processing(delta):
 	check_cmds()
 	
 func check_cmds():	
@@ -119,3 +122,7 @@ func _on_handle_swipe_input(event):
 						move(Direction.Down)
 					else:
 						move(Direction.Up)
+
+
+
+
