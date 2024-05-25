@@ -1,9 +1,8 @@
-res://main/board/robot/robot.tscn
-res://main/game/game.gd
-res://main/board_container/board_container.gd
-res://main/level_select/level_select_screen.gd
 res://main/game/game.tscn
+res://main/board/robot/robot.tscn
 res://main/SceneLoader.tscn
-res://main/SceneLoader.gd
 res://main/level_select/level_select.tscn
+res://main/game/game.gd
+res://main/SceneLoader.gd
+res://main/game/game_events.gd
 res://main/commands/move_robot_cmd.gd

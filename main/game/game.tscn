@@ -1,12 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://tqpt66wvsbue"]
+[gd_scene load_steps=13 format=3 uid="uid://tqpt66wvsbue"]
 
 [ext_resource type="Script" path="res://main/game/game.gd" id="1_5it5f"]
 [ext_resource type="Script" path="res://main/board/board.gd" id="2_jvigl"]
 [ext_resource type="Texture2D" uid="uid://cjxq7fh4ydgpd" path="res://main/game/background.png" id="8_4p5k4"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="8_8rsik"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="9_6aw35"]
 [ext_resource type="PackedScene" uid="uid://yropy8d5rwmf" path="res://main/board/robot/robot.tscn" id="9_gof81"]
 [ext_resource type="Texture2D" uid="uid://csuocyxp4eapi" path="res://main/board/robot/blue-rook.png" id="10_3g4yh"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="10_b8w8w"]
 [ext_resource type="Script" path="res://main/game/robot_textures.gd" id="11_h3mh6"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="11_pfvb0"]
 [ext_resource type="Texture2D" uid="uid://ckcdpxoj84gkf" path="res://main/board/robot/red-rook.png" id="12_robaa"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="12_uw72o"]
 
 [node name="game" type="Node2D"]
 script = ExtResource("1_5it5f")
@@ -71,6 +76,62 @@ npc_textures = Array[Texture2D]([ExtResource("10_3g4yh")])
 script = ExtResource("11_h3mh6")
 char_texture = ExtResource("12_robaa")
 npc_textures = Array[Texture2D]([ExtResource("10_3g4yh")])
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("12_uw72o")]
+offset_left = 72.0
+offset_top = 872.0
+offset_right = 560.0
+offset_bottom = 1216.0
+initial_node_to_watch = NodePath("../StateChart")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("8_8rsik")
+track_in_editor = true
+
+[node name="game_state" type="Node" parent="StateChart"]
+script = ExtResource("9_6aw35")
+initial_state = NodePath("not_started")
+
+[node name="not_started" type="Node" parent="StateChart/game_state"]
+script = ExtResource("10_b8w8w")
+
+[node name="on_start" type="Node" parent="StateChart/game_state/not_started"]
+script = ExtResource("11_pfvb0")
+to = NodePath("../../playing")
+event = &"start game"
+
+[node name="playing" type="Node" parent="StateChart/game_state"]
+script = ExtResource("9_6aw35")
+initial_state = NodePath("active")
+
+[node name="active" type="Node" parent="StateChart/game_state/playing"]
+script = ExtResource("10_b8w8w")
+
+[node name="start_move" type="Node" parent="StateChart/game_state/playing/active"]
+script = ExtResource("11_pfvb0")
+to = NodePath("../../moving")
+event = &"start move"
+
+[node name="moving" type="Node" parent="StateChart/game_state/playing"]
+script = ExtResource("10_b8w8w")
+
+[node name="finish_move" type="Node" parent="StateChart/game_state/playing/moving"]
+script = ExtResource("11_pfvb0")
+to = NodePath("../../active")
+event = &"finish move"
+
+[node name="on_finish" type="Node" parent="StateChart/game_state/playing"]
+script = ExtResource("11_pfvb0")
+to = NodePath("../../finished")
+event = &"end game"
+
+[node name="finished" type="Node" parent="StateChart/game_state"]
+script = ExtResource("10_b8w8w")
+
+[node name="on_start" type="Node" parent="StateChart/game_state/finished"]
+script = ExtResource("11_pfvb0")
+to = NodePath("../../playing")
+event = &"start game"
 
 [connection signal="pressed" from="editor_button" to="." method="_on_editor_button_pressed"]
 [connection signal="pressed" from="restart_button" to="." method="_on_restart_button_pressed"]

@@ -18,6 +18,7 @@ config/icon="res://main/icon.svg"
 [autoload]
 
 Direction="*res://main/global/direction.gd"
+GameEvents="*res://main/game/game_events.gd"
 
 [display]
 

@@ -14,7 +14,7 @@ func _init(new_game_state:StateChart, new_board:Board, new_robot:Robot, new_dire
 	
 func execute():
 	if game_state:
-		game_state.send_event("StartMoving")
+		game_state.send_event(GameEvents.START_MOVE)
 	robot.finished_moving.connect(on_robot_finished_moving)	
 	var moves = get_moves(board, robot.pos, direction)
 	robot.set_moves(moves)
@@ -60,9 +60,9 @@ func on_robot_finished_moving(robot):
 		robot.shrink()
 	else:
 		if game_state:
-			game_state.send_event("StopMoving")
+			game_state.send_event(GameEvents.FINISH_MOVE)
 
 func on_robot_finished_shrinking(robot):
 	if game_state:
-		game_state.send_event("StopMoving")
-		game_state.send_event("EndGame")
+		game_state.send_event(GameEvents.FINISH_MOVE)
+		game_state.send_event(GameEvents.END_GAME)

@@ -29,6 +29,7 @@ func goto_level_select():
 func goto_game():
 	level_select_screen.visible = false
 	game_screen.visible = true
+	game_screen.start()
 
 
 func _on_editor_screen_state_entered():
