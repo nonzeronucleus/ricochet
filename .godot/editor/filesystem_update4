@@ -6,3 +6,4 @@ res://main/game/game.gd
 res://main/SceneLoader.gd
 res://main/game/game_events.gd
 res://main/commands/move_robot_cmd.gd
+res://main/game/moves.gd

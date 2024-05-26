@@ -6,6 +6,7 @@ extends BoardContainer
 @onready var bottom_check:CheckBox = $bottom_check
 @onready var target_check:CheckBox = $target_check
 @onready var game_state:StateChart = $StateChart
+@onready var moves = $moves
 
 var cmds = []
 
@@ -30,7 +31,8 @@ func _reset():
 	super._reset()
 	cmds = []
 	if game_state:
-		game_state.send_event(GameEvents.START)	
+		game_state.send_event(GameEvents.START)
+	moves.reset()
 	
 	
 #func set_navigator(new_navigator:StateChart) -> void:
