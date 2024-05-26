@@ -1,3 +1,4 @@
+Label
 Moves
 StateChart
 Node2D
@@ -12,4 +13,3 @@ IconGroup
 Button
 Transition
 MarginContainer
-Label

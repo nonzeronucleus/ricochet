@@ -9,7 +9,7 @@ func reset():
 	_history.clear()
 	moves_changed.emit()
 	
-func add_move(move:Vector2):
+func add_move(move:MoveRobotCmd):
 	_history.append(move)
 	moves_changed.emit()
 	

@@ -114,9 +114,9 @@ func set_next_move():
 	if moves.size()>0:
 		var next_move:Move = moves.pop_front()
 		if next_move.instant:
-			_set_instant_pos(next_move.pos)
+			_set_instant_pos(next_move.end_pos)
 		else:
-			set_pos(next_move.pos)
+			set_pos(next_move.end_pos)
 	else:
 		finished_moving.emit(self)
 	

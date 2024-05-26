@@ -43,7 +43,9 @@ func _reset():
 	#navigator.send_event("GoToEditor")		
 
 func move(direction):
-	cmds.append(MoveRobotCmd.new(game_state,board, board.get_selected_robot(), direction))
+	var cmd = MoveRobotCmd.new(game_state,board, board.get_selected_robot(), direction)
+	cmds.append(cmd)
+	moves.add_move(cmd)
 
 #func _unhandled_input(event):
 #	_on_ready_state_unhandled_input(event)
@@ -84,7 +86,7 @@ func _on_active_state_processing(delta):
 func check_cmds():	
 	var next_cmd = cmds.pop_back()
 	if next_cmd:
-		next_cmd.execute()	
+		next_cmd.execute()
 
 
 func _on_playing_state_entered():

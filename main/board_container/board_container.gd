@@ -16,8 +16,10 @@ func _ready():
 	_reset()
 	
 func _reset():
-	if level:
-		board.get_player_robot().set_init_pos(level.start_pos)
+	board.reset()
+#	if level:
+		
+#		board.get_player_robot().set_init_pos(level.start_pos)
 	
 func set_level_mgr(new_level_mgr:LevelMgr) -> void:
 	level_mgr = new_level_mgr

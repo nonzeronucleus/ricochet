@@ -12,8 +12,8 @@ var target = SquareView
 var square_size
 var square_views:MultiArray
 var squares:Array
-
 var all_robots:Array = []
+var _level:Level
 
 func get_selected_robot() -> Robot:
 	return all_robots.filter(func(robot): return robot.is_selected)[0]
@@ -33,15 +33,16 @@ signal setup_complete()
 
 
 func _ready():
-	var player_robot = RobotTemplate.instantiate()
-	player_robot.is_player = true
-	player_robot.set_screen_position()	
+#	var player_robot = RobotTemplate.instantiate()
+#	player_robot.is_player = true
+#	player_robot.set_screen_position()	
 	square_size = SquareSize.new(calc_square_size())
-	player_robot.set_square_size(square_size)	
+#	player_robot.set_square_size(square_size)	
 	square_size.size_changed.connect(_on_square_size_changed)
-	player_robot.is_selected = true
-	all_robots.append(player_robot)
-	
+#	player_robot.is_selected = true
+#	all_robots.append(player_robot)
+
+
 func _on_square_size_changed(_length):
 	pass
 
@@ -56,15 +57,37 @@ func resize_squares():
 
 
 func set_level(new_level:Level):
-	remove_all_squares()
-	grid_dimension = new_level.get_size()
-	square_views = MultiArray.new(new_level.get_size())
-	add_all_squares()
-	init_squares(new_level.squares)
-	set_target_pos(new_level.target_pos)
-	get_player_robot().set_init_pos(new_level.start_pos)
-	add_npcs(new_level.npcs_pos)
-	resize_squares()
+	_level = new_level
+	reset()
+	
+func reset():
+	if _level:
+		remove_all_squares()
+		grid_dimension = _level.get_size()
+		square_views = MultiArray.new(_level.get_size())
+		add_all_squares()
+		init_squares(_level.squares)
+		set_target_pos(_level.target_pos)
+		#get_player_robot().set_init_pos(_level.start_pos)
+		add_player_robot(_level.start_pos)
+		add_npcs(_level.npcs_pos)
+		resize_squares()
+
+
+func add_player_robot(pos:Vector2):
+	var player_robot = RobotTemplate.instantiate()
+	player_robot.is_player = true
+#	player_robot.set_screen_position()	
+	player_robot.set_square_size(square_size)	
+	player_robot.is_selected = true
+	player_robot.set_init_pos(pos)
+	all_robots.append(player_robot)
+	add_child(player_robot)
+		
+
+
+#func reset():
+#	pass
 	
 
 
@@ -96,11 +119,11 @@ func remove_all_squares():
 			square_views.set_at(x,y,null)
 	
 	for robot:Robot in all_robots:
-		if !robot.is_player:
-			all_robots.erase(robot)
-			remove_child(robot)
-			robot.queue_free()
-
+#		if !robot.is_player:
+#		all_robots.erase(robot)
+		remove_child(robot)
+		robot.queue_free()
+	all_robots.clear()
 	
 func add_all_squares():
 	for x in grid_dimension.x:
@@ -113,7 +136,7 @@ func add_all_squares():
 			square_view.square_selected.connect(_on_square_selected)
 			add_child(square_view) 
 	set_target(square_views.at(0,0))
-	add_child(get_player_robot())
+	#add_child(get_player_robot())
 	
 
 

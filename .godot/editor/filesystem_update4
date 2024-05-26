@@ -7,3 +7,8 @@ res://main/SceneLoader.gd
 res://main/game/game_events.gd
 res://main/commands/move_robot_cmd.gd
 res://main/game/moves.gd
+res://main/game/moves_label.gd
+res://main/board/robot/move.gd
+res://main/board/robot/robot.gd
+res://main/board_container/board_container.gd
+res://main/board/board.gd

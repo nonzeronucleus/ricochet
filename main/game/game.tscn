@@ -6,13 +6,13 @@
 [ext_resource type="Texture2D" uid="uid://cjxq7fh4ydgpd" path="res://main/game/background.png" id="8_4p5k4"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="8_8rsik"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="9_6aw35"]
-[ext_resource type="PackedScene" uid="uid://yropy8d5rwmf" path="res://main/board/robot/robot.tscn" id="9_gof81"]
 [ext_resource type="Texture2D" uid="uid://csuocyxp4eapi" path="res://main/board/robot/blue-rook.png" id="10_3g4yh"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="10_b8w8w"]
 [ext_resource type="Script" path="res://main/game/robot_textures.gd" id="11_h3mh6"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="11_pfvb0"]
 [ext_resource type="Texture2D" uid="uid://ckcdpxoj84gkf" path="res://main/board/robot/red-rook.png" id="12_robaa"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="12_uw72o"]
+[ext_resource type="Script" path="res://main/game/moves_label.gd" id="13_qa12i"]
 
 [node name="game" type="Node2D"]
 script = ExtResource("1_5it5f")
@@ -67,12 +67,6 @@ offset_bottom = 709.0
 focus_mode = 0
 text = "Next Level"
 metadata/_edit_use_anchors_ = true
-
-[node name="robot_template2" parent="." instance=ExtResource("9_gof81")]
-visible = false
-position = Vector2(-112, 48)
-scale = Vector2(0.0524666, 0.0551649)
-npc_textures = Array[Texture2D]([ExtResource("10_3g4yh")])
 
 [node name="robot_textures" type="Node" parent="."]
 script = ExtResource("11_h3mh6")
@@ -137,6 +131,15 @@ event = &"start game"
 
 [node name="moves" type="Node" parent="."]
 script = ExtResource("1_xnrlw")
+
+[node name="moves_label" type="Label" parent="." node_paths=PackedStringArray("moves")]
+offset_left = 48.0
+offset_top = 8.0
+offset_right = 224.0
+offset_bottom = 40.0
+text = "Moves: 0"
+script = ExtResource("13_qa12i")
+moves = NodePath("../moves")
 
 [connection signal="pressed" from="editor_button" to="." method="_on_editor_button_pressed"]
 [connection signal="pressed" from="restart_button" to="." method="_on_restart_button_pressed"]
