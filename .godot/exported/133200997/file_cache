@@ -2,12 +2,12 @@ res://addons/godot_state_charts/utilities/editor_debugger/editor_debugger.tscn::
 res://addons/godot_state_charts/utilities/event_refactor/event_refactor.tscn::10575ce51e70fbb81f69574d03f8d95d::1716493957::res://.godot/exported/133200997/export-b80a8508b527a774be752a0236bbafd0-event_refactor.scn
 res://addons/godot_state_charts/utilities/editor_sidebar.tscn::e32c0165d0fc308bd408479f1b2181ab::1716493957::res://.godot/exported/133200997/export-df2d4cfb237df792ce3cd52de2fbb820-editor_sidebar.scn
 res://addons/godot_state_charts/utilities/state_chart_debugger.tscn::f89ac8876c059098a0736fb040be6739::1716493957::res://.godot/exported/133200997/export-6a5e4d68230ed0f2c2536fee1232a133-state_chart_debugger.scn
-res://main/board/robot/robot.tscn::fcb7f685ba885fe2647007d765403e9b::1716805760::res://.godot/exported/133200997/export-f0ed2950953540fe0b76e6474d320927-robot.scn
+res://main/board/robot/robot.tscn::fcb7f685ba885fe2647007d765403e9b::1716833292::res://.godot/exported/133200997/export-f0ed2950953540fe0b76e6474d320927-robot.scn
 res://main/board/robot/robot_sprite_frames.tres::5c9d1a22304bd4b4b6be6fb95d416f8b::1716137109::res://.godot/exported/133200997/export-b7a032220c6f2d57936a4d7c48385dd7-robot_sprite_frames.res
 res://main/board/square_view/square_view.tscn::441a47652e95cf63ef3975029e43d5a9::1716581818::res://.godot/exported/133200997/export-f536c8c59666462e668bd335752d36b7-square_view.scn
 res://main/board/wall_view/wall_view.tscn::c71da9c003a162fd40824cdcc991fb57::1713789952::res://.godot/exported/133200997/export-cbe7e8f1b8a119f3ccfb2bd44f2d191a-wall_view.scn
-res://main/game/game.tscn::9058293fed0f4935ff5a6096adf6102b::1716805760::res://.godot/exported/133200997/export-b9850f380dbd1d4ffa479389a7555cd0-game.scn
-res://main/level_select/level_select.tscn::585d1975c5f3bdd41d18541071a88af7::1716805760::res://.godot/exported/133200997/export-e27ccf09b4b759056c25426ea9cffbd7-level_select.scn
+res://main/game/game.tscn::f9cf9f8c1fe7865d2a646ee770d4e026::1716833292::res://.godot/exported/133200997/export-b9850f380dbd1d4ffa479389a7555cd0-game.scn
+res://main/level_select/level_select.tscn::585d1975c5f3bdd41d18541071a88af7::1716833292::res://.godot/exported/133200997/export-e27ccf09b4b759056c25426ea9cffbd7-level_select.scn
 res://main/level_select/level_select_button.tscn::4468d93b7a58b67a223e62755d0ae044::1716111792::res://.godot/exported/133200997/export-5bcbfa86a8761dd7f82eef1b074edcbd-level_select_button.scn
 res://main/objects/confirmation_dialog/confirmation_dialog.tscn::dababc9c67f564043f800b8a2c499a94::1711832056::res://.godot/exported/133200997/export-44d812f1bfce8a23e161f198e3a43cd2-confirmation_dialog.scn
 res://main/themes/fonts/Dosis/Dosis-font-large.tres::8c5c773e854018e75672b32eababc9cf::1711297452::res://.godot/exported/133200997/export-e012a2c23028353bee4e58875aeabd22-Dosis-font-large.res
@@ -19,4 +19,4 @@ res://main/themes/confirmation_theme.tres::eb3e78f617da32fa58226d868116615f::171
 res://main/themes/default_env.tres::05bd5849a92b09eb581574e40b8bad42::1711266790::res://.godot/exported/133200997/export-552924bc2013a89690a513641dd85603-default_env.res
 res://main/themes/main_theme.tres::46626335d654efab127cbcbf7d0a0630::1715544626::res://.godot/exported/133200997/export-ca321d4595fa428ff256e4eee92b8246-main_theme.res
 res://main/themes/options_theme.tres::6cf6830f66d16bc161bed2b3f994c947::1716581818::res://.godot/exported/133200997/export-93081ef773b9de5a3b8b712c9d71a584-options_theme.res
-res://main/SceneLoader.tscn::cf4fc15f7b6d3232c3603e01ccc39800::1716805760::res://.godot/exported/133200997/export-fb81d65e8b67605074cfad931563b123-SceneLoader.scn
+res://main/SceneLoader.tscn::cf4fc15f7b6d3232c3603e01ccc39800::1716833292::res://.godot/exported/133200997/export-fb81d65e8b67605074cfad931563b123-SceneLoader.scn

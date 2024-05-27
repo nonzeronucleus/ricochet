@@ -19,10 +19,8 @@ script = ExtResource("1_5it5f")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 show_behind_parent = true
-offset_left = -24.0
-offset_top = -16.0
-offset_right = 2003.0
-offset_bottom = 2694.0
+offset_right = 2027.0
+offset_bottom = 2710.0
 scale = Vector2(0.351289, 0.493079)
 texture = ExtResource("8_4p5k4")
 
@@ -53,17 +51,17 @@ text = "Restart"
 
 [node name="back_button" type="Button" parent="."]
 offset_left = 56.0
-offset_top = 673.0
+offset_top = 656.0
 offset_right = 120.0
-offset_bottom = 681.0
+offset_bottom = 687.0
 text = "Back"
 metadata/_edit_use_anchors_ = true
 
 [node name="next_level_button" type="Button" parent="."]
 offset_left = 523.0
-offset_top = 678.0
+offset_top = 661.0
 offset_right = 613.0
-offset_bottom = 709.0
+offset_bottom = 692.0
 focus_mode = 0
 text = "Next Level"
 metadata/_edit_use_anchors_ = true
@@ -74,10 +72,10 @@ char_texture = ExtResource("12_robaa")
 npc_textures = Array[Texture2D]([ExtResource("10_3g4yh")])
 
 [node name="StateChartDebugger" parent="." instance=ExtResource("12_uw72o")]
-offset_left = 72.0
-offset_top = 872.0
-offset_right = 560.0
-offset_bottom = 1216.0
+offset_left = 48.0
+offset_top = 704.0
+offset_right = 536.0
+offset_bottom = 832.0
 initial_node_to_watch = NodePath("../StateChart")
 
 [node name="StateChart" type="Node" parent="."]
@@ -149,10 +147,18 @@ offset_bottom = 47.0
 focus_mode = 0
 text = "Replay"
 
+[node name="ItemList" type="ItemList" parent="."]
+offset_left = 8.0
+offset_top = 840.0
+offset_right = 632.0
+offset_bottom = 1096.0
+size_flags_horizontal = 4
+
 [connection signal="pressed" from="editor_button" to="." method="_on_editor_button_pressed"]
 [connection signal="pressed" from="restart_button" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="back_button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="next_level_button" to="." method="_on_next_level_button_pressed"]
+[connection signal="state_input" from="StateChart/game_state/playing/active" to="." method="_on_active_state_input"]
 [connection signal="state_processing" from="StateChart/game_state/playing/active" to="." method="_on_active_state_processing"]
 [connection signal="state_unhandled_input" from="StateChart/game_state/playing/active" to="." method="_on_active_state_unhandled_input"]
 [connection signal="pressed" from="replay_button" to="." method="_on_replay_button_pressed"]

@@ -51,7 +51,12 @@ func move(direction):
 #	_on_ready_state_unhandled_input(event)
 
 func _on_active_state_unhandled_input(event):
+	pass # Replace with function body.
+	
+func _on_active_state_input(event):
+	$ItemList.add_item(str(event))
 	_on_ready_state_unhandled_input(event)
+
 
 func _on_ready_state_unhandled_input(event):
 	
@@ -135,3 +140,5 @@ func _on_replay_button_pressed():
 	board.reset_to_init_pos()
 	cmds.append_array(moves._history)
 	
+
+
