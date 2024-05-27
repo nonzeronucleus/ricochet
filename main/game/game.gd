@@ -66,8 +66,10 @@ func _on_ready_state_unhandled_input(event):
 
 
 func _on_restart_button_pressed():
-	board.get_player_robot().reset_size()
-	_reset()
+#	board.get_player_robot().reset_size()
+#	_reset()
+	board.reset_to_init_pos()
+	moves.reset()
 	if game_state:
 		game_state.send_event(GameEvents.START)	
 
@@ -128,5 +130,7 @@ func _on_handle_swipe_input(event):
 						move(Direction.Up)
 
 
-
-
+func _on_replay_button_pressed():
+	board.reset_to_init_pos()
+	cmds.append_array(moves._history)
+	

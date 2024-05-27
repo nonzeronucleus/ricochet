@@ -68,6 +68,14 @@ func reset():
 		resize_squares()
 
 
+func reset_to_init_pos():
+	for robot:Robot in all_robots:
+		robot.reset_to_init_pos()
+	select_robot(get_player_robot().pos)
+
+
+
+
 func add_player_robot(pos:Vector2):
 	var player_robot = RobotTemplate.instantiate()
 	player_robot.is_player = true
@@ -97,7 +105,7 @@ func init_squares(new_squares:Array):
 func add_npcs(npcs_pos:Array):
 	for pos in npcs_pos:
 		var npc:Robot = RobotTemplate.instantiate()
-		npc.pos = pos
+		npc.set_init_pos(pos)
 		npc.square_size = square_size
 		add_child(npc)
 		all_robots.append(npc)

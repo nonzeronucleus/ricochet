@@ -10,7 +10,7 @@ func reset():
 	moves_changed.emit()
 	
 func add_move(move:MoveRobotCmd):
-	_history.append(move)
+	_history.push_front(move)
 	moves_changed.emit()
 	
 func get_move_count():

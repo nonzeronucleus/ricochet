@@ -44,10 +44,10 @@ offset_bottom = 47.0
 text = "Editor"
 
 [node name="restart_button" type="Button" parent="."]
-offset_left = 372.0
-offset_top = 21.0
-offset_right = 465.0
-offset_bottom = 52.0
+offset_left = 368.0
+offset_top = 16.0
+offset_right = 461.0
+offset_bottom = 47.0
 focus_mode = 0
 text = "Restart"
 
@@ -141,9 +141,18 @@ text = "Moves: 0"
 script = ExtResource("13_qa12i")
 moves = NodePath("../moves")
 
+[node name="replay_button" type="Button" parent="."]
+offset_left = 160.0
+offset_top = 16.0
+offset_right = 256.0
+offset_bottom = 47.0
+focus_mode = 0
+text = "Replay"
+
 [connection signal="pressed" from="editor_button" to="." method="_on_editor_button_pressed"]
 [connection signal="pressed" from="restart_button" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="back_button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="next_level_button" to="." method="_on_next_level_button_pressed"]
 [connection signal="state_processing" from="StateChart/game_state/playing/active" to="." method="_on_active_state_processing"]
 [connection signal="state_unhandled_input" from="StateChart/game_state/playing/active" to="." method="_on_active_state_unhandled_input"]
+[connection signal="pressed" from="replay_button" to="." method="_on_replay_button_pressed"]

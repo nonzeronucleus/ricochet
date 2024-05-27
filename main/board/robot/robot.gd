@@ -3,6 +3,7 @@ class_name Robot
 extends AnimatedSprite2D
 
 var square_size:SquareSize:set = set_square_size
+var init_pos:Vector2
 var pos:Vector2
 var moves:Array
 var init_scale:Vector2
@@ -72,9 +73,12 @@ func _get_texture_size() -> Vector2:
 
 
 func set_init_pos(new_pos:Vector2):
+	init_pos = new_pos
 	pos = new_pos
 	set_screen_position()
-	
+
+func reset_to_init_pos():
+	_set_instant_pos(init_pos)
 	
 func set_screen_position():
 	if !square_size:
