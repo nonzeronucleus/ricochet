@@ -33,14 +33,8 @@ signal setup_complete()
 
 
 func _ready():
-#	var player_robot = RobotTemplate.instantiate()
-#	player_robot.is_player = true
-#	player_robot.set_screen_position()	
 	square_size = SquareSize.new(calc_square_size())
-#	player_robot.set_square_size(square_size)	
 	square_size.size_changed.connect(_on_square_size_changed)
-#	player_robot.is_selected = true
-#	all_robots.append(player_robot)
 
 
 func _on_square_size_changed(_length):
