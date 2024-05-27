@@ -63,7 +63,8 @@ func _on_ready_state_unhandled_input(event):
 		move(Direction.Up)
 	elif Input.is_action_pressed("ui_down"):
 		move(Direction.Down)
-
+	else:
+		_on_handle_swipe_input(event)
 
 func _on_restart_button_pressed():
 #	board.get_player_robot().reset_size()
